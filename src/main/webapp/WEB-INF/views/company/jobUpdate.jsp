@@ -15,12 +15,13 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/common.css" />
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
 	<main class="container-fluid">
 		<div class="row">
-			<nav class="col-1 bg-white sidebar vh-100 border-end">
+			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
 					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
 				</div>
@@ -97,14 +98,16 @@
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
-								<label for="c_intro" class="form-label">기업 소개</label> <textarea rows="10" class="form-control" id="c_intro"
-							name="c_intro" ></textarea>
+								<label for="c_intro" class="form-label">기업 소개</label>
+								<textarea rows="10" class="form-control" id="c_intro"
+									name="c_intro"></textarea>
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
-								<label for="job-intro" class="form-label">업무 소개</label><textarea rows="10" class="form-control" id="job-intro"
-							name="job-intro" ></textarea>
+								<label for="job-intro" class="form-label">업무 소개</label>
+								<textarea rows="10" class="form-control" id="job-intro"
+									name="job-intro"></textarea>
 							</div>
 						</div>
 						<p class="mb-0">기술/자격 조건</p>

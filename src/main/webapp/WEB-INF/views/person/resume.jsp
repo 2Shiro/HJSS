@@ -54,7 +54,7 @@
 							.getElementById('jobPost'));
 					myModal.hide();
 				})
-		document.getElementById('jobDetailDiv').addEventListener('click',
+		document.getElementById('resumeDetailDiv').addEventListener('click',
 				function(event) {
 
 					if (event.target && event.target.id === 'btn-delete') {
@@ -62,7 +62,7 @@
 						event.preventDefault();
 						alert('삭제 처리됨');
 					} else {
-						window.location.href = '/jobDetail';
+						window.location.href = '/resumeDetail';
 					}
 				});
 	});
@@ -76,26 +76,26 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
 				</div>
 			</nav>
 
 			<!-- 메인 섹션 -->
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
-					<h2>등록한 공고</h2>
+					<h2>이력서 관리</h2>
 					<hr>
 					<div>
 						<!-- 공고 등록 모달 출력 버튼 -->
 						<div class="d-grid mx-auto container my-5">
 							<button class="btn btn-outline-dark btn-lg shadow-sm"
 								style="height: 80px" type="button" data-bs-toggle="modal"
-								data-bs-target="#jobPost">새로운 공고등록</button>
+								data-bs-target="#resumeForm">새 이력서 등록</button>
 						</div>
 						<!-- 공고 등록 모달 include -->
-						<%@include file="/WEB-INF/views/company/jobpostform.jsp"%>
+						<%@include file="/WEB-INF/views/person/resumeForm.jsp"%>
 					</div>
-					<div class="container border" id="jobDetailDiv">
+					<div class="container border" id="resumeDetailDiv">
 						<!-- 공고 리스트 시작 -->
 						<div class="d-flex justify-content-between">
 							<div>
@@ -105,8 +105,10 @@
 									class="form-control border-0 shadow-none"
 									value="마감기한 : 2024-04-11" id="deadline">
 							</div>
-							<button id="btn-delete"
-								class="btn btn-dark align-self-center float-end mx-3">삭제</button>
+							<div class="align-self-center float-end mx-3">
+								<button id="btn-publish" class="btn btn-success">공개중</button>
+								<button id="btn-delete" class="btn btn-dark">삭제</button>
+							</div>
 						</div>
 						<!-- 공고 리스트 끝 -->
 					</div>

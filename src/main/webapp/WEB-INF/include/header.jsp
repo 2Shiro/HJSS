@@ -14,8 +14,8 @@
     </a>
    
     <ul class="nav nav-pills mt-auto me-3">
-        <li class="nav-item"><a class="btn" href="#">로그아웃</a></li>
-        <li class="nav-item"><a class="btn" href="#">마이페이지</a></li>
+        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="#" >로그아웃</a></li>
+        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="#">마이페이지</a></li>
     </ul>
     
 <%--    
