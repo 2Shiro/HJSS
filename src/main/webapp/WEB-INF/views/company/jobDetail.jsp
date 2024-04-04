@@ -15,12 +15,13 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/common.css" />
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
 	<main class="container-fluid">
 		<div class="row">
-			<nav class="col-1 bg-white sidebar vh-100 border-end">
+			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
 					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
 				</div>
@@ -85,20 +86,23 @@
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label> <input
-									type="text" class="form-control" id="c_intro" value="기업 소개란" readonly="readonly">
+									type="text" class="form-control" id="c_intro" value="기업 소개란"
+									readonly="readonly">
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="job-intro" class="form-label">업무 소개</label> <input
-									type="text" class="form-control" id="job-intro" value="업무 소개란" readonly="readonly">
+									type="text" class="form-control" id="job-intro" value="업무 소개란"
+									readonly="readonly">
 							</div>
 						</div>
 						<p class="mb-0">기술/자격 조건</p>
 						<div class="my-2 row" id="skills">
 							<div class="col-auto">
 								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="Javascript" readonly="readonly">
+									style="padding: 5px 0px;" value="Javascript"
+									readonly="readonly">
 							</div>
 							<div class="col-auto">
 								<input type="text" class="form-control text-center"
