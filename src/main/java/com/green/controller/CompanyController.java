@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CproposalVo;
+import com.green.domain.PersonVo;
 import com.green.mapper.ComMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/Company")
 public class CompanyController {
+	
 	@Autowired
 	private ComMapper comMapper;
 	
@@ -47,13 +49,6 @@ public class CompanyController {
 	public ModelAndView jobUpdate() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/company/jobUpdate");
-		return mv;
-	}
-	
-	@RequestMapping("/Mypage")
-	public ModelAndView mypage() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/company/mypage");
 		return mv;
 	}
 

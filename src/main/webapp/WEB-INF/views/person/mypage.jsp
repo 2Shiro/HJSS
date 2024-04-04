@@ -38,23 +38,23 @@
 							<div class="col-6 row ms-4" >
 								<div class="input-group mb-3 ">
 									<span class="input-group-text text-center" id="pname">이름</span>
-									<input type="text" class="form-control" id="pname" name="pname" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="pname" name="pname" value="${ vo.pname }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="pid">ID</span>
-									<input type="text" class="form-control" id="pid" name="pid" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="pid" name="pid" value="${ vo.id }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="phone">전화번호</span>
-									<input type="text" class="form-control" id="phone" name="phone" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="phone" name="phone" value="${ vo.phone }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="paddress">주소</span>
-									<input type="text" class="form-control" id="paddress" name="paddress" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="paddress" name="paddress" value="${ vo.address }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="birth">생년월일</span>
-									<input type="email" class="form-control" id="birth" name="birth" readonly style="height: 70px;">
+									<input type="email" class="form-control" id="birth" name="birth" value="${ vo.birth }" readonly style="height: 70px;">
 								</div>
 							</div>
 						</div>
