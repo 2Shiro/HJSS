@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,25 +48,13 @@ h3 {
 						<th>이력서</th>
 						<th>상태</th>
 					</tr>
-					<c:forEach var="i" begin="1" end="8">   
-						<tr>       
-<%--              <c:choose> --%>
-<%--                 <c:when test=""> --%>
-<!--                     <tr> -->
-<%--                 </c:when> --%>
-<%--                 <c:when test=""> --%>
-<!--                     <tr class="table-info"> -->
-<%--                 </c:when> --%>
-<%--                 <c:otherwise> --%>
-<!--                     <tr class="table-secondary"> -->
-<%--                 </c:otherwise> --%>
-<%--              </c:choose> --%>
-         
-             <td> &nbsp &nbsp title</td>
-             <td>공고이름</td>
-             <td>구직자이름</td>
-             <td><a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#personResumeModal">이력서</a></td>
-             <td>상태</td>
+					<c:forEach var="proposalList" items="${proposalList}">   
+						<tr>                
+             <td>${proposalList.pro_idx}</td>
+             <td>${proposalList.id}</td>
+             <td>${proposalList.post_id}</td>
+             <td><a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#personResumeModal">${proposalList.resume_id}</a></td>
+             <td>${proposalList.status}</td>
          	</tr>
          </c:forEach>
 				</table>
