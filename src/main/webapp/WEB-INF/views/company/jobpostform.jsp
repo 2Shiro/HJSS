@@ -82,7 +82,7 @@
 							type="email" class="form-control" id="post_name"
 							placeholder="제목을 입력해주세요.">
 					</div>
-					<div class="my-1 mx-auto row">
+					<div class="mt-3 mx-auto row">
 						<div class="col-auto">
 							<input type="checkbox" class="btn-check" id="skill_1"
 								autocomplete="off"> <label

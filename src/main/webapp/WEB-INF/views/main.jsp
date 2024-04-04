@@ -30,7 +30,7 @@
 		<div class="row">
 			<nav class="col-1 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/main_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">

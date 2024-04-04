@@ -75,7 +75,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-1 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/main_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -100,9 +100,9 @@
 							<div>
 								<input type="text"
 									class="form-control border-0 shadow-none mb-2"
-									value="백앤드 개발자 구합니다." id="input1"> <input type="text"
+									value="백앤드 개발자 구합니다." id="title"> <input type="text"
 									class="form-control border-0 shadow-none"
-									value="마감기한 : 2024-04-11" id="input2">
+									value="마감기한 : 2024-04-11" id="deadline">
 							</div>
 							<button id="btn-delete"
 								class="btn btn-dark align-self-center float-end mx-3">삭제</button>

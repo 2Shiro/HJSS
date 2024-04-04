@@ -22,7 +22,7 @@
 		<div class="row">
 			<nav class="col-1 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/main_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
@@ -42,7 +42,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="career"
-										value="신입">
+										value="신입" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
@@ -50,7 +50,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="pay"
-										value="면접 후 결정">
+										value="면접 후 결정" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -61,7 +61,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="type"
-										value="정규직">
+										value="정규직" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
@@ -69,7 +69,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="career"
-										value="09:00 ~ 18:00">
+										value="09:00 ~ 18:00" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -79,38 +79,38 @@
 							<div class="mb-3">
 								<label for="deadline" class="form-label">마감 일자</label> <input
 									type="text" class="form-control" id="deadline"
-									value="2024-04-11 09:00:00">
+									value="2024-04-11 09:00:00" readonly="readonly">
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label> <input
-									type="text" class="form-control" id="c_intro" value="기업 소개란">
+									type="text" class="form-control" id="c_intro" value="기업 소개란" readonly="readonly">
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="job-intro" class="form-label">업무 소개</label> <input
-									type="text" class="form-control" id="job-intro" value="업무 소개란">
+									type="text" class="form-control" id="job-intro" value="업무 소개란" readonly="readonly">
 							</div>
 						</div>
 						<p class="mb-0">기술/자격 조건</p>
 						<div class="my-2 row" id="skills">
 							<div class="col-auto">
 								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="Javascript">
+									style="padding: 5px 0px;" value="Javascript" readonly="readonly">
 							</div>
 							<div class="col-auto">
 								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="SQL">
+									style="padding: 5px 0px;" value="SQL" readonly="readonly">
 							</div>
 							<div class="col-auto">
 								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="JAVA">
+									style="padding: 5px 0px;" value="JAVA" readonly="readonly">
 							</div>
 							<div class="col-auto">
 								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="HTML">
+									style="padding: 5px 0px;" value="HTML" readonly="readonly">
 							</div>
 
 						</div>
@@ -123,7 +123,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="csize"
-										value="12">
+										value="12" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
@@ -131,7 +131,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="crep"
-										value="아무개">
+										value="아무개" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -142,7 +142,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="cyear"
-										value="2024">
+										value="2024" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
@@ -150,7 +150,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="phone"
-										value="010-1234-5678">
+										value="010-1234-5678" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
