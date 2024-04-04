@@ -179,9 +179,9 @@
 							</div>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/jobs" id="btn-list"
+							<a href="/Company/jobs" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/jobUpdate" id="btn-list"
+								href="/Company/jobUpdate" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
 						</div>
 					</div>
