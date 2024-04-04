@@ -15,6 +15,7 @@
 <body>
 	<p>서버구동확인
 	<a href="/Company/JoinForm">회원가입 테스트</a>
+	<a href="/loginForm">로그인 테스트</a>
 </body>
 </html>
 

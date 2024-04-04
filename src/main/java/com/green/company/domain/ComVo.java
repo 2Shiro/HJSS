@@ -2,25 +2,31 @@ package com.green.company.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ComVo {
 	
+	String id;
+	String password;
 	int    type;
-	String cid;
-	String cpassword;
+	String user_email;
+	String created_date;
+	int    cnumber;
 	String cname;
 	String com_logo;
-	String cate;
-	int    cnumber;
 	String crepresentive;
 	String address;
 	String manager_name;
-	String manager_tel;
+	String company_managerphone;
 	int    csize;
-	int    cyear;
+	String cyear;
 	
 }

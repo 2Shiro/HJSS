@@ -10,5 +10,7 @@ public interface ComMapper {
 
 	void insert(ComVo comVo);
 
+	ComVo login(String id, String password);
+
 
 }
