@@ -32,4 +32,11 @@ public class PersonController {
 		mv.setViewName("/person/resumeUpdate");
 		return mv;
 	}
+
+	@RequestMapping("/Mypage")
+	public ModelAndView mypage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/person/mypage");
+		return mv;
+	}
 }
