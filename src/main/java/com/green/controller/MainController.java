@@ -18,5 +18,4 @@ public class MainController {
 		mv.setViewName("main");
 		return mv;
 	}
-
 }
