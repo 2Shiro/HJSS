@@ -13,9 +13,9 @@
         <img alt="Logo" src="/images/logo.png" style="width:150px;">
     </a>
    
-    <ul class="nav nav-pills mt-auto me-3">
-        <li class="nav-item"><a class="btn" href="#">로그아웃</a></li>
-        <li class="nav-item"><a class="btn" href="#">마이페이지</a></li>
+    <ul class="nav nav-pills mt-auto me-3 d-flex justify-content-center">
+        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="#" >로그아웃</a></li>
+        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="#">마이페이지</a></li>
     </ul>
     
 <%--    
