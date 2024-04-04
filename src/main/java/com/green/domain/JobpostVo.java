@@ -1,8 +1,10 @@
 package com.green.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
@@ -19,4 +21,5 @@ public class JobpostVo {
 	private String job_intro;
 	private String c_intro;
 	private String created_date;
+	private List<PostskillVo> skillList = new ArrayList<>();
 }
