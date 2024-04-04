@@ -50,4 +50,11 @@ public class CompanyController {
 		return mv;
 	}
 	
+	@RequestMapping("/Mypage")
+	public ModelAndView mypage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/company/mypage");
+		return mv;
+	}
+
 }
