@@ -44,28 +44,40 @@
 </style>
 
 <script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
-		document.getElementById('postsub').addEventListener(
-				'submit',
-				function(event) {
-					event.preventDefault();
-					alert('등록 되었습니다');
-					var myModal = bootstrap.Modal.getInstance(document
-							.getElementById('jobPost'));
-					myModal.hide();
-				})
-		document.getElementById('jobDetailDiv').addEventListener('click',
-				function(event) {
+	document
+			.addEventListener(
+					'DOMContentLoaded',
+					function() {
+						document.getElementById('postForm').addEventListener('submit', function(event) {
+							  event.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
+							  
+							  // 알림을 사용자에게 보여줍니다.
+							  alert('등록 되었습니다');
+							  
+							  // bootstrap Modal 인스턴스를 가져와서 숨깁니다.
+							  var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
+							  myModal.hide();
+							  var postsub = document.getElementById('postsub');
+						        postsub.submit();
+							});
 
-					if (event.target && event.target.id === 'btn-delete') {
+						document
+								.getElementById('jobDetailDiv')
+								.addEventListener(
+										'click',
+										function(event) {
 
-						event.preventDefault();
-						alert('삭제 처리됨');
-					} else {
-						window.location.href = '/Company/jobDetail';
-					}
-				});
-	});
+											if (event.target
+													&& event.target.id === 'btn-delete') {
+
+												event.preventDefault();
+												alert('삭제 처리됨');
+												window.location.href = '/Company/postDelete?id=${user.id}';
+											} else {
+												window.location.href = '/Company/jobDetail?id=${user.id}';
+											}
+										});
+					});
 </script>
 
 </head>
@@ -95,21 +107,23 @@
 						<!-- 공고 등록 모달 include -->
 						<%@include file="/WEB-INF/views/company/jobpostform.jsp"%>
 					</div>
-					<div class="container border" id="jobDetailDiv">
-						<!-- 공고 리스트 시작 -->
-						<div class="d-flex justify-content-between">
-							<div>
-								<input type="text"
-									class="form-control border-0 shadow-none mb-2"
-									value="백앤드 개발자 구합니다." id="title"> <input type="text"
-									class="form-control border-0 shadow-none"
-									value="마감기한 : 2024-04-11" id="deadline">
+					<c:forEach var="list" items="${ list }">
+						<div class="container border mb-3" id="jobDetailDiv">
+							<!-- 공고 리스트 시작 -->
+							<div class="d-flex justify-content-between">
+								<div>
+									<input type="text"
+										class="form-control border-0 shadow-none mb-2"
+										value="${ list.post_name }" id="title"> <input
+										type="text" class="form-control border-0 shadow-none"
+										value="마감기한 : ${ list.deadline }" id="deadline">
+								</div>
+								<button id="btn-delete"
+									class="btn btn-dark align-self-center float-end mx-3">삭제</button>
 							</div>
-							<button id="btn-delete"
-								class="btn btn-dark align-self-center float-end mx-3">삭제</button>
+							<!-- 공고 리스트 끝 -->
 						</div>
-						<!-- 공고 리스트 끝 -->
-					</div>
+					</c:forEach>
 				</div>
 			</section>
 		</div>
