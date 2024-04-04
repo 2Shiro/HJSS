@@ -62,7 +62,7 @@
 						event.preventDefault();
 						alert('삭제 처리됨');
 					} else {
-						window.location.href = '/jobDetail';
+						window.location.href = '/Company/jobDetail';
 					}
 				});
 	});

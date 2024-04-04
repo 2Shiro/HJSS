@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기업 등록 공고 관리 페이지</title>
+<title>이력서 관리 페이지</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -32,26 +32,26 @@
 	margin-left: 0.5rem;
 }
 
-#jobDetailDiv {
+#resumeDetailDiv {
 	padding: 10px;
 	border-radius: 5px;
 	transition: background-color .3s;
 }
 
-#jobDetailDiv:hover {
+#resumeDetailDiv:hover {
 	cursor: pointer;
 }
 </style>
 
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() {
-		document.getElementById('postsub').addEventListener(
+		document.getElementById('resumeFormsub').addEventListener(
 				'submit',
 				function(event) {
 					event.preventDefault();
 					alert('등록 되었습니다');
 					var myModal = bootstrap.Modal.getInstance(document
-							.getElementById('jobPost'));
+							.getElementById('resumeForm'));
 					myModal.hide();
 				})
 		document.getElementById('resumeDetailDiv').addEventListener('click',
@@ -62,7 +62,7 @@
 						event.preventDefault();
 						alert('삭제 처리됨');
 					} else {
-						window.location.href = '/resumeDetail';
+						window.location.href = '/Person/resumeDetail';
 					}
 				});
 	});

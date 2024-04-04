@@ -136,7 +136,7 @@
 						</div>
 
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>
+							<a href="/Company/jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>
 							<button type="submit" id="btn-update"
 								class="btn btn-secondary mx-3">수정</button>
 						</div>

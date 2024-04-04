@@ -1,19 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<div class="modal fade" id="resumeForm" data-bs-backdrop="true"
-	data-bs-keyboard="false" tabindex="-1"
-	aria-labelledby="resumeFormLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-centered">
-		<div class="modal-content">
-			<form class="needs-validation container" novalidate
-				id="resumeFormsub" method="post" enctype="multipart/form-data">
-				<div class="modal-body">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<%@include file="/WEB-INF/include/header.jsp"%>
+	<main class="container-fluid">
+		<div class="row">
+			<nav class="col-2 bg-white sidebar vh-100 border-end">
+				<div class="sidebar-sticky pt-3">
+					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+				</div>
+			</nav>
+			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
+				<div class="mt-5 ms-3">
 					<h2 class="modal-title" id="resumeFormLabel">이력서 등록하기</h2>
 					<hr>
 					<div class="my-1 mx-auto row">
 						<div class="col">
 							<label for="resume_name" class="form-label">이력서 제목</label> <input
-								type="email" class="form-control" id="post_name"
+								type="email" class="form-control" id="resume_name"
 								placeholder="제목을 입력해주세요.">
 
 						</div>
@@ -58,20 +78,15 @@
 								</div>
 							</div>
 						</div>
-						<div class="row mt-2">
-							<div class="input-group">
-								<input type="file" class="form-control" id="profile"
-									aria-describedby="profile">
-							</div>
-						</div>
-						<div class="mt-3 mx-auto row">
+
+						<div class="my-1 mx-auto row">
 							<label for="portfolio" class="form-label">포트폴리오 주소</label> <input
 								type="text" class="form-control" id="portfolio"
 								placeholder="포트폴리오 주소를 입력해주세요.">
 						</div>
-						<div class="mt-3 mx-auto row">
+						<div class="my-1 mx-auto row">
 							<label for="skills" class="form-label">기술스택</label>
-							<div class="mx-auto row" id="skills">
+							<div class="mt-3 mx-auto row" id="skills">
 								<div class="col-auto">
 									<input type="checkbox" class="btn-check" id="skill_1"
 										autocomplete="off"> <label
@@ -104,20 +119,26 @@
 								</div>
 							</div>
 						</div>
-						<div class="mt-3 mx-auto row">
-							<label for="self-intro" class="form-label">자기 소개</label>
+						<div class="my-1 mx-auto row">
+							<label for="self-intro" class="form-label">업무 소개</label>
 							<textarea rows="10" class="form-control" id="job-intro"
 								name="self-intro"></textarea>
 						</div>
+						<div class="my-3 d-flex justify-content-center">
+							<a href="/Person/resume" id="btn-list"
+								class="btn btn-outline-secondary mx-3">목록</a> <a
+								href="/Person/resumeUpdate" id="btn-update"
+								class="btn btn-outline-primary mx-3">수정</a>
+						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="reset" id="btn-cancel"
-						class="btn btn-danger float-end" data-bs-dismiss="modal">취소</button>
-					<button type="submit" id="post-submit"
-						class="btn btn-primary float-end me-2">등록</button>
-				</div>
-			</form>
+
+
+
+
+			</section>
 		</div>
-	</div>
-</div>
+	</main>
+	<%@include file="/WEB-INF/include/footer.jsp"%>
+</body>
+</html>
