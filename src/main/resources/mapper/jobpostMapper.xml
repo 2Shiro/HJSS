@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.mapper.JobPostMapper">
+	<select id="getUser">
+		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
+		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
+	</select>
+	<select id="getpostList">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		WHERE ID = #{id}
+	</select>
+	<select id="getSkillList">
+		SELECT SKILL_IDX, SKILL_NAME
+		FROM SKILL_TB
+	</select>
+	<insert id="insertpost" parameterType="com.green.domain.JobpostVo">
+		INSERT INTO JOB_POST_TB
+		(POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO)
+		VALUES
+		((SELECT NVL(MAX(POST_IDX),0) + 1 FROM JOB_POST_TB), #{id}, #{post_name}, #{career}, #{job_type}, #{pay},
+		#{go_work}, #{go_home}, #{deadline}, #{job_intro}, #{c_intro})
+
+	</insert>
+</mapper>
