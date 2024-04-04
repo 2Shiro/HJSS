@@ -63,7 +63,7 @@
 					<button type="submit" id="post-submit"
 						class="btn btn-primary float-end me-2">수정</button>
 					<button type="reset" id="btn-cancel"
-						class="btn btn-danger float-end" data-bs-dismiss="modal">삭제</button>
+						class="btn btn-danger float-end" data-bs-dismiss="modal">탈퇴</button>
 				</div>
 				
 			</div>

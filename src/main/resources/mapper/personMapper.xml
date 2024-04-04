@@ -4,7 +4,11 @@
 
 	<select  id = "getPerson" resultType = "com.green.domain.PersonVo">
 		
-		SELECT	ID, PNAME, PHONE, ADDRESS, TO_CHAR( BIRTH, 'YYYY-MM-DD')	BIRTH
+		SELECT	ID,
+				PNAME,
+				PHONE,
+				ADDRESS,
+				TO_CHAR( BIRTH, 'YY-MM-DD')	BIRTH
 		FROM	PERSON_INFO_TB
 		WHERE	ID = 'ps1'
 	
