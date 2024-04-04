@@ -37,47 +37,47 @@
 						<div class="row mt-2">
 							<div class="col-2 row d-flex align-items-center">
 								<div class="col-md-auto">
-									<img alt="Logo" src="/images/naver.png" style="height: 30px;">
+									<img alt="Logo" src="${ vo.com_logo }" style="height: 30px;">
 								</div>
 							</div>
 							<div class="col-5 row ms-4" >
 								<div class="input-group mb-3 ">
 									<span class="input-group-text text-center" id="cname">기업명</span>
-									<input type="text" class="form-control" id="cname" name="cname" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="cname" name="cname" value="${ vo.cname }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="cnum">사업자 번호</span>
-									<input type="text" class="form-control" id="cnum" name="cnum" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="cnum" name="cnum" value="${ vo.cnumber }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="cid">ID</span>
-									<input type="text" class="form-control" id="cid" name="cid" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="cid" name="cid" value="${ vo.id }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="crepresentive">대표자</span>
-									<input type="text" class="form-control" id="crepresentive" name="crepresentive" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="crepresentive" name="crepresentive" value="${ vo.crepresentive }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="caddress">주소</span>
-									<input type="email" class="form-control" id="caddress" name="caddress" readonly style="height: 70px;">
+									<input type="email" class="form-control" id="caddress" name="caddress" value="${ vo.address }" readonly style="height: 70px;">
 								</div>
 							</div>
 							<div class="col-5 row ms-4">
 								<div class="input-group mb-3 ">
 									<span class="input-group-text text-center" id="mname">담당자</span>
-									<input type="text" class="form-control" id="mname" name="mname" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="mname" name="mname" value="${ vo.manager_name }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="mnum">담당자 번호</span> <input
-										type="text" class="form-control" id="mnum" name="mnum" readonly style="height: 70px;">
+									<span class="input-group-text" id="mnum">담당자 번호</span>
+									<input type="text" class="form-control" id="mnum" name="mnum" value="${ vo.company_managerphone }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="address">규모</span> <input
-										type="text" class="form-control" id="address" name="address" readonly style="height: 70px;">
+									<span class="input-group-text" id="address">규모</span>
+									<input type="text" class="form-control" id="address" name="address" value="${ vo.csize }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="cyear">창립일</span> <input
-										type="text" class="form-control" id="cyear" name="cyear" readonly style="height: 70px;">
+									<span class="input-group-text" id="cyear">창립일</span>
+									<input type="text" class="form-control" id="cyear" name="cyear" value="${ vo.cyear }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3" style="height: 70px;">
 									&nbsp;
@@ -89,7 +89,7 @@
 					<button type="submit" id="post-submit"
 						class="btn btn-primary float-end me-2">수정</button>
 					<button type="reset" id="btn-cancel"
-						class="btn btn-danger float-end" data-bs-dismiss="modal">삭제</button>
+						class="btn btn-danger float-end" data-bs-dismiss="modal">탈퇴</button>
 				</div>
 
 			</div>

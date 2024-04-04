@@ -121,7 +121,7 @@ INSERT INTO person_scrap_tb ( pscrap_idx, pid, post_idx )
 
 -- 13) 고객센터 FAQ 테이블
 INSERT INTO user_faq_tb ( q_idx, type, question, answer )
-  VALUES ( 2, 2, '이력서에 사진이 안올라갑니다', '브라우저 창을 닫고 다시 실행해주세요' );
+  VALUES ( 2, 2, '이력서에 사진이 안올라갑니다', '브라우저창을 닫고 다시 실행해주세요' );
 
 INSERT INTO user_faq_tb ( q_idx, type, question, answer )
   VALUES ( 1, 1, '공고페이지에 정보가 출력되지 않습니다', '일시적 오류입니다. 최대한 빠르게 해결하겠습니다' );

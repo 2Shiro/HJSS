@@ -7,15 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.green.domain.CompanyVo;
 import com.green.domain.CproposalVo;
-
-import com.green.domain.PersonVo;
-
 import com.green.domain.JobpostVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
-
-import com.green.mapper.ComMapper;
+import com.green.mapper.CompanyMapper;
 import com.green.mapper.JobPostMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +23,15 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyController {
 	
 	@Autowired
-	private ComMapper comMapper;
+	private CompanyMapper companyMapper;
+	
 	@Autowired
 	private JobPostMapper jobPostMapper;
 	
 	//로그인한 회사에 구직자들이 제안한 현황
 	@RequestMapping("/GetProposal")
 	public ModelAndView getProposal() {
-		List<CproposalVo> proposalList = comMapper.getProposal();
+		List<CproposalVo> proposalList = companyMapper.getProposal();
 		System.out.println(proposalList);
 		
 		ModelAndView mv = new ModelAndView();
@@ -76,6 +74,19 @@ public class CompanyController {
 	public ModelAndView jobUpdate() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/company/jobUpdate");
+		return mv;
+	}
+	
+	@RequestMapping("/Mypage")
+	public ModelAndView mypage( CompanyVo companyVo ) {
+		
+		CompanyVo vo  =  companyMapper.getCompany( companyVo );
+
+		log.info("vo : {}", vo);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("/company/mypage");
 		return mv;
 	}
 

@@ -30,7 +30,7 @@ CREATE TABLE company_info_tb (
 	manager_name            varchar2(255)   NOT NULL,
     company_managerPhone    varchar2(255)   NOT NULL,
 	csize                   number(20)      NOT NULL,
-	cyear                   varchar2(255)   NOT NULL
+	cyear                   date			NOT NULL
 );
 
 
