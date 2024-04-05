@@ -2,25 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.mapper.CompanyMapper">
 	<select id="getProposal">
-		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at, 'YY-MM-DD') FROM PERSON_PROPOSAL_TB
+		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
+		'YY-MM-DD') FROM PERSON_PROPOSAL_TB
 	</select>
-	
-	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
-		
-		SELECT	ID,
-				CNUMBER,
-				CNAME,
-				COM_LOGO,
-				CREPRESENTIVE,
-				ADDRESS,
-				MANAGER_NAME,
-				COMPANY_MANAGERPHONE,
-				CSIZE,
-				TO_CHAR( CYEAR, 'YY-MM-DD')	CYEAR
-		FROM	COMPANY_INFO_TB
-		WHERE	ID = 'cp1'
-	
+
+	<select id="getUser">
+		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
+		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
 	</select>
-	
-	
+	<select id="getInfo">
+		select * from COMPANY_INFO_TB WHERE ID = #{id}
+	</select>
+	<select id="getpostList" parameterType="String"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE ID = #{id}
+	</select>
+	<select id="getSkillList">
+		SELECT SKILL_IDX, SKILL_NAME
+		FROM SKILL_TB
+	</select>
+	<insert id="insertpost" parameterType="com.green.domain.JobpostVo">
+		INSERT INTO JOB_POST_TB
+		(POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO)
+		VALUES
+		(#{post_idx}, #{id},
+		#{post_name}, #{career}, #{job_type}, #{pay},
+		#{go_work}, #{go_home}, #{deadline}, #{job_intro}, #{c_intro})
+	</insert>
+	<select id="viewPost" parameterType="int"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+	<update id="updatePost">
+		UPDATE JOB_POST_TB
+		SET POST_NAME = #{post_name}, CAREER = #{career}, JOB_TYPE =
+		#{job_type}, PAY = #{pay}, GO_WORK = #{go_work}, GO_HOME = #{go_home},
+		DEADLINE = #{deadline}, JOB_INTRO = #{job_intro}, C_INTRO = #{c_intro}
+		WHERE POST_IDX = #{ post_idx }
+	</update>
+	<delete id="postDelete">
+		DELETE FROM JOB_POST_TB WHERE POST_IDX = #{ post_idx }
+	</delete>
+	<insert id="insertskills" parameterType="com.green.domain.PostskillVo">
+		INSERT INTO POST_SKILL_TB (csno, post_idx, skill_idx)
+		VALUES ((SELECT NVL(MAX(csno),0) + 1 FROM POST_SKILL_TB), #{post_idx}, #{skill_idx})
+	</insert>
+	<select id="selectpostidxmax" resultType="int">
+		SELECT NVL(MAX(POST_IDX),0) + 1 FROM JOB_POST_TB
+	</select>
+		<delete id="deletepostskills">
+		DELETE FROM POST_SKILL_TB WHERE POST_IDX = #{ post_idx }
+	</delete>
 </mapper>
