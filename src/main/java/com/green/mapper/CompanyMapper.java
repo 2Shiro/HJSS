@@ -18,6 +18,7 @@ public interface CompanyMapper {
 	
 	UserVo getUser(String id);
 
+<<<<<<< HEAD
 	List<JobpostVo> getpostList(JobpostVo vo);
 
 	List<SkillVo> getSkillList();
@@ -38,5 +39,12 @@ public interface CompanyMapper {
 
 	void deletepostskills(JobpostVo postVo);
 	
+=======
+	CompanyVo getCompany(CompanyVo companyVo);
+	
+	void insert(CompanyVo comVo);
+
+	CompanyVo login(String id, String password);
+>>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
 
 }

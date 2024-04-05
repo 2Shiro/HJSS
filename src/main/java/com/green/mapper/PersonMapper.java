@@ -10,5 +10,9 @@ import com.green.domain.PersonVo;
 public interface PersonMapper {
 
 	PersonVo getPerson(PersonVo personVo);
+	
+	void insert(PersonVo personVo);
+	   
+	PersonVo login(String id, String password);
 
 }
