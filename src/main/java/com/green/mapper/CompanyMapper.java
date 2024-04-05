@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.green.domain.CproposalVo;
 
 @Mapper
-public interface ComMapper {
+public interface CompanyMapper {
 
 	List<CproposalVo> getProposal();
 

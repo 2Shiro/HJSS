@@ -29,35 +29,37 @@ h3 {
 </style>
 </head>
 <body>
-<div class="modal fade" id="personResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<form action="/Person/Pass" method="POST">
+<input type="hidden" name="resume_idx" value="${presumeVo.resume_idx}" />
+<div class="" id="personResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">이력서 이름</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">이력서 : ${presumeVo.title}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div>
         <div>
         	<img href="">
         	<div class="input-group mb-3">
 					  <span class="input-group-text" id="inputGroup-sizing-default">이름</span>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${psuerVo.pname}" readonly>
 					</div>
 					<div class="input-group mb-3">
 					  <span class="input-group-text" id="inputGroup-sizing-default">생년월일</span>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${psuerVo.birth}"  readonly>
 					</div>
 					<div class="input-group mb-3">
 					  <span class="input-group-text" id="inputGroup-sizing-default">연락처</span>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${psuerVo.phone}"  readonly>
 					</div>
 					<div class="input-group mb-3">
 					  <span class="input-group-text" id="inputGroup-sizing-default">주소</span>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${psuerVo.address}"  readonly>
 					</div>
 					<div class="input-group mb-3">
 					  <span class="input-group-text" id="inputGroup-sizing-default">이메일</span>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${userVo.user_email}"  readonly>
 					</div>
         </div>
         
@@ -65,29 +67,42 @@ h3 {
 				  <label for="basic-url" class="form-label">포트폴리오 URL</label>
 				  <div class="input-group">
 				    <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-				    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+				    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4" value="${presumeVo.portfolio}"  readonly>
 				  </div>
 				  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
 				</div>
 				
 				<div class="input-group mb-3">
 				  <span class="input-group-text" id="inputGroup-sizing-default">기술스택</span>
-				  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+				  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"  readonly>
 				</div>
 				
 				<div class="input-group">
 				  <span class="input-group-text">자기소개</span>
-				  <textarea class="form-control" aria-label="With textarea"></textarea>
+				  <textarea class="form-control" aria-label="With textarea" value="${presumeVo.self_intro}"  readonly></textarea>
 				</div>
 				
       </div>
-      <div class="modal-footer">
-      	<button type="button" class="btn btn-primary">합격</button>
-      	<button type="button" class="btn btn-primary">불합격</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <div>
+      	&nbsp;&nbsp;
+      		<div class="form-check ">
+					  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1" value="1">
+					  <label class="form-check-label" for="flexRadioDefault1">
+					    합격
+					  </label>
+					</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" value="2" checked>
+					  <label class="form-check-label" for="flexRadioDefault2">
+					    불합격
+					  </label>
+					</div>
+					<input type="submit" class="btn btn-secondary result">
       </div>
     </div>
   </div>
 </div>
+</form>
 </body>
+
 </html>

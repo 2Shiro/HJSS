@@ -12,12 +12,13 @@ public class MainController {
 		return "home";
 	}
 
-	@RequestMapping("/main")
-	public ModelAndView main() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("main");
-		return mv;
-	}
+//	@RequestMapping("/main")
+//	public ModelAndView main() {
+//		ModelAndView mv = new ModelAndView();
+//		mv.setViewName("main");
+//		return mv;
+//	}
+	
 	@RequestMapping("/jobs")
 	public ModelAndView jobs() {
 		ModelAndView mv = new ModelAndView();

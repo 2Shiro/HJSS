@@ -52,8 +52,10 @@ h3 {
 						<tr>                
              <td>${proposalList.pro_idx}</td>
              <td>${proposalList.id}</td>
-             <td>${proposalList.post_id}</td>
-             <td><a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#personResumeModal">${proposalList.resume_id}</a></td>
+             <td>${proposalList.post_idx}</td>
+             	<td>
+             		<a href="/Person/GetResume?resume_idx=${proposalList.resume_idx}" class="pop">이력서</a>
+             	</td>
              <td>${proposalList.status}</td>
          	</tr>
          </c:forEach>
@@ -64,4 +66,18 @@ h3 {
 	<%@include file="/WEB-INF/include/getresume.jsp" %>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
+<script>
+	let popuplist = document.querySelectorAll('.pop');
+	
+	popuplist.forEach(function( popup ) {
+			popup.onclick = function(e) {
+				e.preventDefault();
+				//alert(popup.href)
+				let popOption = 'width = 650px, height=550px;, top=300px, left=300px, scrollbars=yes';
+				let openUrl = popup.href
+				window.open(openUrl, 'popresume', popOption);
+		  }
+	})
+
+</script>
 </html>
