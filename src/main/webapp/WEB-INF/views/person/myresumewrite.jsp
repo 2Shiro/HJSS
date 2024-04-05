@@ -5,7 +5,7 @@
 	aria-labelledby="resumeFormLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl modal-dialog-centered">
 		<div class="modal-content">
-			<form class="needs-validation container" action="/Person/InsertResume?id=${id }" novalidate
+			<form class="needs-validation container" action="/Person/MyResumeWrite?id=${id }" novalidate
 				id="resumeFormsub" method="post" enctype="multipart/form-data">
 				<div class="modal-body">
 					<h2 class="modal-title" id="resumeFormLabel">이력서 등록하기</h2>
@@ -30,8 +30,8 @@
 
 						<div class="row mt-2">
 							<div class="col-6 row d-flex align-items-center">
-								<div class="col-md-auto">
-									<img alt="Logo" src="/images/logo.png" style="height: 180px;">
+								<div class="col-md-auto ms-5">
+									<img alt="Logo" src="/images/logo.png" style="height: 120px; width: auto;">
 								</div>
 							</div>
 							<div class="col-6 row ms-4">

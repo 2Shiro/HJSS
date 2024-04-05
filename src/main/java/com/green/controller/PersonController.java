@@ -3,16 +3,16 @@ package com.green.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 //github.com/2Shiro/HJSS.git
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonController {
 
 	@Autowired
-	private ResourceLoader resourceLoader;
+	private Environment env; // application.properties에 접근하기 위한 Environment 객체
 
 	@Autowired
 	private MainMapper mainMapper;
@@ -73,35 +73,37 @@ public class PersonController {
 
 	@RequestMapping("/MyResumeWrite")
 	public ModelAndView insertResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
-			@RequestParam("file") MultipartFile file) {
+			@RequestParam("file") MultipartFile file, @Value("${file.upload-dir}") String uploadDir) {
 		ModelAndView mv = new ModelAndView();
 
 		String id = userVo.getId();
 		vo.setId(id);
-		if (file != null && !file.isEmpty()) {
-			try {
-				// 파일 저장 경로 생성
-				Resource resource = resourceLoader.getResource("classpath:/static/images/");
-				File directory = resource.getFile();
+		 if (file != null && !file.isEmpty()) {
+		        try {
+		            // 파일 저장 경로 구성
+		            String baseDir = System.getProperty("user.dir");
+		            String imagesDirPath = baseDir + uploadDir; // application.properties에서 설정된 값을 사용
 
-				if (!directory.exists()) {
-					directory.mkdirs(); // 디렉토리가 없다면 생성
-				}
+		            File directory = new File(imagesDirPath);
+		            if (!directory.exists()) {
+		                directory.mkdirs();
+		            }
 
-				Path path = Paths.get(directory.getAbsolutePath()).resolve(file.getOriginalFilename());
-				// 파일 저장
-				Files.write(path, file.getBytes());
+		            String fileName = file.getOriginalFilename();
+		            String filePath = Paths.get(imagesDirPath, fileName).toString();
 
-				String fileName = file.getOriginalFilename();
-				String relativepath = "/images/";
-				String filePathString = relativepath + fileName;
-				vo.setProfile(filePathString);
+		            // 파일 저장
+		            Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-				// 에러 발생 시 처리 로직
-			}
-		}
+		            // 데이터베이스에 저장할 파일 경로 설정
+		            String relativePath = "/images/" + fileName;
+		            vo.setProfile(relativePath);
+
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            // 에러 처리 로직
+		        }
+		    }
 
 		personMapper.insertResume(vo); // 이력서 정보 삽입
 

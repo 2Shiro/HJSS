@@ -67,6 +67,37 @@
 	            }
 	        });
 	    });
+	    
+	 // 파일 인풋 필드를 선택
+	    var fileInput = document.getElementById('file');
+	    // 이미지를 미리보여줄 위치를 선택
+	    var previewArea = document.querySelector('.col-md-auto img');
+
+	    // 기본 이미지 URL 설정
+	    var defaultImage = '/images/logo.png';
+
+	    // 파일 인풋 필드에 변화가 생기면 실행할 함수
+	    fileInput.addEventListener('change', function(e) {
+	        // 파일이 선택되지 않았다면, 미리보기를 기본 이미지로 설정
+	        if (fileInput.files.length === 0) {
+	            previewArea.src = defaultImage;
+	            return; // 함수 실행을 여기서 중단
+	        }
+	        
+	        // 선택된 파일을 가져옴
+	        var file = e.target.files[0];
+	        // FileReader 객체 생성
+	        var reader = new FileReader();
+
+	        // 파일이 읽히면 실행될 함수 정의
+	        reader.onload = function(e) {
+	            // 미리보기 이미지의 src 속성을 읽은 파일의 내용으로 설정
+	            previewArea.src = e.target.result;
+	        }
+
+	        // FileReader로 파일 읽기를 시작함
+	        reader.readAsDataURL(file);
+	    });
 	});
 </script>
 

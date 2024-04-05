@@ -6,7 +6,7 @@
 	<div class="modal-dialog modal-xl modal-dialog-centered">
 		<div class="modal-content">
 			<form class="needs-validation container"
-				action="/Company/JobPost?id=${id }" novalidate id="postForm"
+				action="/Company/MyPostWrite?id=${id }" novalidate id="postForm"
 				method="post" enctype="multipart/form-data">
 				<div class="modal-body">
 					<h2 class="modal-title" id="staticBackdropLabel">공고 등록하기</h2>
