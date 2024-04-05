@@ -1,10 +1,16 @@
 package com.green.controller;
 
 import java.util.ArrayList;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +26,8 @@ import com.green.mapper.CompanyMapper;
 import com.green.mapper.JobPostMapper;
 import com.green.mapper.PersonMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -117,7 +125,8 @@ public class CompanyController {
 			String id = proposalList.get(i).getId();
 			System.out.println(id);
 			PersonVo vo = personMapper.getPname(id);
-			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(), vo.getAddress(), vo.getBirth()));
+			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(),
+							vo.getAddress(), vo.getBirth()));
 		}
 		
 		List<MyProposalVo> myproposalList = new ArrayList<>();
@@ -202,4 +211,33 @@ public class CompanyController {
 		mv.setViewName("/company/mypage");
 		return mv;
 	}
+
+	//기업회원가입폼
+	@RequestMapping("/JoinForm")
+	public ModelAndView CompanyJoinForm() {
+		ModelAndView mv = new ModelAndView();
+		
+		LocalDateTime today = LocalDateTime.now();
+		String    now = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		DayOfWeek day = today.getDayOfWeek();
+		now    += " " +day;
+		mv.addObject("now",now);
+		
+		mv.setViewName("company/join");
+		return mv;
+	}
+	//기업회원가입
+	@RequestMapping("/Join")
+	public ModelAndView ComJoin(CompanyVo companyVo) {
+		
+		System.out.println("comVo" +companyVo);
+		
+		ModelAndView mv = new ModelAndView();
+		companyMapper.insert(companyVo);
+		
+		mv.setViewName("redirect:/main");
+		return mv;
+	}
+
+
 }

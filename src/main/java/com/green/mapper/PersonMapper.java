@@ -16,6 +16,10 @@ public interface PersonMapper {
 	PersonVo getPuser(String string);
 	
 	PersonVo getPerson(PersonVo personVo);
+	
+	void insert(PersonVo personVo);
+	   
+	PersonVo login(String id, String password);
 
 	void updateResumePass(int resume_idx, int status);
 

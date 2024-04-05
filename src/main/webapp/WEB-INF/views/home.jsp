@@ -40,5 +40,10 @@
 		</div>
 	</main>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
+	<p>서버구동확인
+	<a href="/Company/JoinForm">기업회원가입 테스트</a>
+	<a href="/Company/loginForm">기업로그인 테스트</a>
+	<a href="Person/joinForm">개인회원가입 테스트</a>
+	<a href="/loginForm">개인로그인 테스트</a>
 </body>
 </html>

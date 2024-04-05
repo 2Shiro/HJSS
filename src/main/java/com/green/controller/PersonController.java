@@ -1,6 +1,8 @@
 package com.green.controller;
 
-import java.util.HashMap;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.PresumeVo;
+
 import com.green.domain.PersonVo;
+
 import com.green.domain.UserVo;
+
 import com.green.mapper.PersonMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -110,4 +115,29 @@ public class PersonController {
 		return mv;
 
 	}
+	   @RequestMapping("/joinForm")
+	   public ModelAndView joinForm() {
+	      ModelAndView mv = new ModelAndView();
+	         
+	      LocalDateTime today = LocalDateTime.now();
+	      String    now = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	      DayOfWeek day = today.getDayOfWeek();
+	        now+= " " +day;
+	       mv.addObject("now",now);
+	         
+	       mv.setViewName("person/join");
+	    return mv;
+	      }
+	   
+	   @RequestMapping("/join")
+	   public ModelAndView join(PersonVo personVo) {
+	      System.out.println("개인회원" + personVo);
+	      
+	      personMapper.insert(personVo);
+	      
+	      ModelAndView mv = new ModelAndView();
+	      mv.setViewName("redirect:/main");
+	      
+	      return mv;
+	   }
 }
