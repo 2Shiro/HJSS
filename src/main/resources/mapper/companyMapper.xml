@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.green.mapper.ComMapper">
+<mapper namespace="com.green.mapper.CompanyMapper">
 	<select id="getProposal">
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at, 'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
 	</select>
+	
+	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
+		
+		SELECT	ID,
+				CNUMBER,
+				CNAME,
+				COM_LOGO,
+				CREPRESENTIVE,
+				ADDRESS,
+				MANAGER_NAME,
+				COMPANY_MANAGERPHONE,
+				CSIZE,
+				TO_CHAR( CYEAR, 'YY-MM-DD')	CYEAR
+		FROM	COMPANY_INFO_TB
+		WHERE	ID = 'cp1'
+	
+	</select>
+	
+	
 </mapper>

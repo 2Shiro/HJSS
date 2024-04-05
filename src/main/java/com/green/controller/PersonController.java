@@ -1,5 +1,7 @@
 package com.green.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,9 @@ import com.green.domain.PersonVo;
 import com.green.domain.UserVo;
 import com.green.mapper.PersonMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/Person")
 public class PersonController {
@@ -70,5 +75,38 @@ public class PersonController {
 	@RequestMapping("/Recommend")
 	public String recommend() {
 		return "/person/recommend";
+	}
+
+	@RequestMapping("/resume")
+	public ModelAndView resume() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/person/resume");
+		return mv;
+	}
+	@RequestMapping("/resumeDetail")
+	public ModelAndView resumeDetail() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/person/resumeDetail");
+		return mv;
+	}
+	@RequestMapping("/resumeUpdate")
+	public ModelAndView resumeUpdate() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/person/resumeUpdate");
+		return mv;
+	}
+
+	@RequestMapping("/Mypage")
+	public ModelAndView mypage( PersonVo personVo ) {
+		
+		PersonVo vo  =  personMapper.getPerson( personVo );
+
+		log.info("vo : {}", vo);
+		
+		ModelAndView  mv  =  new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("/person/mypage");
+		return mv;
+
 	}
 }

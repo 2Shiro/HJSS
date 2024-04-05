@@ -37,4 +37,11 @@ public class MainController {
 		mv.setViewName("/company/jobUpdate");
 		return mv;
 	}
+
+	@RequestMapping("/main")
+	public ModelAndView main() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("main");
+		return mv;
+	}
 }

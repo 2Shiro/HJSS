@@ -15,5 +15,18 @@
 	
 	<update id="updateResumePass">
 		UPDATE PERSON_PROPOSAL_TB SET STATUS = #{arg1} WHERE RESUME_IDX = #{arg0}
-	</update>
+	</update>  
+
+	<select  id = "getPerson" resultType = "com.green.domain.PersonVo">
+		
+		SELECT	ID,
+				PNAME,
+				PHONE,
+				ADDRESS,
+				TO_CHAR( BIRTH, 'YY-MM-DD')	BIRTH
+		FROM	PERSON_INFO_TB
+		WHERE	ID = 'ps1'
+	
+	</select>
+
 </mapper>

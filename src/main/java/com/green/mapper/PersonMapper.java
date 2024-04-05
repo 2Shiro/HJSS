@@ -13,7 +13,9 @@ public interface PersonMapper {
 
 	UserVo getUser(String id);
 
-	PersonVo getPuser(String id);
+	PersonVo getPuser(String string);
+	
+	PersonVo getPerson(PersonVo personVo);
 
 	void updateResumePass(int resume_idx, int status);
 
