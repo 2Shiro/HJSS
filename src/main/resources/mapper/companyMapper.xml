@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.green.mapper.CompanyMapper">
 	<select id="getProposal">
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
@@ -10,19 +11,36 @@
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
 		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
 	</select>
-<<<<<<< HEAD
-	<select id="getInfo">
-		select * from COMPANY_INFO_TB WHERE ID = #{id}
+
+	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
+		
+		SELECT	ID,
+				CNUMBER,
+				CNAME,
+				COM_LOGO,
+				CREPRESENTIVE,
+				ADDRESS,
+				MANAGER_NAME,
+				COMPANY_MANAGERPHONE,
+				CSIZE,
+				TO_CHAR( CYEAR, 'YY-MM-DD')	CYEAR
+		FROM	COMPANY_INFO_TB
+		WHERE	ID = 'cp1'
+	
 	</select>
+	
+	<select id="getCompanyById">
+		SELECT	ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS, MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
+			FROM	COMPANY_INFO_TB
+			WHERE	ID = #{id}
+	</select>
+	
 	<select id="getpostList" parameterType="String"
 		resultType="com.green.domain.JobpostVo">
 		select * from JOB_POST_TB
 		WHERE ID = #{id}
 	</select>
-	<select id="getSkillList">
-		SELECT SKILL_IDX, SKILL_NAME
-		FROM SKILL_TB
-	</select>
+
 	<insert id="insertpost" parameterType="com.green.domain.JobpostVo">
 		INSERT INTO JOB_POST_TB
 		(POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
@@ -49,33 +67,43 @@
 	</delete>
 	<insert id="insertskills" parameterType="com.green.domain.PostskillVo">
 		INSERT INTO POST_SKILL_TB (csno, post_idx, skill_idx)
-		VALUES ((SELECT NVL(MAX(csno),0) + 1 FROM POST_SKILL_TB), #{post_idx}, #{skill_idx})
+		VALUES ((SELECT NVL(MAX(csno),0) + 1 FROM POST_SKILL_TB), #{post_idx},
+		#{skill_idx})
 	</insert>
 	<select id="selectpostidxmax" resultType="int">
 		SELECT NVL(MAX(POST_IDX),0) + 1 FROM JOB_POST_TB
 	</select>
-		<delete id="deletepostskills">
+	<delete id="deletepostskills">
 		DELETE FROM POST_SKILL_TB WHERE POST_IDX = #{ post_idx }
 	</delete>
-=======
+
 	<!-- logo default값 넣을 예정 -->
-<insert id="insert">
-INSERT ALL
-	INTO user_tb (id, password, type,user_email, created_date)
-	VALUES(#{id},#{password},1,#{user_email},#{created_date})
+	<insert id="insert">
+		INSERT ALL
+		INTO user_tb (id, password, type,user_email, created_date)
+		VALUES(#{id},#{password},1,#{user_email},#{created_date})
 
-	INTO company_info_tb (id,cnumber, cname, com_logo,crepresentive, address,
-	                      manager_name,company_managerphone,csize,cyear)
-	VALUES(#{id}, #{cnumber}, #{cname}, 'logo' , #{crepresentive}, #{address},
-	       #{manager_name}, #{company_managerphone},#{csize}, #{cyear})
-SELECT * FROM DUAL
-</insert> 
+		INTO company_info_tb (id,cnumber, cname, com_logo,crepresentive,
+		address,
+		manager_name,company_managerphone,csize,cyear)
+		VALUES(#{id}, #{cnumber}, #{cname}, 'logo' , #{crepresentive},
+		#{address},
+		#{manager_name}, #{company_managerphone},#{csize}, #{cyear})
+		SELECT * FROM DUAL
+	</insert>
 
-<select id="login">
- SELECT id,password,type
- FROM   user_tb
- WHERE  id=#{arg0} AND password=#{arg1} AND type=1
-</select>
-	
->>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
+	<select id="login">
+		SELECT id,password,type
+		FROM user_tb
+		WHERE id=#{arg0} AND password=#{arg1} AND type=1
+	</select>
+
+	<select id="loadskills" parameterType="int">
+		select p.post_idx, p.skill_idx, s.skill_name
+		from POST_SKILL_TB p, SKILL_TB s
+		where p.skill_idx = s.skill_idx
+		and p.post_idx = #{post_idx}
+		order by p.skill_idx
+	</select>
+
 </mapper>

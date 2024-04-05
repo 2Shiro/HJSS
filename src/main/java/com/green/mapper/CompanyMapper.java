@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.green.domain.CompanyInfoVo;
+import com.green.domain.CompanyVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
 import com.green.domain.PostskillVo;
@@ -15,13 +16,16 @@ import com.green.domain.UserVo;
 public interface CompanyMapper {
 
 	List<CproposalVo> getProposal();
-	
-	UserVo getUser(String id);
 
-<<<<<<< HEAD
+	CompanyVo getCompanyById(String id);
+
+	CompanyVo getCompany(String id);
+
+	void insert(CompanyVo comVo);
+
+	CompanyVo login(String id, String password);
+
 	List<JobpostVo> getpostList(JobpostVo vo);
-
-	List<SkillVo> getSkillList();
 
 	void insertpost(JobpostVo postVo);
 
@@ -38,13 +42,11 @@ public interface CompanyMapper {
 	int selectpostidxmax();
 
 	void deletepostskills(JobpostVo postVo);
-	
-=======
-	CompanyVo getCompany(CompanyVo companyVo);
-	
-	void insert(CompanyVo comVo);
 
-	CompanyVo login(String id, String password);
->>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
+	List<SkillVo> loadskills(int post_idx);
+
+	JobpostVo getpostName(int post_idx);
+
+	List<JobpostVo> getmainpostList();
 
 }

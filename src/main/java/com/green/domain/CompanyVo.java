@@ -8,6 +8,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyVo {
+	
+	public CompanyVo(String id, int cnumber, String cname, String com_logo, String crepresentive, String address,
+			String manager_name, String company_managerphone, int csize, String cyear) {
+		this.id = id;
+		this.cnumber = cnumber;
+		this.cname = cname;
+		this.com_logo = com_logo;
+		this.crepresentive = crepresentive;
+		this.address = address;
+		this.manager_name = manager_name;
+		this.company_managerphone = company_managerphone;
+		this.csize = csize;
+		this.cyear = cyear;
+	}
+	
 	private String id;
 	private String password;
 	private int    type;

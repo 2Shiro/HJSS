@@ -30,7 +30,7 @@
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
 						<input type="text" class="border-0" id="title"
-							value="백엔드 개발자 구합니다">
+							value="${ vo.post_name }">
 					</h2>
 					<hr>
 					<div class="container">
@@ -99,23 +99,13 @@
 						</div>
 						<p class="mb-0">기술/자격 조건</p>
 						<div class="my-2 row" id="skills">
+						<c:forEach var="skill" items="${ skill }">
 							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="Javascript"
-									readonly="readonly">
+								<input type="checkbox" class="btn-check" id="skill_${skill.skill_idx }" value="${skill.skill_idx}" name="skillIdx"
+									autocomplete="off" readonly="readonly"> <label
+									class="btn btn-outline-primary" for="skill_${skill.skill_idx }">${skill.skill_name }</label>
 							</div>
-							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="SQL" readonly="readonly">
-							</div>
-							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="JAVA" readonly="readonly">
-							</div>
-							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="HTML" readonly="readonly">
-							</div>
+						</c:forEach>
 
 						</div>
 						<p class="mb-0">기업 정보</p>
@@ -179,19 +169,13 @@
 							</div>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/jobs" id="btn-list"
+							<a href="/Company/Jobs" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/Company/jobUpdateForm?post_idx=${vo.post_idx}" id="btn-update"
+								href="/Company/JobUpdateForm?post_idx=${vo.post_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
 						</div>
 					</div>
-
-
 				</div>
-
-
-
-
 			</section>
 		</div>
 	</main>

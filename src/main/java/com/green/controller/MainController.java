@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
 public class MainController {
 	@Autowired
 	private CompanyMapper companyMapper;
-	
+
 	@Autowired
 	private PersonMapper personMapper;
 
@@ -37,84 +37,83 @@ public class MainController {
 		mv.setViewName("main");
 		return mv;
 	}
-	
-	//기업로그인폼
+
+	// 기업로그인폼
 	@RequestMapping("/Company/loginForm")
 	public String companyLoginForm() {
 		return "company/login";
 	}
-	//기업로그인
+
+	// 기업로그인
 	@PostMapping("/Company/login")
-	public ModelAndView companyLogin(HttpServletRequest request, CompanyVo comVo,
-	                           HttpServletResponse response) throws IOException {
-	ModelAndView mv = new ModelAndView();
-	      
-	String id = request.getParameter("id");
-	String password = request.getParameter("password");
+	public ModelAndView companyLogin(HttpServletRequest request, CompanyVo comVo, HttpServletResponse response)
+			throws IOException {
+		ModelAndView mv = new ModelAndView();
 
-     comVo= companyMapper.login(id,password);
-	      
-	 if(comVo != null) {//아이디와 암호 일치시 수행
-	 HttpSession session = request.getSession();
-	 session.setMaxInactiveInterval(60*60); //60분동안 로그인 유지	      
-	 session.setAttribute("login", comVo);            
-	 mv.setViewName("redirect:/main");
-	            
-	 }
-	else {//로그인 실패시
-	      PrintWriter out = response.getWriter();
-	      response.setCharacterEncoding("UTF-8");
-	      response.setContentType("text/html; charset=UTF-8;");
-	      out.println("<script> alert('Please check your ID password');");
-	      out.println("history.go(-1); </script>"); 
-	      out.close();             
-	      mv.setViewName("redirect:/Company/loginForm");
-	      }	   
-	      return  mv;	   
-	   }
-	   
-	//개인회원 로그인폼
-	@RequestMapping("/loginForm")
-	public  String  loginForm() {
-	return "person/login";
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+
+		comVo = companyMapper.login(id, password);
+
+		if (comVo != null) {// 아이디와 암호 일치시 수행
+			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(60 * 60); // 60분동안 로그인 유지
+			session.setAttribute("login", comVo);
+			mv.setViewName("redirect:/main");
+
+		} else {// 로그인 실패시
+			PrintWriter out = response.getWriter();
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8;");
+			out.println("<script> alert('Please check your ID password');");
+			out.println("history.go(-1); </script>");
+			out.close();
+			mv.setViewName("redirect:/Company/loginForm");
+		}
+		return mv;
 	}
-	
-	//개인회원 로그인
+
+	// 개인회원 로그인폼
+	@RequestMapping("/loginForm")
+	public String loginForm() {
+		return "person/login";
+	}
+
+	// 개인회원 로그인
 	@PostMapping("/login")
-	public ModelAndView login(HttpServletRequest request, PersonVo personVo,
-	                           HttpServletResponse response) throws IOException {
-	ModelAndView mv = new ModelAndView();
-	      
-	String id = request.getParameter("id");
-	String password = request.getParameter("password");
+	public ModelAndView login(HttpServletRequest request, PersonVo personVo, HttpServletResponse response)
+			throws IOException {
+		ModelAndView mv = new ModelAndView();
 
-     personVo= personMapper.login(id,password);
-	      
-	 if(personVo != null) {//아이디와 암호 일치시 수행
-	 HttpSession session = request.getSession();
-	 session.setMaxInactiveInterval(60*60); //60분동안 로그인 유지	      
-	 session.setAttribute("login", personVo);            
-	 mv.setViewName("redirect:/main");
-	            
-	 }
-	else {//로그인 실패시
-	      PrintWriter out = response.getWriter();
-	      response.setCharacterEncoding("UTF-8");
-	      response.setContentType("text/html; charset=UTF-8;");
-	      out.println("<script> alert('Please check your ID password');");
-	      out.println("history.go(-1); </script>"); 
-	      out.close();             
-	      mv.setViewName("redirect:/loginForm");
-	      }	   
-	      return  mv;	   
-	   }
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
 
-	//logout
+		personVo = personMapper.login(id, password);
+
+		if (personVo != null) {// 아이디와 암호 일치시 수행
+			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(60 * 60); // 60분동안 로그인 유지
+			session.setAttribute("login", personVo);
+			mv.setViewName("redirect:/main");
+
+		} else {// 로그인 실패시
+			PrintWriter out = response.getWriter();
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8;");
+			out.println("<script> alert('Please check your ID password');");
+			out.println("history.go(-1); </script>");
+			out.close();
+			mv.setViewName("redirect:/loginForm");
+		}
+		return mv;
+	}
+
+	// logout
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
-		
+
 		session.invalidate();
-		
+
 		return "redirect:/loginForm";
 	}
 }
