@@ -19,4 +19,6 @@ public interface PersonMapper {
 
 	void updateResumePass(int resume_idx, int status);
 
+	PersonVo getPname(String id);
+
 }

@@ -36,7 +36,6 @@ h3 {
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">이력서 : ${presumeVo.title}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div>
         <div>
@@ -66,10 +65,10 @@ h3 {
         <div class="mb-3">
 				  <label for="basic-url" class="form-label">포트폴리오 URL</label>
 				  <div class="input-group">
-				    <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-				    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4" value="${presumeVo.portfolio}"  readonly>
+				    <span class="input-group-text" id="basic-addon3">URL</span>
+				    <a class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4" value="${presumeVo.portfolio}">${presumeVo.portfolio}</a>
 				  </div>
-				  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+				  <div class="form-text" id="basic-addon4"></div>
 				</div>
 				
 				<div class="input-group mb-3">

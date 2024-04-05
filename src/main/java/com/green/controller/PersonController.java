@@ -26,6 +26,7 @@ public class PersonController {
 	//구직자의 메인페이지
 	@RequestMapping("/Pmain")
 	public String pmain() {
+		
 		return "/person/pmain";
 	}
 	

@@ -22,13 +22,13 @@
 	const RecommendEl = document.getElementById("recommend");
 	
 	MainEl.addEventListener('click', function(e) {
-		alert('pmain');
+		alert('cmain');
 		location.href = '/Company/Cmain';
 	});
 	
 	MyPostEl.addEventListener('click', function(e) {
 		alert('mypost');
-		location.href = '/Company/MyPost';
+		location.href = '/Company/jobs';
 	});
 	
 	MyParticipateEl.addEventListener('click', function(e) {

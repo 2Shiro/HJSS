@@ -5,16 +5,35 @@
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
 		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
 	</select>
+	
 	<select id="getpostList">
 		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
 		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
 		FROM JOB_POST_TB
 		WHERE ID = #{id}
 	</select>
+	
 	<select id="getSkillList">
 		SELECT SKILL_IDX, SKILL_NAME
 		FROM SKILL_TB
 	</select>
+	
+	<!-- 전체 공고 가져오기 -->
+	<select id="getmainpostList">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		ORDER BY POST_IDX
+	</select>
+	
+	<!-- 공고 이름 가져오기 -->
+	<select id="getpostName">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+	
 	<insert id="insertpost" parameterType="com.green.domain.JobpostVo">
 		INSERT INTO JOB_POST_TB
 		(POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,

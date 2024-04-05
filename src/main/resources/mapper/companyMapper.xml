@@ -22,5 +22,11 @@
 	
 	</select>
 	
+	<!-- 기업 회원 중 특정 아이디의 컴퍼니 info를 가져옴 -->
+	<select id="getCompanyById">
+		SELECT	ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS, MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
+			FROM	COMPANY_INFO_TB
+			WHERE	ID = #{id}
+	</select>
 	
 </mapper>

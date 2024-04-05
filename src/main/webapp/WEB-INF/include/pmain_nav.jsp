@@ -3,7 +3,7 @@
 		
 <ul class="nav flex-column">
 	<li class="nav-item mx-auto">
-		<button type="button" class="btn btn-secondary" id="main">채용공고</button>
+		<button type="button" class="btn btn-outline-secondary {a}" id="main">채용공고</button>
 	</li>
 	<li class="nav-item mx-auto">
 		<button type="button" class="btn btn-outline-secondary" id="myresume">등록 이력서 관리</button>
@@ -26,7 +26,8 @@
 	MainEl.addEventListener('click', function(e) {
 		alert('pmain');
 		location.href = '/Person/Pmain';
-		//btn();
+		MainEl.removeClass("btn-outline-secondary");
+		MainEl.addClass("btn-secondary");
 	});
 	
 	MyResumeEl.addEventListener('click', function(e) {
@@ -36,7 +37,7 @@
 	});
 	
 	MyProposalEl.addEventListener('click', function(e) {
-		alert('myparticipate');
+		alert('myproposal');
 		location.href = '/Person/MyProposal';
 		//btn();
 	});

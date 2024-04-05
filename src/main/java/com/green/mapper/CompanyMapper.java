@@ -14,5 +14,7 @@ public interface CompanyMapper {
 
 	CompanyVo getCompany(CompanyVo companyVo);
 
+	CompanyVo getCompanyById(String id);
+
 
 }
