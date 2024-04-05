@@ -6,75 +6,130 @@
 <meta charset="UTF-8">
 <title>Rolling Stone</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
 <style>
-
-  *{text-align:center;
-    padding : 0%;
-    margin : 1%;}
+   .main {
+       text-align:center;
+       padding : 0;
+       margin : 0 auto;      
+    }
  span{color:red;}
- 
-fieldset {
 
-  display: block;
-  margin-left: 2px;
-  margin-right: 2px;
-  padding-top: 0.35em;
-  padding-bottom: 0.625em;
-  padding-left: 0.75em;
-  padding-right: 0.75em;
-  border: 1px solname purple; (internal value);
-  
-  div{ text-align : left;
-       wnameth : 100%;
+ .input-group-sm {
+      width: 400px;
+      margin: 0 auto;
+ }
+ #btn   {
+    input{   
+      color:white;
+     background-color:#5215a6;
+     opacity: 70%;
+     border : 2px solid grey;
+     border-radius :10px;
+     margin-right : 25px;
+     margin-left:25px;
+     }
   }
+  
+  form{ 
+        margin : 50px; } 
 
-}
 
 </style>
+
 </head>
 <body>
   <main>
-  <span><a href="/main"><img src="/images/logo.png" style="wnameth:150px"></a></span>
-   <h2>기업회원 가입</h2>
-   <fieldset>
-    <form action="/Company/Join"  name="join" name="join" method="post">
-      <div><input type="text" name="type" value="1"></div>
-      <div><span>*</span>아이디</div>
-      <div><input type="text" name="id" placeholder="아이디"  value="sky" required>
-      <div><span>*</span>비밀번호</div>
-      <div><input type="password" name="password"  value="123" required></div>
+  <div class="main">
+     <div>
+        <a href="/main">
+           <img src="/images/logo.png" style="width:150px">
+        </a>
+     </div>
+     
+  <h2>기업회원 가입</h2>
+   
+    <form action="/Company/Join"  name="join" name="join" method="post" >
+      
+      <div><input type="hidden" name="type" value="1"></div>
+      
+     <div class="input-group-sm mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">아이디</span>
+        <input type="text" class="form-control" name="id" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>
+    
+     <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">비밀번호</span>
+           <input type="password" class="form-control" name="password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>
      
 
-      <div><span>*</span>이메일</div>
-      <div><input type="text" name="user_email"  value="하늘" required></div>
-      <div><span>*</span>사명</div>
-      <div><input type="text" name="cname"  value="하늘" required></div>
-      <div>업종</div>
-      <div><input type="text" name="cate"  value="1"></div>
-      <div>기업 로고</div>
-      <div><input type="text" name="com_logo" value="123456" style="border:1px solname black"></div>
-      <div><span>*</span>사업자번호</div>
-      <div><input type="text" name="cnumber" value="1234" required></div>
-      <div>회사 대표</div>
-      <div><input type="text" name="crepresentive" value="몰라" ></div>
-      <div><span>*</span>소재지</div>
-      <div><input type="text" name="address" value="부산 어딘가"   required></div>
-      <div><span>*</span>담당자님 성함</div>
-      <div><input type="text" name="manager_name" value="마동석"  required></div>
-      <div>담당자님 연락처</div>
-      <div><input type="text" name="company_managerphone" value="010" ></div>
-      <div>기업 규모(사원수 기준)</div>
-      <div><input type="text" name="csize" value="1000" ></div>
-      <div><span>*</span>설립 연도</div>
-      <div><input type="date" name="cyear" value="2000" required></div>    
-      <div>가입일</div>
-      <div><input type="text" name="created_date" value=${ now } readonly></div>
-      <span><input type="submit" value="작성완료" >
-            <input type="button" onClick="location.href='/main'" value="HOME"></span>
-    </fieldset>
+  
+     <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">이메일</span>
+           <input type="text" class="form-control" name="user_email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>
+      
+     <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">사명</span>
+              <input type="text" class="form-control" name="cname" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+         </div>
+      
+      <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">업종</span>
+             <input type="text" class="form-control" name="cate" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+         </div>
+    
+      <div class="input-group-sm mb-3">
+              <span class="input-group-text" id="inputGroup-sizing-default">기업 로고</span>
+              <input type="text" class="form-control" name="com_logo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+         </div>
+    
+      <div class="input-group-sm mb-3">
+              <span class="input-group-text" id="inputGroup-sizing-default">사업자번호</span>
+           <input type="text" class="form-control" name="cnumber" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+         </div>
+    
+      <div class="input-group-sm mb-3">
+              <span class="input-group-text" id="inputGroup-sizing-default">회사 대표</span>
+              <input type="text" class="form-control" name="crepresentive" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+         </div>
+     
+     <div class="input-group-sm mb-3">
+              <span class="input-group-text" id="inputGroup-sizing-default">소재지</span>
+              <input type="text" class="form-control" name="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+         </div>
+    
+     <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">담당자님 성함</span>
+             <input type="text" class="form-control" name="manager_name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>
+    
+     <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">담당자님 연락처</span>
+              <input type="text" class="form-control" name="company_managerphone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>
+   
+     <div class="input-group-sm mb-3">
+              <span class="input-group-text" id="inputGroup-sizing-default">기업 규모(사원수 기준)</span>
+              <input type="text" class="form-control" name="csize" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>
+   
+    <div class="input-group-sm mb-3">
+           <span class="input-group-text" id="inputGroup-sizing-default">설립 연도</span>
+           <input type="date" class="form-control" name="cyear" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      </div>   
+              <input type="hidden" class="form-control"  name="created_date"
+              value=${ now } readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      
+      
+      
+      <span id="btn"><input type="submit" value="작성완료" >
+            <input type="button" onClick="location.href='/main'" value="뒤로가기"></span>
+    
     </form>
+   
     <%@include file="/WEB-INF/include/footer.jsp" %>
+  </div>
   </main>
 
 

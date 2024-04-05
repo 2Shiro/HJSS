@@ -32,10 +32,10 @@
   table
   
   a {text-decoration-line:none;
-     color:grey;}
+     color : grey;}
   
-#logch{ td:first-child{border-bottom:7px solid lightgrey; }
-         td:nth-child(2){border-bottom:7px solid #5215a6;}
+#logch{ td:first-child{border-bottom:7px solid #5215a6; }
+         td:nth-child(2){border-bottom:7px solid lightgrey;}
          td{width:150px;} 
 }  
 #btn{ 
@@ -74,7 +74,7 @@ footer{
     <td ><a href="Company/loginForm" id="comlog">기업회원</a></td>
   </tr>
 </table>
-   <form  action="/Company/login" method="post" id="login">
+   <form  action="/login" method="post" id="login">
    <div class="log">
      <table>
        <tr>
@@ -86,7 +86,7 @@ footer{
        </tr>
        <tr id="btn">
          <td ><input type="submit" value="로그인" ></td>
-         <td><input type="button" value="회원가입" onClick="location.href='/Company/JoinForm'"></td>
+         <td><input type="button" value="회원가입" onClick="location.href='Person/joinForm'"></td>
         </tr>     
      </table> 
      </div>  

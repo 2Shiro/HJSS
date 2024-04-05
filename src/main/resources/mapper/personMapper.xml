@@ -13,5 +13,23 @@
 		WHERE	ID = 'ps1'
 	
 	</select>
+	
+	<insert id="insert">
+	INSERT ALL	
+	INTO person_info_tb ( id, pname, phone, address, birth )
+	VALUES (#{id},#{pname},#{phone},#{address},#{birth})
+	INTO user_tb (id,password,type,user_email,created_date)
+	VALUES (#{id},#{password},2,#{user_email},#{created_date})
+	SELECT * FROM DUAL
+	</insert>
+	
+	<select id="login">
+ 	SELECT id,password,type
+ 	FROM   user_tb
+ 	WHERE  id=#{arg0} AND password=#{arg1} AND type=2
+	</select>
+	
+	
+	
 
 </mapper>
