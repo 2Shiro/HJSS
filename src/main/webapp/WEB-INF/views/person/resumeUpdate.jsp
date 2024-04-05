@@ -54,7 +54,7 @@
 							<div class="row mt-2">
 								<div class="col-6 row d-flex align-items-center">
 									<div class="col-md-auto">
-										<img alt="Logo" src="/images/logo.png" style="height: 180px;">
+										<img alt="Logo" src="${vo.profile}" style="height: 180px;">
 									</div>
 								</div>
 								<div class="col-6 row ms-4">
@@ -85,7 +85,7 @@
 						</div>
 						<div class="form-floating my-3">
 							<div class="input-group">
-								<input type="file" class="form-control" id="profile"
+								<input type="file" class="form-control" id="file" name="file"
 									aria-describedby="profile">
 							</div>
 						</div>
@@ -93,6 +93,7 @@
 							<div class="mb-3">
 								<label for="portfolio" class="form-label">포트폴리오 주소</label> <input
 									type="text" class="form-control" id="portfolio"
+									name="portfolio" value="${ vo.portfolio}"
 									placeholder="포트폴리오 주소를 입력해주세요.">
 							</div>
 						</div>
@@ -100,49 +101,29 @@
 							<div class="mt-3 mx-auto row">
 								<label for="skills" class="form-label">기술스택</label>
 								<div class="mx-auto row" id="skills">
-									<div class="col-auto">
-										<input type="checkbox" class="btn-check" id="skill_1"
-											autocomplete="off"> <label
-											class="btn btn-outline-primary" for="skill_1">JAVA</label>
-									</div>
-									<div class="col-auto">
-										<input type="checkbox" class="btn-check" id="skill_2"
-											autocomplete="off"> <label
-											class="btn btn-outline-primary" for="skill_2">JAVA</label>
-									</div>
-									<div class="col-auto">
-										<input type="checkbox" class="btn-check" id="skill_3"
-											autocomplete="off"> <label
-											class="btn btn-outline-primary" for="skill_3">JAVA</label>
-									</div>
-									<div class="col-auto">
-										<input type="checkbox" class="btn-check" id="skill_4"
-											autocomplete="off"> <label
-											class="btn btn-outline-primary" for="skill_4">JAVA</label>
-									</div>
-									<div class="col-auto">
-										<input type="checkbox" class="btn-check" id="skill_5"
-											autocomplete="off"> <label
-											class="btn btn-outline-primary" for="skill_5">JAVA</label>
-									</div>
-									<div class="col-auto">
-										<input type="checkbox" class="btn-check" id="skill_6"
-											autocomplete="off"> <label
-											class="btn btn-outline-primary" for="skill_6">JAVA</label>
-									</div>
+									<c:forEach var="skill" items="${ skill }">
+										<div class="col-auto">
+											<input type="checkbox" class="btn-check"
+												id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
+												name="skillIdx" autocomplete="off"> <label
+												class="btn btn-outline-primary"
+												for="skill_${skill.skill_idx }">${skill.skill_name }</label>
+										</div>
+									</c:forEach>
 								</div>
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="self-intro" class="form-label">자기 소개</label>
-								<textarea rows="10" class="form-control" id="job-intro"
-									name="self-intro"></textarea>
+								<textarea rows="10" class="form-control" id="self_intro"
+									name="self_intro">${ vo.self_intro }</textarea>
 							</div>
 						</div>
 
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>
+							<a href="/Person/ResumeDetail?resume_idx=${ vo.resume_idx }"
+								id="btn-list" class="btn btn-danger mx-3">취소</a>
 							<button type="submit" id="btn-update"
 								class="btn btn-secondary mx-3">수정</button>
 						</div>

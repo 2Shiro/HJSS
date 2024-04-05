@@ -28,22 +28,22 @@
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
-					<h2 class="modal-title" id="resumeFormLabel">이력서 등록하기</h2>
-					<hr>
-					<div class="my-1 mx-auto row">
-						<div class="col">
-							<label for="resume_name" class="form-label">이력서 제목</label> <input
-								type="email" class="form-control" id="resume_name"
-								placeholder="제목을 입력해주세요.">
+					<div class="row">
+						<div class="my-1 mx-auto d-flex justify-content-between">
+							<div>
+								<h2 class="fw-semibold">
+									<input type="text" class="border-0" id="title"
+										value="${ vo.title }" readonly="readonly">
+								</h2>
+							</div>
+							<div>
+								<input type="text" class="form-control border-0" id="publish"
+									readonly="readonly"
+									value="공개여부설정 : <c:choose><c:when test='${vo.publish == 1}'>공개</c:when><c:when test='${vo.publish == 2}'>비공개</c:when><c:otherwise>상태 미정</c:otherwise>
+				              </c:choose>">
+							</div>
+						</div>
 
-						</div>
-						<div class="col-2">
-							<label for="resume_publish" class="form-label">공개여부</label> <select
-								class="form-select" aria-label="이력서 공개여부" id="resume_publish">
-								<option selected value="1">공개</option>
-								<option value="2">비공개</option>
-							</select>
-						</div>
 					</div>
 					<hr>
 					<div class="my-1 mx-auto row">
@@ -51,83 +51,67 @@
 						<div class="row mt-2">
 							<div class="col-6 row d-flex align-items-center">
 								<div class="col-md-auto">
-									<img alt="Logo" src="/images/logo.png" style="height: 180px;">
+									<img alt="Logo" src="${vo.profile}" style="height: 180px;">
 								</div>
 							</div>
 							<div class="col-6 row ms-4">
 								<div class="input-group mb-3 ">
 									<span class="input-group-text text-center" id="pname">이름</span>
-									<input type="text" class="form-control" id="pname" name="pname">
+									<input type="text" class="form-control" id="pname" name="pname"
+										readonly="readonly" value="${ info.pname }">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="birth">생년월일</span> <input
-										type="text" class="form-control" id="birth" name="birth">
+										type="text" class="form-control" id="birth" name="birth"
+										readonly="readonly" value="${ info.birth }">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="phone">연락처</span> <input
-										type="text" class="form-control" id="phone" name="phone">
+										type="text" class="form-control" id="phone" name="phone"
+										readonly="readonly" value="${ info.phone }">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="address">주소</span> <input
-										type="text" class="form-control" id="address" name="address">
+										type="text" class="form-control" id="address" name="address"
+										readonly="readonly" value="${ info.address }">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="user_email">이메일</span> <input
 										type="email" class="form-control" id="user_email"
+										readonly="readonly" value="${ userVo.user_email }"
 										name="user_email">
 								</div>
 							</div>
 						</div>
 
 						<div class="my-1 mx-auto row">
-							<label for="portfolio" class="form-label">포트폴리오 주소</label> <input
-								type="text" class="form-control" id="portfolio"
-								placeholder="포트폴리오 주소를 입력해주세요.">
+							<label for="portfolio" class="form-label">포트폴리오 주소</label> <a
+								class="form-control text-decoration-none text-dark"
+								id="portfolio" href="${vo.portfolio}">${vo.portfolio}</a>
 						</div>
 						<div class="my-1 mx-auto row">
 							<label for="skills" class="form-label">기술스택</label>
 							<div class="mt-3 mx-auto row" id="skills">
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check" id="skill_1"
-										autocomplete="off"> <label
-										class="btn btn-outline-primary" for="skill_1">JAVA</label>
-								</div>
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check" id="skill_2"
-										autocomplete="off"> <label
-										class="btn btn-outline-primary" for="skill_2">JAVA</label>
-								</div>
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check" id="skill_3"
-										autocomplete="off"> <label
-										class="btn btn-outline-primary" for="skill_3">JAVA</label>
-								</div>
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check" id="skill_4"
-										autocomplete="off"> <label
-										class="btn btn-outline-primary" for="skill_4">JAVA</label>
-								</div>
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check" id="skill_5"
-										autocomplete="off"> <label
-										class="btn btn-outline-primary" for="skill_5">JAVA</label>
-								</div>
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check" id="skill_6"
-										autocomplete="off"> <label
-										class="btn btn-outline-primary" for="skill_6">JAVA</label>
-								</div>
+								<c:forEach var="skill" items="${ skill }">
+									<div class="col-auto">
+										<input type="checkbox" class="btn-check"
+											id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
+											name="skillIdx" autocomplete="off" readonly="readonly">
+										<label class="btn btn-outline-primary"
+											for="skill_${skill.skill_idx }">${skill.skill_name }</label>
+									</div>
+								</c:forEach>
 							</div>
 						</div>
 						<div class="my-1 mx-auto row">
 							<label for="self-intro" class="form-label">업무 소개</label>
 							<textarea rows="10" class="form-control" id="job-intro"
-								name="self-intro"></textarea>
+								name="self-intro">${ vo.self_intro }</textarea>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Person/resume" id="btn-list"
+							<a href="/Person/Resume" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/Person/resumeUpdate" id="btn-update"
+								href="/Person/ResumeUpdate?resume_idx=${vo.resume_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
 						</div>
 					</div>

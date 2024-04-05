@@ -15,6 +15,7 @@ import com.green.domain.PostskillVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
+import com.green.mapper.MainMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyController {
 	@Autowired
 	private CompanyMapper comMapper;
+	@Autowired
+	private MainMapper mainMapper;
 
 	// 로그인한 회사에 구직자들이 제안한 현황
 	@RequestMapping("/GetProposal")
@@ -37,16 +40,16 @@ public class CompanyController {
 		return mv;
 	}
 
-	@RequestMapping("/jobs")
+	@RequestMapping("/Jobs")
 	public ModelAndView jobs(UserVo userVo, JobpostVo vo) {
 		ModelAndView mv = new ModelAndView();
 		String id = "";
 		id = "cp1";
 		userVo.setId(id);
-		userVo = comMapper.getUser(id);
+		userVo = mainMapper.getUser(id);
 		vo.setId(id);
 		List<JobpostVo> list = comMapper.getpostList(vo);
-		List<SkillVo> skill = comMapper.getSkillList();
+		List<SkillVo> skill = mainMapper.getSkillList();
 		log.info("list = {}", list);
 		mv.addObject("user", userVo);
 		mv.addObject("vo", vo);
@@ -57,7 +60,7 @@ public class CompanyController {
 		return mv;
 	}
 
-	@RequestMapping("/jobPost")
+	@RequestMapping("/JobPost")
 	public ModelAndView jobPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
 		int post_idx = comMapper.selectpostidxmax();
@@ -69,47 +72,61 @@ public class CompanyController {
 		        skillVo.setSkill_idx(skillIdx);
 		        comMapper.insertskills(skillVo);
 		    }
-		mv.setViewName("redirect:/Company/jobs");
+		mv.setViewName("redirect:/Company/Jobs");
 		return mv;
 	}
 
-	@RequestMapping("/jobDetail")
+	@RequestMapping("/JobDetail")
 	public ModelAndView jobDetail(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
 		JobpostVo vo = comMapper.viewPost(postVo);
 		String id = vo.getId();
 		CompanyInfoVo com = comMapper.getInfo(id);
-		UserVo userVo = comMapper.getUser(id);
+		UserVo userVo = mainMapper.getUser(id);
+		int post_idx = vo.getPost_idx();
+		List<SkillVo> skill = comMapper.loadskills(post_idx);
 		mv.addObject("vo", vo);
 		mv.addObject("com", com);
 		mv.addObject("userVo", userVo);
+		mv.addObject("skill", skill);
 		mv.setViewName("/company/jobDetail");
 		return mv;
 	}
 
-	@RequestMapping("/jobUpdateForm")
+	@RequestMapping("/JobUpdateForm")
 	public ModelAndView jobUpdateForm(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
 		JobpostVo vo = comMapper.viewPost(postVo);
+		List<SkillVo> skill = mainMapper.getSkillList();
 		mv.addObject("vo", vo);
+		mv.addObject("skill", skill);
 		mv.setViewName("/company/jobUpdate");
 		return mv;
 	}
 
-	@RequestMapping("/jobUpdate")
-	public ModelAndView jobUpdate(JobpostVo postVo) {
+	@RequestMapping("/JobUpdate")
+	public ModelAndView jobUpdate(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
+		int post_idx = postVo.getPost_idx();
+		postVo.setPost_idx(post_idx);
 		comMapper.updatePost(postVo);
-		mv.setViewName("redirect:/Company/jobs");
+		comMapper.deletepostskills(postVo);
+		for (Integer skillIdx : skillIdxList) {
+	        PostskillVo skillVo = new PostskillVo();
+	        skillVo.setPost_idx(post_idx);
+	        skillVo.setSkill_idx(skillIdx);
+	        comMapper.insertskills(skillVo);
+	    }
+		mv.setViewName("redirect:/Company/Jobs");
 		return mv;
 	}
 
-	@RequestMapping("/postDelete")
+	@RequestMapping("/PostDelete")
 	public ModelAndView postDelete(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
 		comMapper.deletepostskills(postVo);
 		comMapper.postDelete(postVo);
-		mv.setViewName("redirect:/Company/jobs");
+		mv.setViewName("redirect:/Company/Jobs");
 		return mv;
 	}
 

@@ -49,12 +49,8 @@
 					'DOMContentLoaded',
 					function() {
 						document.getElementById('postForm').addEventListener('submit', function(event) {
-							  event.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
-							  
-							  // 알림을 사용자에게 보여줍니다.
+							  event.preventDefault();
 							  alert('등록 되었습니다');
-							  
-							  // bootstrap Modal 인스턴스를 가져와서 숨깁니다.
 							  var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
 							  myModal.hide();
 							  var postForm = document.getElementById('postForm');
@@ -66,11 +62,11 @@
 					                event.preventDefault();
 					                alert('삭제 처리됨');
 					                const postIdx = event.target.id.replace('btn-delete', ''); // 동적으로 생성된 ID에서 post_idx를 추출합니다.
-					                window.location.href = `/Company/postDelete?post_idx=`+postIdx;
+					                window.location.href = `/Company/PostDelete?post_idx=`+postIdx;
 					            } else if (event.target) {
 					                // 클릭된 요소에서 가장 가까운 .linkDiv의 ID를 찾아 마감기한 페이지로 이동합니다.
 					                const postIdx = event.target.closest('[id^="jobDetailDiv"]').id.replace('jobDetailDiv', '');
-					                window.location.href = `/Company/jobDetail?post_idx=`+postIdx;
+					                window.location.href = `/Company/JobDetail?post_idx=`+postIdx;
 					            }
 					        });
 					    });

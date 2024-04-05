@@ -15,12 +15,8 @@ import com.green.domain.UserVo;
 public interface CompanyMapper {
 
 	List<CproposalVo> getProposal();
-	
-	UserVo getUser(String id);
 
 	List<JobpostVo> getpostList(JobpostVo vo);
-
-	List<SkillVo> getSkillList();
 
 	void insertpost(JobpostVo postVo);
 
@@ -37,6 +33,7 @@ public interface CompanyMapper {
 	int selectpostidxmax();
 
 	void deletepostskills(JobpostVo postVo);
-	
+
+	List<SkillVo> loadskills(int post_idx);
 
 }
