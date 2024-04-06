@@ -31,7 +31,7 @@
 					<h2>공고 수정하기</h2>
 					<hr>
 					<form class="container"
-						action="/Company/JobUpdate?post_idx=${vo.post_idx}">
+						action="/Company/MyPostUpdate?post_idx=${vo.post_idx}">
 						<input type="hidden" value="${vo.post_idx }" name="post_idx">
 						<div class="form-floating my-3">
 							<div class="mb-3">
@@ -68,9 +68,11 @@
 								<div class="col-3 my-3">
 									<select class="form-select" aria-label="job_type" id="job_type"
 										name="job_type">
-										<option >선택</option>
-										<option value="정규직" <c:if test="${vo.job_type == '정규직'}">selected</c:if>>정규직</option>
-										<option value="계약직" <c:if test="${vo.job_type == '계약직'}">selected</c:if>>계약직</option>
+										<option>선택</option>
+										<option value="정규직"
+											<c:if test="${vo.job_type == '정규직'}">selected</c:if>>정규직</option>
+										<option value="계약직"
+											<c:if test="${vo.job_type == '계약직'}">selected</c:if>>계약직</option>
 									</select>
 								</div>
 
@@ -94,6 +96,23 @@
 									value="${vo.deadline }" name="deadline" style="width: 30%">
 							</div>
 						</div>
+						<p class="mb-0">기술/자격 조건</p>
+						<div class="my-2 row" id="skills">
+							<c:forEach var="skill" items="${allSkills}">
+								<div class="col-auto">
+									<input type="checkbox" class="btn-check"
+										id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
+										name="skillIdx" autocomplete="off"
+										<c:forEach var="postSkills" items="${postSkills}">
+                <c:if test="${skill.skill_idx == postSkills.skill_idx}">
+                    checked="checked"
+                </c:if>
+            </c:forEach>>
+									<label class="btn btn-outline-primary"
+										for="skill_${skill.skill_idx }">${skill.skill_name}</label>
+								</div>
+							</c:forEach>
+						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label>
@@ -108,18 +127,7 @@
 									name="job_intro">${vo.job_intro }</textarea>
 							</div>
 						</div>
-						<p class="mb-0">기술/자격 조건</p>
-						<div class="my-2 row" id="skills">
-							<c:forEach var="skill" items="${ skill }">
-								<div class="col-auto">
-									<input type="checkbox" class="btn-check"
-										id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
-										name="skillIdx" autocomplete="off"> <label
-										class="btn btn-outline-primary"
-										for="skill_${skill.skill_idx }">${skill.skill_name }</label>
-								</div>
-							</c:forEach>
-						</div>
+
 
 						<div class="my-3 d-flex justify-content-center">
 							<a href="/Company/Jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>

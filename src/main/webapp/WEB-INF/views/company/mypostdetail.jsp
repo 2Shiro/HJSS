@@ -171,7 +171,7 @@
 						<div class="my-3 d-flex justify-content-center">
 							<a href="/Company/Jobs" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/Company/JobUpdateForm?post_idx=${vo.post_idx}" id="btn-update"
+								href="/Company/MyPostEdit?post_idx=${vo.post_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
 						</div>
 					</div>

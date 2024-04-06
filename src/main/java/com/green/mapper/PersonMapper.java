@@ -46,4 +46,6 @@ public interface PersonMapper {
 	
 	PersonVo getPname(String id);
 
+	void updateResume(PresumeVo vo);
+
 }

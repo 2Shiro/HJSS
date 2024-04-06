@@ -131,9 +131,12 @@ public class CompanyController {
 	public ModelAndView editMyPost(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
 		JobpostVo vo = companyMapper.viewPost(postVo);
-		List<SkillVo> skill = mainMapper.getSkillList();
+		int post_idx = vo.getPost_idx();
+		List<SkillVo> postSkills = companyMapper.loadskills(post_idx);
+		List<SkillVo> allSkills = mainMapper.getSkillList();
 		mv.addObject("vo", vo);
-		mv.addObject("skill", skill);
+		mv.addObject("allSkills", allSkills);
+		mv.addObject("postSkills", postSkills);
 		mv.setViewName("/company/mypostedit");
 		return mv;
 	}

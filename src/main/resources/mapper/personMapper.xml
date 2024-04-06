@@ -71,4 +71,13 @@
 	<delete id="deletepersonskills">
 		DELETE FROM PERSON_SKILL_TB WHERE ID = #{id}
 	</delete>
+	<update id="updateResume">
+		UPDATE RESUME_TB
+		SET TITLE = #{title},PORTFOLIO =  #{portfolio},PUBLISH =  #{publish}, profile = #{profile}, SELF_INTRO = #{self_intro}
+		WHERE RESUME_IDX = #{resume_idx}
+		AND ID = #{id} 
+	</update>
+	
+	
+	
 </mapper>

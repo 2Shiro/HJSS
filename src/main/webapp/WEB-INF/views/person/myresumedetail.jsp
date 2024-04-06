@@ -29,14 +29,14 @@
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
 					<div class="row">
-						<div class="my-1 mx-auto d-flex justify-content-between">
-							<div>
+						<div class="my-1 mx-auto row">
+							<div class="col-10">
 								<h2 class="fw-semibold">
-									<input type="text" class="border-0" id="title"
+									<input type="text" class="border-0 w-100" id="title"
 										value="${ vo.title }" readonly="readonly">
 								</h2>
 							</div>
-							<div>
+							<div class="col-2">
 								<input type="text" class="form-control border-0" id="publish"
 									readonly="readonly"
 									value="공개여부설정 : <c:choose><c:when test='${vo.publish == 1}'>공개</c:when><c:when test='${vo.publish == 2}'>비공개</c:when><c:otherwise>상태 미정</c:otherwise>
@@ -51,7 +51,7 @@
 						<div class="row mt-2">
 							<div class="col-6 row d-flex align-items-center">
 								<div class="col-md-auto">
-									<img alt="Logo" src="${vo.profile}" style="height: 180px;">
+									<img alt="profile" src="${vo.profile}" style="height: 180px;">
 								</div>
 							</div>
 							<div class="col-6 row ms-4">
@@ -109,9 +109,9 @@
 								name="self-intro">${ vo.self_intro }</textarea>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Person/Resume" id="btn-list"
+							<a href="/Person/MyResume" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/Person/ResumeUpdate?resume_idx=${vo.resume_idx}" id="btn-update"
+								href="/Person/MyResumeEdit?resume_idx=${vo.resume_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
 						</div>
 					</div>
