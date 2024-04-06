@@ -14,7 +14,8 @@
 
 	<select id="getCompany" resultType="com.green.domain.CompanyVo">
 		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS,
-		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, TO_CHAR(TO_DATE(CYEAR), 'YY-MM-DD') CYEAR
+		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, TO_CHAR(TO_DATE(CYEAR),
+		'YY-MM-DD') CYEAR
 		FROM COMPANY_INFO_TB
 		WHERE ID = #{id}
 	</select>
@@ -95,6 +96,40 @@
 		where p.skill_idx = s.skill_idx
 		and p.post_idx = #{post_idx}
 		order by p.skill_idx
+	</select>
+
+	<select id="getPersonInfoByResumeId" parameterType="String"
+		resultType="com.green.domain.PersonInfoVo">
+		SELECT * FROM PERSON_INFO_TB WHERE resume_id = #{resumeId}
+	</select>
+	<select id="recommended" resultType="com.green.domain.MatchingResultVo">
+		SELECT J.post_name, J.deadline, R.id, R.title, PI.ID, PI.PNAME,
+		PI.PHONE, PI.ADDRESS, PI.BIRTH,
+		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		FROM PERSON_SKILL_TB PS
+		JOIN SKILL_TB S ON PS.skill_idx = S.skill_idx
+		WHERE PS.id = PI.ID) AS skills
+		FROM RESUME_TB R
+		JOIN PERSON_INFO_TB PI ON R.id = PI.ID
+		JOIN JOB_POST_TB J ON J.post_idx = #{post_idx}
+		WHERE R.id IN (
+		SELECT PS.id
+		FROM PERSON_SKILL_TB PS
+		WHERE PS.id IN (
+		SELECT PS2.id
+		FROM PERSON_SKILL_TB PS2
+		JOIN POST_SKILL_TB PS3 ON PS2.skill_idx = PS3.skill_idx
+		WHERE PS3.POST_IDX = #{post_idx}
+		GROUP BY PS2.id
+		HAVING COUNT(DISTINCT PS2.skill_idx) >= (
+		SELECT COUNT(DISTINCT PS3.skill_idx)
+		FROM POST_SKILL_TB PS3
+		WHERE PS3.POST_IDX = #{post_idx}
+		)
+		)
+		)
+		GROUP BY J.post_name, J.deadline, R.id, R.title, PI.ID, PI.PNAME,
+		PI.PHONE, PI.ADDRESS, PI.BIRTH
 	</select>
 
 </mapper>

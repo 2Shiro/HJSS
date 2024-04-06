@@ -1,10 +1,14 @@
 package com.green.controller;
 
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +20,11 @@ import com.green.domain.CompanyVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
 import com.green.domain.MainPageVo;
+import com.green.domain.MatchingResultVo;
 import com.green.domain.MyProposalVo;
 import com.green.domain.PersonVo;
 import com.green.domain.PostskillVo;
+import com.green.domain.PresumeVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
@@ -76,7 +82,7 @@ public class CompanyController {
 	public ModelAndView myPost(UserVo userVo, JobpostVo vo) {
 		ModelAndView mv = new ModelAndView();
 		String id = "";
-		id = "cp1";
+		id = "cp2";
 		userVo.setId(id);
 		userVo = mainMapper.getUser(id);
 		vo.setId(id);
@@ -92,7 +98,6 @@ public class CompanyController {
 		return mv;
 	}
 
-	
 	// 특정 기업회원의 공고 등록
 	@RequestMapping("/MyPostWrite")
 	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
@@ -157,6 +162,7 @@ public class CompanyController {
 		mv.setViewName("redirect:/Company/MyPost");
 		return mv;
 	}
+
 	@RequestMapping("/MyPostDelete")
 	public ModelAndView postDelete(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
@@ -165,11 +171,7 @@ public class CompanyController {
 		mv.setViewName("redirect:/Company/MyPost");
 		return mv;
 	}
-	
-	
-	
-	
-	
+
 	// 특정 기업회원이 지원 받은 이력서
 	// 로그인한 회사에 구직자들이 제안한 현황
 	@RequestMapping("/MyParticipate") // /Company/MyParticipate
@@ -219,10 +221,57 @@ public class CompanyController {
 	}
 
 	@RequestMapping("/Recommend")
-	public String recommend() {
-		return "/company/recommend";
+	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume) {
+	    ModelAndView mv = new ModelAndView();
+	    String companyId = "cp1";
+	    jobpostVo.setId(companyId);
+
+	    // 회사의 공고 목록을 가져옵니다.
+	    List<JobpostVo> jobPosts = companyMapper.getpostList(jobpostVo);
+	    log.info("jobPosts = {}", jobPosts);
+
+	    // 각 공고에 대한 후보자 목록을 담을 맵
+	    Map<Integer, List<MatchingResultVo>> candidatesPerPost = new HashMap<>();
+	    // 공고 ID와 공고명을 매핑할 맵
+	    Map<Integer, String> postNames = new HashMap<>();
+	    // 공고 ID와 마감일을 매핑할 맵을 추가 (Date 타입으로 변경)
+	    Map<Integer, Date> deadlines = new HashMap<>();
+
+	    for (JobpostVo post : jobPosts) {
+	        int postId = post.getPost_idx();
+	        // 공고명을 postNames 맵에 추가
+	        postNames.put(postId, post.getPost_name());
+	        // 마감일을 deadlines 맵에 추가 (String에서 Date로 변환)
+	        deadlines.put(postId, parseStringToDate(post.getDeadline()));
+
+	        // postId를 사용하여 해당 공고에 추천된 후보자 목록을 가져옵니다.
+	        List<MatchingResultVo> candidates = companyMapper.recommended(postId);
+	        log.info("candidates for post {} = {}", postId, candidates);
+	        // 후보자 목록을 candidatesPerPost 맵에 추가
+	        candidatesPerPost.put(postId, candidates);
+	    }
+
+	    // candidatesPerPost, postNames, deadlines를 모델에 추가
+	    mv.addObject("candidatesPerPost", candidatesPerPost);
+	    mv.addObject("postNames", postNames);
+	    mv.addObject("deadlines", deadlines); // deadlines 맵을 모델에 추가
+	    mv.setViewName("/company/recommend");
+
+	    return mv;
 	}
- 
+
+	// 날짜 문자열을 Date 객체로 변환하는 메소드
+	private Date parseStringToDate(String dateString) {
+	    try {
+	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	        return formatter.parse(dateString);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
+
 	// 기업회원가입폼
 	@RequestMapping("/JoinForm")
 	public ModelAndView CompanyJoinForm() {
@@ -250,7 +299,5 @@ public class CompanyController {
 		mv.setViewName("redirect:/main");
 		return mv;
 	}
-
-
 
 }

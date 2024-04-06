@@ -17,7 +17,7 @@ public class PresumeVo {
 	private String self_intro;
 	private String created_at;
 	private MultipartFile profileFile;
-
+	
 	public String getProfile() {
 		return profile;
 	}
@@ -33,4 +33,11 @@ public class PresumeVo {
 	public void setProfileFile(MultipartFile profileFile) {
 		this.profileFile = profileFile;
 	}
+	public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

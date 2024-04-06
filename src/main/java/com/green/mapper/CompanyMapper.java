@@ -8,9 +8,9 @@ import com.green.domain.CompanyInfoVo;
 import com.green.domain.CompanyVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
+import com.green.domain.MatchingResultVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.SkillVo;
-import com.green.domain.UserVo;
 
 @Mapper
 public interface CompanyMapper {
@@ -48,5 +48,7 @@ public interface CompanyMapper {
 	JobpostVo getpostName(int post_idx);
 
 	List<JobpostVo> getmainpostList();
+
+	List<MatchingResultVo> recommended(int post_idx);
 
 }
