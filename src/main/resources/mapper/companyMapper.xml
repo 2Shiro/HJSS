@@ -103,7 +103,8 @@
 		SELECT * FROM PERSON_INFO_TB WHERE resume_id = #{resumeId}
 	</select>
 	<select id="recommended" resultType="com.green.domain.MatchingResultVo">
-		SELECT J.post_name, J.deadline, R.id, R.title, PI.ID, PI.PNAME,
+		SELECT J.post_name, J.deadline, R.id AS resumeId, R.title, PI.ID AS
+		personId, PI.PNAME,
 		PI.PHONE, PI.ADDRESS, PI.BIRTH,
 		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
 		FROM PERSON_SKILL_TB PS
@@ -112,6 +113,11 @@
 		FROM RESUME_TB R
 		JOIN PERSON_INFO_TB PI ON R.id = PI.ID
 		JOIN JOB_POST_TB J ON J.post_idx = #{post_idx}
+		JOIN (
+		SELECT id, MAX(created_at) AS latest
+		FROM RESUME_TB
+		GROUP BY id
+		) LR ON R.id = LR.id AND R.created_at = LR.latest
 		WHERE R.id IN (
 		SELECT PS.id
 		FROM PERSON_SKILL_TB PS
