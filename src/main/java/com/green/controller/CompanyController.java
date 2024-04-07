@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CompanyVo;
+import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
 import com.green.domain.MainPageVo;
@@ -30,6 +33,7 @@ import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
 import com.green.mapper.MainMapper;
 import com.green.mapper.PersonMapper;
+import com.green.util.AgeUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -236,25 +240,39 @@ public class CompanyController {
 	    Map<Integer, String> postNames = new HashMap<>();
 	    // 공고 ID와 마감일을 매핑할 맵을 추가 (Date 타입으로 변경)
 	    Map<Integer, Date> deadlines = new HashMap<>();
-
+	    // 공고의 직무 소개를 매핑할 맵
+	    Map<Integer, String> job_intros = new HashMap<>();
+	    // 이력서의 생일을 만 나이로 매핑할 맵
+	    Map<Integer, Integer> candidateAges = new HashMap<>();
+	    
+	    
 	    for (JobpostVo post : jobPosts) {
-	        int postId = post.getPost_idx();
+	        int postIdx = post.getPost_idx();
 	        // 공고명을 postNames 맵에 추가
-	        postNames.put(postId, post.getPost_name());
+	        postNames.put(postIdx, post.getPost_name());
 	        // 마감일을 deadlines 맵에 추가 (String에서 Date로 변환)
-	        deadlines.put(postId, parseStringToDate(post.getDeadline()));
-
+	        deadlines.put(postIdx, parseStringToDate(post.getDeadline()));
+	        // 직무소개를 job_intro 맵에 추가
+	        job_intros.put(postIdx, post.getJob_intro());
 	        // postId를 사용하여 해당 공고에 추천된 후보자 목록을 가져옵니다.
-	        List<MatchingResultVo> candidates = companyMapper.recommended(postId);
-	        log.info("candidates for post {} = {}", postId, candidates);
+	        List<MatchingResultVo> candidates = companyMapper.recommended(postIdx);
+	        log.info("candidates for post {} = {}", postIdx, candidates);
 	        // 후보자 목록을 candidatesPerPost 맵에 추가
-	        candidatesPerPost.put(postId, candidates);
+	        candidatesPerPost.put(postIdx, candidates);
+	        for (MatchingResultVo candidate : candidates) {
+	            // 후보자의 만 나이를 계산하여 맵에 저장합니다.
+	            candidateAges.put(candidate.getResume_idx(), AgeUtil.calculateAgeFromDate(candidate.getBirth()));
+	        }
+	        
 	    }
 
 	    // candidatesPerPost, postNames, deadlines를 모델에 추가
+	    mv.addObject("cid", companyId);
+	    mv.addObject("candidateAges", candidateAges);
 	    mv.addObject("candidatesPerPost", candidatesPerPost);
 	    mv.addObject("postNames", postNames);
 	    mv.addObject("deadlines", deadlines); // deadlines 맵을 모델에 추가
+	    mv.addObject("job_intros", job_intros); // deadlines 맵을 모델에 추가
 	    mv.setViewName("/company/recommend");
 
 	    return mv;
@@ -300,4 +318,35 @@ public class CompanyController {
 		return mv;
 	}
 
+	// 이력서 스크랩 기능
+	@RequestMapping("/ScrapAdd")
+    public ResponseEntity<?> addScrap(@RequestBody ComscrapVo scrapvo) {
+        try {
+        	companyMapper.insertScrap(scrapvo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("스크랩 추가에 실패했습니다.");
+        }
+    }
+
+	@RequestMapping("/ScrapDelete")
+    public ResponseEntity<?> deleteScrap(@RequestParam("resume_idx") int resume_idx) {
+        try {
+        	companyMapper.deleteScrap(resume_idx);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("스크랩 삭제에 실패했습니다.");
+        }
+    }
+	
+	@RequestMapping("/CheckScrap")
+	public ResponseEntity<?> checkScrap(@RequestParam("resume_idx") int resume_idx, @RequestParam("cid") String cid) {
+	    try {
+	        boolean isScraped = companyMapper.checkScrap(resume_idx, cid);
+	        return ResponseEntity.ok(isScraped);
+	    } catch (Exception e) {
+	        return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
+	    }
+	}
+	
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.green.domain.CompanyInfoVo;
 import com.green.domain.CompanyVo;
+import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
 import com.green.domain.MatchingResultVo;
@@ -50,5 +51,11 @@ public interface CompanyMapper {
 	List<JobpostVo> getmainpostList();
 
 	List<MatchingResultVo> recommended(int post_idx);
+
+	void insertScrap(ComscrapVo scrapvo);
+
+	void deleteScrap(int resume_idx);
+
+	boolean checkScrap(int resume_idx, String cid);
 
 }

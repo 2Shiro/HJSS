@@ -103,7 +103,8 @@
 		SELECT * FROM PERSON_INFO_TB WHERE resume_id = #{resumeId}
 	</select>
 	<select id="recommended" resultType="com.green.domain.MatchingResultVo">
-		SELECT J.post_name, J.deadline, R.id AS resumeId, R.title, PI.ID AS
+		SELECT J.post_name, J.deadline, J.POST_IDX, J.JOB_INTRO, R.id AS
+		resumeId, R.RESUME_IDX, R.title, R.PROFILE, PI.ID AS
 		personId, PI.PNAME,
 		PI.PHONE, PI.ADDRESS, PI.BIRTH,
 		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
@@ -134,8 +135,23 @@
 		)
 		)
 		)
-		GROUP BY J.post_name, J.deadline, R.id, R.title, PI.ID, PI.PNAME,
+		GROUP BY J.POST_IDX, J.post_name, J.deadline, J.JOB_INTRO, R.id,
+		RESUME_IDX, R.title, PI.ID, PI.PNAME, R.PROFILE,
 		PI.PHONE, PI.ADDRESS, PI.BIRTH
+	</select>
+
+	<insert id="insertScrap">
+		insert into COM_SCRAP_TB (cscrap_idx, cid, resume_idx)
+		values((SELECT NVL(MAX(cscrap_idx),0) + 1 FROM COM_SCRAP_TB), #{cid} ,
+		#{resume_idx})
+	</insert>
+
+	<delete id="deleteScrap">
+		delete from COM_SCRAP_TB where resume_idx = #{resume_idx}
+	</delete>
+
+	<select id="checkScrap" resultType="com.green.domain.ComscrapVo">
+		select * from COM_SCRAP_TB where cid = #{cid} and RESUME_IDX = #{resume_idx}
 	</select>
 
 </mapper>

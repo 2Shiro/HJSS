@@ -86,7 +86,7 @@
 
 						<div class="my-1 mx-auto row">
 							<label for="portfolio" class="form-label">포트폴리오 주소</label> <a
-								class="form-control text-decoration-none text-dark"
+								class="form-control text-decoration-none text-dark" 
 								id="portfolio" href="${vo.portfolio}">${vo.portfolio}</a>
 						</div>
 						<div class="my-1 mx-auto row">
@@ -105,7 +105,7 @@
 						</div>
 						<div class="my-1 mx-auto row">
 							<label for="self-intro" class="form-label">업무 소개</label>
-							<textarea rows="10" class="form-control" id="job-intro"
+							<textarea rows="10" class="form-control" id="job-intro" readonly="readonly"
 								name="self-intro">${ vo.self_intro }</textarea>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
