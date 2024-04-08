@@ -8,8 +8,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonVo {
-   
-	
+
+	private String id;
+	private String password;
+	private String pname;
+	private String phone;
+	private String user_email;
+	private String address;
+	private String birth;
+	private String created_date;
+	private int type;
+
 	public PersonVo(String id, String pname, String phone, String address, String birth) {
 		this.id = id;
 		this.pname = pname;
@@ -17,17 +26,6 @@ public class PersonVo {
 		this.address = address;
 		this.birth = birth;
 	}
-	private String id;
-   private String pname;
-   private String phone;
-   private String address;
-   private String birth;
-      
-   private String password;
-   private int type;
-   private String user_email;
-   private String created_date;
-   
 
 
 }
