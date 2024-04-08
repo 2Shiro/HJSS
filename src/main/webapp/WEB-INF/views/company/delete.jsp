@@ -16,6 +16,14 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/common.css" />
+
+<style>
+    textarea {
+        display: block;
+        margin: 0 auto;
+        width: 100%; /* 원하는 너비 설정 */
+    }
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -36,20 +44,20 @@
 					<form  action="/Company/Delete?id=${ vo.id }" method="POST">
 						<div class="my-1 mx-auto row">
 							<div class="row mt-2  d-flex justify-content-center">
-								<div class="col-10 row ms-4" >
-									<div class="input-group mb-3 ">
+								<div class="col-12 row ms-4" >
+									<div class="input-group mb-3">
 										<textarea class="form-control border-0 shadow-none mb-2" id="warning" name="warning" readonly style="height: 500px; text-align: center;">
-													⚠ 회원탈퇴 경고문
-													
-											• 회원탈퇴 후 개인정보는 즉시 영구삭제됩니다
-											
-											• 정보는 영구삭제되기에 복구가 불가합니다
-											
-											• 재가입은 언제든지 가능합니다
-											
-											• 신중하게 생각하시고 결정해주십시오
-											
-											• 정말로 탈퇴 하시겠습니까?
+⚠ 회원탈퇴 경고문
+		
+* 회원탈퇴 후 개인정보는 즉시 영구삭제됩니다 *
+
+* 정보는 영구삭제되기에 복구가 불가합니다 *
+
+* 재가입은 언제든지 가능합니다 *
+
+* 신중하게 생각하시고 결정해주십시오 *
+
+* 정말로 탈퇴 하시겠습니까? *
 										</textarea>
 									</div>
 								</div>

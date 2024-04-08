@@ -39,17 +39,17 @@
 								<div class="col-10 row ms-4" >
 									<div class="input-group mb-3 ">
 										<textarea class="form-control border-0 shadow-none mb-2" id="warning" name="warning" readonly style="height: 500px; text-align: center;">
-													⚠ 회원탈퇴 경고문
-													
-											• 회원탈퇴 후 개인정보는 즉시 영구삭제됩니다
-											
-											• 정보는 영구삭제되기에 복구가 불가합니다
-											
-											• 재가입은 언제든지 가능합니다
-											
-											• 신중하게 생각하시고 결정해주십시오
-											
-											• 정말로 탈퇴 하시겠습니까?
+⚠ 회원탈퇴 경고문
+		
+* 회원탈퇴 후 개인정보는 즉시 영구삭제됩니다 *
+
+* 정보는 영구삭제되기에 복구가 불가합니다 *
+
+* 재가입은 언제든지 가능합니다 *
+
+* 신중하게 생각하시고 결정해주십시오 *
+
+* 정말로 탈퇴 하시겠습니까? *
 										</textarea>
 									</div>
 								</div>
