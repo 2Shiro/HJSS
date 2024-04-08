@@ -104,12 +104,6 @@ public class CompanyController {
 		return mv;
 	}
 
-	// 특정 기업회원의 공고에 대한 인재 추천
-	@RequestMapping("/Recommend")
-	public String recommend() {
-		return "/company/recommend";
-	}
-
 	// 특정 기업회원의 공고 등록
 	@RequestMapping("/MyPostWrite")
 	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
@@ -231,7 +225,7 @@ public class CompanyController {
 		mv.setViewName("company/myparticipate");
 		return mv;
 	}
-
+	// 특정 기업회원의 공고에 대한 인재 추천
 	@ResponseBody
 	@RequestMapping("/Recommend")
 	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume, HttpServletRequest request) {

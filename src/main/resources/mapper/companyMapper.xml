@@ -24,13 +24,6 @@
 		WHERE ID = #{id}
 	</select>
 
-	<select id="getCompanyById">
-		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS,
-		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
-		FROM COMPANY_INFO_TB
-		WHERE ID = #{id}
-	</select>
-
 	<select id="getpostList" parameterType="String"
 		resultType="com.green.domain.JobpostVo">
 		select * from JOB_POST_TB
