@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CompanyVo;
+import com.green.domain.ComscrapListVo;
 import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
@@ -313,14 +314,15 @@ public class CompanyController {
 		mv.setViewName("company/myparticipate");
 		return mv;
 	}
+
 	// 특정 기업회원의 공고에 대한 인재 추천
 	@ResponseBody
 	@RequestMapping("/Recommend")
 	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume, HttpServletRequest request) {
+		
 		ModelAndView mv = new ModelAndView();
 		String id = "";
 		id = "cp2";
-		System.out.println(request.getParameter("resume_idx"));
 		userVo.setId(id);
 		userVo = mainMapper.getUser(id);
 		jobpostVo.setId(id);
@@ -330,12 +332,16 @@ public class CompanyController {
 
 		// 각 공고에 대한 후보자 목록을 담을 맵
 		Map<Integer, List<MatchingResultVo>> candidatesPerPost = new HashMap<>();
+		
 		// 공고 ID와 공고명을 매핑할 맵
 		Map<Integer, String> postNames = new HashMap<>();
+		
 		// 공고 ID와 마감일을 매핑할 맵을 추가 (Date 타입으로 변경)
 		Map<Integer, Date> deadlines = new HashMap<>();
+		
 		// 공고의 직무 소개를 매핑할 맵
 		Map<Integer, String> job_intros = new HashMap<>();
+		
 		// 이력서의 생일을 만 나이로 매핑할 맵
 		Map<Integer, Integer> candidateAges = new HashMap<>();
 
@@ -348,10 +354,15 @@ public class CompanyController {
 			// 직무소개를 job_intro 맵에 추가
 			job_intros.put(postIdx, post.getJob_intro());
 			// postId를 사용하여 해당 공고에 추천된 후보자 목록을 가져옵니다.
+			
 			List<MatchingResultVo> candidates = companyMapper.recommended(postIdx);
+			
 			log.info("candidates for post {} = {}", postIdx, candidates);
+			
 			// 후보자 목록을 candidatesPerPost 맵에 추가
 			candidatesPerPost.put(postIdx, candidates);
+			
+			
 			for (MatchingResultVo candidate : candidates) {
 				// 후보자의 만 나이를 계산하여 맵에 저장합니다.
 				candidateAges.put(candidate.getResume_idx(), AgeUtil.calculateAgeFromDate(candidate.getBirth()));
@@ -366,7 +377,6 @@ public class CompanyController {
 		mv.addObject("deadlines", deadlines); // deadlines 맵을 모델에 추가
 		mv.addObject("job_intros", job_intros); // deadlines 맵을 모델에 추가
 		mv.setViewName("/company/recommend");
-
 		return mv;
 	}
 
@@ -431,12 +441,34 @@ public class CompanyController {
 
 	@RequestMapping("/CheckScrap")
 	public ResponseEntity<?> checkScrap(@RequestParam("resume_idx") int resume_idx, @RequestParam("cid") String cid) {
+		int scarapCount = companyMapper.countScrap(cid, resume_idx);
 		try {
-			boolean isScraped = companyMapper.checkScrap(resume_idx, cid);
-			return ResponseEntity.ok(isScraped);
+
+			if (scarapCount != 0) {
+				boolean isScraped = true;
+				return ResponseEntity.ok(isScraped);
+			} else {
+				boolean isScraped = false;
+				return ResponseEntity.ok(isScraped);
+			}
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
 		}
+	}
+	
+	@RequestMapping("/MyScrap")
+	public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo) {
+		ModelAndView mv = new ModelAndView();
+		String id = "";
+		id = "cp2";
+		userVo.setId(id);
+		userVo = mainMapper.getUser(id);
+		scrapVo.setCid(id);
+		List<ComscrapListVo> comScrapList = companyMapper.getScrapList(scrapVo);
+		mv.addObject("ScrapList", comScrapList);
+		mv.setViewName("company/myscrap");
+		return mv;
 	}
 
 }

@@ -58,7 +58,7 @@ public class PersonController {
 	public ModelAndView resume(UserVo userVo, PresumeVo presume) {
 		ModelAndView mv = new ModelAndView();
 		String id = "";
-		id = "ps1";
+		id = "ps2";
 		userVo.setId(id);
 		userVo = mainMapper.getUser(id);
 		presume.setId(id);

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.green.domain.CompanyInfoVo;
 import com.green.domain.CompanyVo;
+import com.green.domain.ComscrapListVo;
 import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
@@ -56,7 +57,9 @@ public interface CompanyMapper {
 
 	void deleteScrap(int resume_idx);
 
-	boolean checkScrap(int resume_idx, String cid);
+	int countScrap(String arg0, int arg1);
+
+	List<ComscrapListVo> getScrapList(ComscrapListVo scrapVo);
 
 	void updateCompany(CompanyVo companyVo);
 	void updateUser(CompanyVo companyVo);

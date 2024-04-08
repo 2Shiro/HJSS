@@ -6,7 +6,8 @@
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
 		'YY-MM-DD') FROM PERSON_PROPOSAL_TB
 
-		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at, 'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
+		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
+		'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
 
 	</select>
 	
@@ -30,10 +31,19 @@
 	
 	</select>
 
+	<!-- 전체 공고 가져오기 -->
+	<select id="getmainpostList">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		ORDER BY POST_IDX
+	</select>
+
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
 		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
 	</select>
+
 	
 	<update id ="updateCompany">
 	
@@ -112,9 +122,10 @@
 
 	<!-- 기업 회원 중 특정 아이디의 컴퍼니 info를 가져옴 -->
 	<select id="getCompanyById">
-		SELECT	ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS, MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
-			FROM	COMPANY_INFO_TB
-			WHERE	ID = #{id}
+		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS,
+		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
+		FROM COMPANY_INFO_TB
+		WHERE ID = #{id}
 	</select>
 	<!-- logo default값 넣을 예정 -->
 	<insert id="insert">
@@ -197,8 +208,22 @@
 		delete from COM_SCRAP_TB where resume_idx = #{resume_idx}
 	</delete>
 
-	<select id="checkScrap" resultType="com.green.domain.ComscrapVo">
-		select * from COM_SCRAP_TB where cid = #{cid} and RESUME_IDX = #{resume_idx}
+	<select id="getScrapList" resultType="com.green.domain.ComscrapListVo">
+		SELECT CS.resume_idx,
+		CS.cid,
+		R.title,
+		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		FROM skill_tb S) AS skills,
+		I.pname
+		FROM COM_SCRAP_TB CS
+		JOIN resume_tb R ON CS.resume_idx = R.resume_idx
+		JOIN PERSON_INFO_TB I ON R.ID = I.ID
+		WHERE CS.cid = #{cid}
+		GROUP BY CS.resume_idx, CS.cid, R.title, I.pname
+	</select>
+	<select id="countScrap" resultType="int">
+		select count(*) from COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
+		#{arg1}
 	</select>
 
 </mapper>
