@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>개인 회원 마이페이지</title>
+<title>${ vo.pname }님의 마이페이지</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -30,7 +30,7 @@
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
 						<input type="text" class="border-0" id="title"
-							value="마이페이지" readonly>
+							value="${ vo.pname }님의 마이페이지" readonly>
 					</h2>
 					<hr>
 					<div class="my-1 mx-auto row">
@@ -38,34 +38,43 @@
 							<div class="col-6 row ms-4" >
 								<div class="input-group mb-3 ">
 									<span class="input-group-text text-center" id="pname">이름</span>
-									<input type="text" class="form-control" id="pname" name="pname" value="${ vo.pname }" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="pname" name="pname" value="${ vo.pname }" readonly style="height: 70px; text-align: center;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="pid">ID</span>
-									<input type="text" class="form-control" id="pid" name="pid" value="${ vo.id }" readonly style="height: 70px;">
+									<span class="input-group-text" id="id">아이디</span>
+									<input type="text" class="form-control" id="id" name="id" value="${ vo.id }" readonly style="height: 70px; text-align: center;">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="password">비밀번호</span>
+									<input type="password" class="form-control" id="password" name="password" value="${ vo.password }" readonly style="height: 70px; text-align: center;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="phone">전화번호</span>
-									<input type="text" class="form-control" id="phone" name="phone" value="${ vo.phone }" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="phone" name="phone" value="${ vo.phone }" readonly style="height: 70px; text-align: center;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="paddress">주소</span>
-									<input type="text" class="form-control" id="paddress" name="paddress" value="${ vo.address }" readonly style="height: 70px;">
+									<span class="input-group-text" id="user_email">이메일</span>
+									<input type="text" class="form-control" id="user_email" name="user_email" value="${ vo.user_email }" readonly style="height: 70px; text-align: center;">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="address">주소</span>
+									<input type="text" class="form-control" id="address" name="address" value="${ vo.address }" readonly style="height: 70px; text-align: center;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="birth">생년월일</span>
-									<input type="email" class="form-control" id="birth" name="birth" value="${ vo.birth }" readonly style="height: 70px;">
+									<input type="text" class="form-control" id="birth" name="birth" value="${ vo.birth }" readonly style="height: 70px; text-align: center;">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="created_date">생성일</span>
+									<input type="text" class="form-control" id="created_date" name="created_date" value="${ vo.created_date }" readonly style="height: 70px; text-align: center;">
 								</div>
 							</div>
 						</div>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" id="post-submit"
-						class="btn btn-primary float-end me-2">수정</button>
-					<button type="reset" id="btn-cancel"
-						class="btn btn-danger float-end" data-bs-dismiss="modal">탈퇴</button>
-				</div>
-				
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-primary float-end me-2" href  = "/Person/UpdateForm?id=${ vo.id }" />수정</a>
+						<a class="btn btn-danger float-end me-2" href  = "/Person/DeleteForm?id=${ vo.id }" />탈퇴</a>
+					</div>
 			</div>
 			</section>
 		</div>

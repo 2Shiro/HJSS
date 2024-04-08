@@ -58,4 +58,12 @@ public interface CompanyMapper {
 
 	boolean checkScrap(int resume_idx, String cid);
 
+	void updateCompany(CompanyVo companyVo);
+	void updateUser(CompanyVo companyVo);
+
+	void deleteCompany(CompanyVo companyVo);
+	void deleteUser(CompanyVo companyVo);
+
+	CompanyVo getCompany(CompanyVo companyVo);
+
 }

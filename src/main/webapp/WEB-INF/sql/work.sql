@@ -1,3 +1,18 @@
+--드랍
+DROP TABLE COM_SCRAP_TB;
+DROP TABLE COMPANY_INFO_TB;
+DROP TABLE JOB_POST_TB;
+DROP TABLE PERSON_INFO_TB;
+DROP TABLE PERSON_PROPOSAL_TB;
+DROP TABLE PERSON_SCRAP_TB;
+DROP TABLE PERSON_SKILL_TB;
+DROP TABLE POST_SKILL_TB;
+DROP TABLE PROPOSAL_STATUS_TB;
+DROP TABLE RESUME_TB;
+DROP TABLE SKILL_TB;
+DROP TABLE USER_FAQ_TB;
+DROP TABLE USER_TB;
+
 -- 1) 유저 테이블
 CREATE TABLE user_tb (
     id            VARCHAR2(255)   NOT NULL,
@@ -67,7 +82,7 @@ CREATE TABLE job_post_tb (
     pay             varchar2(255)   NOT NULL,
     go_work         varchar2(255)   NOT NULL,
 	go_home         varchar2(255)   NOT NULL,
-	deadline        varchar2(255)   NOT NULL,
+	deadline        date			NOT NULL,
     job_intro       varchar2(4000)  NOT NULL,
 	c_intro         varchar2(4000)  NOT NULL,
     created_date    DATE            DEFAULT SYSDATE NOT NULL
@@ -86,13 +101,14 @@ CREATE TABLE person_proposal_tb (
 
 
 -- 9) 구직자가 지원한 공고 테이블의 상태 테이블
--- status는 제가 임의로 합격 : 1 / 불합격 : 2 / 대기 : 3 으로 부여했습니다
+-- status는 제가 임의로 대기 : 0 / 합격 : 1 / 불합격 : 2 으로 부여했습니다
 CREATE TABLE proposal_status_tb (
     status_idx  NUMBER(8)       PRIMARY KEY     NOT NULL,
     id          VARCHAR2(255)   NOT NULL,
     pro_idx     NUMBER(8)       NOT NULL,
     post_idx    NUMBER(8)       NOT NULL,
-    comments     VARCHAR2(255)   NOT NULL
+    status      number(8)       DEFAULT 0       			NOT NULL,
+    comments    VARCHAR2(255)   DEFAULT '미처리중입니다'	NOT NULL
 );
 
 
