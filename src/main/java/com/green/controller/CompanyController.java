@@ -136,7 +136,7 @@ public class CompanyController {
 		ModelAndView mv = new ModelAndView();
 
 		mv.addObject("vo", vo);
-		mv.setViewName("/company/mypost");
+		mv.setViewName("/company/mypage");
 		return mv;
 	}
 	

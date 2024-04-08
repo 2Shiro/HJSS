@@ -26,7 +26,7 @@
 				TO_CHAR( C.CYEAR, 'YY-MM-DD')	CYEAR,
 				TO_CHAR( U.CREATED_DATE, 'YY-MM-DD')	CREATED_DATE
 		FROM	COMPANY_INFO_TB C, USER_TB U
-		WHERE	C.ID = U.ID AND C.ID = 'cp3'
+		WHERE	C.ID = U.ID AND C.ID = 'cp1'
 	
 	</select>
 
@@ -67,15 +67,6 @@
 		WHERE  ID = #{ id }
 	
 	</delete>
-
-
-	<select id="getCompany" resultType="com.green.domain.CompanyVo">
-		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS,
-		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, TO_CHAR(TO_DATE(CYEAR),
-		'YY-MM-DD') CYEAR
-		FROM COMPANY_INFO_TB
-		WHERE ID = #{id}
-	</select>
 
 	<select id="getpostList" parameterType="String"
 		resultType="com.green.domain.JobpostVo">
