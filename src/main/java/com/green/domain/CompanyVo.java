@@ -22,7 +22,7 @@ public class CompanyVo {
 		this.csize = csize;
 		this.cyear = cyear;
 	}
-	
+
 	private String id;
 	private String password;
 	private int    type;

@@ -18,15 +18,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+//github.com/2Shiro/HJSS.git
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.PersonInfoVo;
+//github.com/2Shiro/HJSS.git
 import com.green.domain.PersonVo;
 import com.green.domain.PersonskillVo;
 import com.green.domain.PresumeVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.MainMapper;
+//github.com/2Shiro/HJSS.git
 import com.green.mapper.PersonMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -220,11 +223,40 @@ public class PersonController {
 		return mv;
 	}
 
+	//특정 구직자가 지원한 공고
 	@RequestMapping("/MyProposal")
 	public ModelAndView getProposal() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/person/myproposal");
 		return mv;
+	}
+
+	@RequestMapping("/GetResume")
+	public ModelAndView getResume(PresumeVo presume) {
+		int resume_idx = presume.getResume_idx();
+		//System.out.println(resume_idx);
+		PresumeVo presumeVo = personMapper.getResume(resume_idx);
+		//System.out.println("이력서" + presumeVo);
+		PersonVo psuerVo = personMapper.getPuser(presumeVo.getId());
+		UserVo userVo = personMapper.getUser(presumeVo.getId());
+		//System.out.println("유저: " + userVo);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("presumeVo", presumeVo);
+		mv.addObject("psuerVo", psuerVo);
+		mv.addObject("userVo", userVo);
+		mv.setViewName("/person/popresume");
+		return mv;
+	}
+	
+	@RequestMapping("/Pass")
+	public String pass(@RequestParam(value="resume_idx") int resume_idx, @RequestParam(value="status") int status) {
+		System.out.println("상태" + resume_idx);
+		personMapper.updateResumePass(resume_idx, status);
+		
+		System.out.println(status);
+		
+		return "/person/updateok";
 	}
 
 	@RequestMapping("/Mypage")
@@ -238,6 +270,7 @@ public class PersonController {
 		mv.addObject("vo", vo);
 		mv.setViewName("/person/mypage");
 		return mv;
+
 	}
 
 	@RequestMapping("/joinForm")

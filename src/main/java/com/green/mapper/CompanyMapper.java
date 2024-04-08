@@ -25,7 +25,7 @@ public interface CompanyMapper {
 	void insert(CompanyVo comVo);
 
 	CompanyVo login(String id, String password);
-
+ 
 	List<JobpostVo> getpostList(JobpostVo vo);
 
 	void insertpost(JobpostVo postVo);

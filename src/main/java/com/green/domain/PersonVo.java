@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonVo {
-   
+
 	public PersonVo(String id, String pname, String phone, String address, String birth) {
 		this.id = id;
 		this.pname = pname;

@@ -3,8 +3,12 @@
 
 <mapper namespace="com.green.mapper.CompanyMapper">
 	<select id="getProposal">
+
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
 		'YY-MM-DD') FROM PERSON_PROPOSAL_TB
+
+		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at, 'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
+
 	</select>
 
 	<select id="getUser">
@@ -69,6 +73,12 @@
 		DELETE FROM POST_SKILL_TB WHERE POST_IDX = #{ post_idx }
 	</delete>
 
+	<!-- 기업 회원 중 특정 아이디의 컴퍼니 info를 가져옴 -->
+	<select id="getCompanyById">
+		SELECT	ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE, ADDRESS, MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
+			FROM	COMPANY_INFO_TB
+			WHERE	ID = #{id}
+	</select>
 	<!-- logo default값 넣을 예정 -->
 	<insert id="insert">
 		INSERT ALL
@@ -153,5 +163,6 @@
 	<select id="checkScrap" resultType="com.green.domain.ComscrapVo">
 		select * from COM_SCRAP_TB where cid = #{cid} and RESUME_IDX = #{resume_idx}
 	</select>
+
 
 </mapper>

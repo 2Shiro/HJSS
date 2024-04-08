@@ -104,6 +104,12 @@ public class CompanyController {
 		return mv;
 	}
 
+	// 특정 기업회원의 공고에 대한 인재 추천
+	@RequestMapping("/Recommend")
+	public String recommend() {
+		return "/company/recommend";
+	}
+
 	// 특정 기업회원의 공고 등록
 	@RequestMapping("/MyPostWrite")
 	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
@@ -225,77 +231,74 @@ public class CompanyController {
 		mv.setViewName("company/myparticipate");
 		return mv;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/Recommend")
 	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume, HttpServletRequest request) {
-	    ModelAndView mv = new ModelAndView();
-	    String id = "";
+		ModelAndView mv = new ModelAndView();
+		String id = "";
 		id = "cp2";
 		System.out.println(request.getParameter("resume_idx"));
 		userVo.setId(id);
 		userVo = mainMapper.getUser(id);
 		jobpostVo.setId(id);
-	    // 회사의 공고 목록을 가져옵니다.
-	    List<JobpostVo> jobPosts = companyMapper.getpostList(jobpostVo);
-	    log.info("jobPosts = {}", jobPosts);
+		// 회사의 공고 목록을 가져옵니다.
+		List<JobpostVo> jobPosts = companyMapper.getpostList(jobpostVo);
+		log.info("jobPosts = {}", jobPosts);
 
-	    // 각 공고에 대한 후보자 목록을 담을 맵
-	    Map<Integer, List<MatchingResultVo>> candidatesPerPost = new HashMap<>();
-	    // 공고 ID와 공고명을 매핑할 맵
-	    Map<Integer, String> postNames = new HashMap<>();
-	    // 공고 ID와 마감일을 매핑할 맵을 추가 (Date 타입으로 변경)
-	    Map<Integer, Date> deadlines = new HashMap<>();
-	    // 공고의 직무 소개를 매핑할 맵
-	    Map<Integer, String> job_intros = new HashMap<>();
-	    // 이력서의 생일을 만 나이로 매핑할 맵
-	    Map<Integer, Integer> candidateAges = new HashMap<>();
-	    
-	    
-	    for (JobpostVo post : jobPosts) {
-	        int postIdx = post.getPost_idx();
-	        // 공고명을 postNames 맵에 추가
-	        postNames.put(postIdx, post.getPost_name());
-	        // 마감일을 deadlines 맵에 추가 (String에서 Date로 변환)
-	        deadlines.put(postIdx, parseStringToDate(post.getDeadline()));
-	        // 직무소개를 job_intro 맵에 추가
-	        job_intros.put(postIdx, post.getJob_intro());
-	        // postId를 사용하여 해당 공고에 추천된 후보자 목록을 가져옵니다.
-	        List<MatchingResultVo> candidates = companyMapper.recommended(postIdx);
-	        log.info("candidates for post {} = {}", postIdx, candidates);
-	        // 후보자 목록을 candidatesPerPost 맵에 추가
-	        candidatesPerPost.put(postIdx, candidates);
-	        for (MatchingResultVo candidate : candidates) {
-	            // 후보자의 만 나이를 계산하여 맵에 저장합니다.
-	            candidateAges.put(candidate.getResume_idx(), AgeUtil.calculateAgeFromDate(candidate.getBirth()));
-	        }
-	        
-	    }
-	    // candidatesPerPost, postNames, deadlines를 모델에 추가
-	    mv.addObject("cid", id);
-	    mv.addObject("candidateAges", candidateAges);
-	    mv.addObject("candidatesPerPost", candidatesPerPost);
-	    mv.addObject("postNames", postNames);
-	    mv.addObject("deadlines", deadlines); // deadlines 맵을 모델에 추가
-	    mv.addObject("job_intros", job_intros); // deadlines 맵을 모델에 추가
-	    mv.setViewName("/company/recommend");
+		// 각 공고에 대한 후보자 목록을 담을 맵
+		Map<Integer, List<MatchingResultVo>> candidatesPerPost = new HashMap<>();
+		// 공고 ID와 공고명을 매핑할 맵
+		Map<Integer, String> postNames = new HashMap<>();
+		// 공고 ID와 마감일을 매핑할 맵을 추가 (Date 타입으로 변경)
+		Map<Integer, Date> deadlines = new HashMap<>();
+		// 공고의 직무 소개를 매핑할 맵
+		Map<Integer, String> job_intros = new HashMap<>();
+		// 이력서의 생일을 만 나이로 매핑할 맵
+		Map<Integer, Integer> candidateAges = new HashMap<>();
 
-	    return mv;
+		for (JobpostVo post : jobPosts) {
+			int postIdx = post.getPost_idx();
+			// 공고명을 postNames 맵에 추가
+			postNames.put(postIdx, post.getPost_name());
+			// 마감일을 deadlines 맵에 추가 (String에서 Date로 변환)
+			deadlines.put(postIdx, parseStringToDate(post.getDeadline()));
+			// 직무소개를 job_intro 맵에 추가
+			job_intros.put(postIdx, post.getJob_intro());
+			// postId를 사용하여 해당 공고에 추천된 후보자 목록을 가져옵니다.
+			List<MatchingResultVo> candidates = companyMapper.recommended(postIdx);
+			log.info("candidates for post {} = {}", postIdx, candidates);
+			// 후보자 목록을 candidatesPerPost 맵에 추가
+			candidatesPerPost.put(postIdx, candidates);
+			for (MatchingResultVo candidate : candidates) {
+				// 후보자의 만 나이를 계산하여 맵에 저장합니다.
+				candidateAges.put(candidate.getResume_idx(), AgeUtil.calculateAgeFromDate(candidate.getBirth()));
+			}
+
+		}
+		// candidatesPerPost, postNames, deadlines를 모델에 추가
+		mv.addObject("cid", id);
+		mv.addObject("candidateAges", candidateAges);
+		mv.addObject("candidatesPerPost", candidatesPerPost);
+		mv.addObject("postNames", postNames);
+		mv.addObject("deadlines", deadlines); // deadlines 맵을 모델에 추가
+		mv.addObject("job_intros", job_intros); // deadlines 맵을 모델에 추가
+		mv.setViewName("/company/recommend");
+
+		return mv;
 	}
 
 	// 날짜 문자열을 Date 객체로 변환하는 메소드
 	private Date parseStringToDate(String dateString) {
-	    try {
-	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	        return formatter.parse(dateString);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    }
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			return formatter.parse(dateString);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-
-	// 기업회원가입폼
 	@RequestMapping("/JoinForm")
 	public ModelAndView CompanyJoinForm() {
 		ModelAndView mv = new ModelAndView();
@@ -325,33 +328,33 @@ public class CompanyController {
 
 	// 이력서 스크랩 기능
 	@RequestMapping("/ScrapAdd")
-    public ResponseEntity<?> addScrap(@RequestBody ComscrapVo scrapvo) {
-        try {
-        	companyMapper.insertScrap(scrapvo);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("스크랩 추가에 실패했습니다.");
-        }
-    }
+	public ResponseEntity<?> addScrap(@RequestBody ComscrapVo scrapvo) {
+		try {
+			companyMapper.insertScrap(scrapvo);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("스크랩 추가에 실패했습니다.");
+		}
+	}
 
 	@RequestMapping("/ScrapDelete")
-    public ResponseEntity<?> deleteScrap(@RequestParam("resume_idx") int resume_idx) {
-        try {
-        	companyMapper.deleteScrap(resume_idx);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("스크랩 삭제에 실패했습니다.");
-        }
-    }
-	
+	public ResponseEntity<?> deleteScrap(@RequestParam("resume_idx") int resume_idx) {
+		try {
+			companyMapper.deleteScrap(resume_idx);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("스크랩 삭제에 실패했습니다.");
+		}
+	}
+
 	@RequestMapping("/CheckScrap")
 	public ResponseEntity<?> checkScrap(@RequestParam("resume_idx") int resume_idx, @RequestParam("cid") String cid) {
-	    try {
-	        boolean isScraped = companyMapper.checkScrap(resume_idx, cid);
-	        return ResponseEntity.ok(isScraped);
-	    } catch (Exception e) {
-	        return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
-	    }
+		try {
+			boolean isScraped = companyMapper.checkScrap(resume_idx, cid);
+			return ResponseEntity.ok(isScraped);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
+		}
 	}
-	
+
 }
