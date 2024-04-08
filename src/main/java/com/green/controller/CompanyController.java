@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CompanyVo;
@@ -35,6 +36,7 @@ import com.green.mapper.MainMapper;
 import com.green.mapper.PersonMapper;
 import com.green.util.AgeUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -223,13 +225,17 @@ public class CompanyController {
 		mv.setViewName("company/myparticipate");
 		return mv;
 	}
-
+	
+	@ResponseBody
 	@RequestMapping("/Recommend")
-	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume) {
+	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume, HttpServletRequest request) {
 	    ModelAndView mv = new ModelAndView();
-	    String companyId = "cp1";
-	    jobpostVo.setId(companyId);
-
+	    String id = "";
+		id = "cp2";
+		System.out.println(request.getParameter("resume_idx"));
+		userVo.setId(id);
+		userVo = mainMapper.getUser(id);
+		jobpostVo.setId(id);
 	    // 회사의 공고 목록을 가져옵니다.
 	    List<JobpostVo> jobPosts = companyMapper.getpostList(jobpostVo);
 	    log.info("jobPosts = {}", jobPosts);
@@ -265,9 +271,8 @@ public class CompanyController {
 	        }
 	        
 	    }
-
 	    // candidatesPerPost, postNames, deadlines를 모델에 추가
-	    mv.addObject("cid", companyId);
+	    mv.addObject("cid", id);
 	    mv.addObject("candidateAges", candidateAges);
 	    mv.addObject("candidatesPerPost", candidatesPerPost);
 	    mv.addObject("postNames", postNames);
