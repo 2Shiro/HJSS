@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>개인 회원 메인</title>
+<title>인재 추천</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -23,10 +23,11 @@
 		<div class="row">
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
+			<h2>임시</h2>
 				<%@include file="/WEB-INF/include/main_section.jsp"%>
 			</section>
 		</div>

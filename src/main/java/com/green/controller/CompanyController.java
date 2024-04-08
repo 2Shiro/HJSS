@@ -37,19 +37,16 @@ public class CompanyController {
 	
 	@Autowired
 	private CompanyMapper companyMapper;
-	
-	@Autowired
-	private JobPostMapper jobPostMapper;
 		
 	@Autowired
 	private PersonMapper personMapper;
 	
-	//기업의 메인페이지
+	//기업의 메인페이지 //임시 컨트롤러 maincontroller에서 작동 예정
 	@RequestMapping("/Cmain")
 	public ModelAndView cmain() {
 		//JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
-		List<JobpostVo> jobList = jobPostMapper.getmainpostList();
+		List<JobpostVo> jobList = companyMapper.getmainpostList();
 		
 		//기업 이미지 객체리스트 -> companyVo
 		List<CompanyVo> companyVo = new ArrayList<>();
@@ -99,12 +96,12 @@ public class CompanyController {
 	public ModelAndView getProposal() {
 		//공고에 제안한 것들 테이블
 		List<CproposalVo> proposalList = companyMapper.getProposal();
-		System.out.println(proposalList);
+		//System.out.println(proposalList);
 		
 		//공고 리스트
 		List<JobpostVo> jobpostList = new ArrayList<>();
 		for(int i = 0; i < proposalList.size(); i++) {
-			JobpostVo vo = jobPostMapper.getpostName(proposalList.get(i).getPost_idx());
+			JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
 			jobpostList.add(new JobpostVo(vo.getPost_idx(),
 										  vo.getId(),
 										  vo.getPost_name(),
@@ -168,9 +165,9 @@ public class CompanyController {
 		String id = "";
 		id = "cp1";
 		userVo.setId(id);
-		userVo = jobPostMapper.getUser(id);
-		List<JobpostVo> list = jobPostMapper.getpostList(id);
-		List<SkillVo> skill = jobPostMapper.getSkillList();
+		userVo = companyMapper.getUser(id);
+		List<JobpostVo> list = companyMapper.getpostList(id);
+		List<SkillVo> skill = companyMapper.getSkillList();
 		log.info("list = {}", list);
 		mv.addObject("user", userVo);		
 		mv.addObject("id", id);		
@@ -182,7 +179,7 @@ public class CompanyController {
 	@RequestMapping("/jobPost")
 	public ModelAndView jobPost(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
-		jobPostMapper.insertpost(postVo);
+		companyMapper.insertpost(postVo);
 		mv.setViewName("redirect:/jobs");
 		return mv;
 	}
