@@ -22,10 +22,10 @@ INSERT INTO person_info_tb ( id, pname, phone, address, birth )
 
 -- 3) 기업 회원 테이블
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
-  VALUES ( 'cp1', 1, 'NAVER', '/', '최수현', '경기도 성남시', '김범준', '051-111-1111', '10', '99/06/02' );
+  VALUES ( 'cp1', 1, 'NAVER', 'naver', '최수현', '경기도 성남시', '김범준', '051-111-1111', '10', '99/06/02' );
 
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
-  VALUES ( 'cp2', 2, 'kakao', '/', '권기수', '제주특별자치도 제주시', '장윤중', '051-222-2222', '9', '10/07/20' );
+  VALUES ( 'cp2', 2, 'kakao', 'kakao', '권기수', '제주특별자치도 제주시', '장윤중', '051-222-2222', '9', '10/07/20' );
 
 
 -- 4) 스킬 테이블
