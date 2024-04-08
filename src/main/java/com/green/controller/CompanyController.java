@@ -24,12 +24,16 @@ import com.green.domain.ComscrapListVo;
 import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
+
+import com.green.domain.PersonVo;
+
 import com.green.domain.MainPageVo;
 import com.green.domain.MatchingResultVo;
 import com.green.domain.MyProposalVo;
 import com.green.domain.PersonVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.PresumeVo;
+
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
@@ -96,12 +100,96 @@ public class CompanyController {
 		List<JobpostVo> list = companyMapper.getpostList(vo);
 		List<SkillVo> skill = mainMapper.getSkillList();
 		log.info("list = {}", list);
-		mv.addObject("user", userVo);
+
+		mv.addObject("user", userVo);		
+		mv.addObject("id", id);		
+		mv.addObject("list", list);		
+		mv.addObject("skill", skill);		
+		mv.setViewName("/company/jobs");
+		return mv;
+	}
+	@RequestMapping("/jobPost")
+	public ModelAndView jobPost(JobpostVo postVo) {
+		ModelAndView mv = new ModelAndView();
+		companyMapper.insertpost(postVo);
+		mv.setViewName("redirect:/jobs");
+		return mv;
+	}
+	@RequestMapping("/jobDetail")
+	public ModelAndView jobDetail() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/company/jobDetail");
+		return mv;
+	}
+	@RequestMapping("/jobUpdate")
+	public ModelAndView jobUpdate() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/company/jobUpdate");
+		return mv;
+	}
+	
+	// /Company/Mypage
+	@RequestMapping("/Mypage")
+	public ModelAndView mypage( CompanyVo companyVo ) {
+		
+		CompanyVo vo  =  companyMapper.getCompany( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+
 		mv.addObject("vo", vo);
-		mv.addObject("id", id);
-		mv.addObject("list", list);
-		mv.addObject("skill", skill);
-		mv.setViewName("/company/mypost");
+		mv.setViewName("/company/mypage");
+		return mv;
+	}
+	
+	// /Company/UpdateForm
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm( CompanyVo companyVo ) {
+		
+		CompanyVo vo = companyMapper.getCompany( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("company/mypageUpdate");
+		
+		return mv;
+	}
+	
+	// /Company/Update
+	@RequestMapping("/Update")
+	public ModelAndView update( CompanyVo companyVo ) {
+		
+		companyMapper.updateCompany( companyVo );
+		companyMapper.updateUser( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Company/Mypage");
+		return mv;
+	}
+	
+	
+	// /Company/DeleteForm
+	@RequestMapping("/DeleteForm")
+	public ModelAndView deleteForm( CompanyVo companyVo ) {
+		
+		CompanyVo vo = companyMapper.getCompany( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("/company/delete");
+		return mv;
+	}
+	
+	// /Company/DeleteForm
+	@RequestMapping("/Delete")
+	public ModelAndView delete( CompanyVo companyVo ) {
+	   
+		companyMapper.deleteCompany( companyVo );
+		companyMapper.deleteUser( companyVo );
+		   
+		ModelAndView mv = new ModelAndView();
+		   
+		mv.setViewName("redirect:/main");
+		
 		return mv;
 	}
 

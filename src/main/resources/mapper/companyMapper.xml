@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.green.mapper.CompanyMapper">
 	<select id="getProposal">
 
@@ -10,6 +9,26 @@
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
 		'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
 
+	</select>
+	
+	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
+		
+		SELECT	C.ID,
+				U.PASSWORD,
+				C.CNUMBER,
+				C.CNAME,
+				C.COM_LOGO,
+				C.CREPRESENTIVE,
+				C.ADDRESS,
+				C.MANAGER_NAME,
+				C.COMPANY_MANAGERPHONE,
+				U.USER_EMAIL,
+				C.CSIZE,
+				TO_CHAR( C.CYEAR, 'YY-MM-DD')	CYEAR,
+				TO_CHAR( U.CREATED_DATE, 'YY-MM-DD')	CREATED_DATE
+		FROM	COMPANY_INFO_TB C, USER_TB U
+		WHERE	C.ID = U.ID AND C.ID = 'cp1'
+	
 	</select>
 
 	<!-- 전체 공고 가져오기 -->
@@ -25,25 +44,39 @@
 		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
 	</select>
 
-	<select id="getCompany" resultType="com.green.domain.CompanyVo">
-
-		SELECT C.ID,
-		U.PASSWORD,
-		C.CNUMBER,
-		C.CNAME,
-		C.COM_LOGO,
-		C.CREPRESENTIVE,
-		C.ADDRESS,
-		C.MANAGER_NAME,
-		C.COMPANY_MANAGERPHONE,
-		U.USER_EMAIL,
-		C.CSIZE,
-		TO_CHAR( C.CYEAR, 'YY-MM-DD') CYEAR,
-		TO_CHAR( U.CREATED_DATE, 'YY-MM-DD') CREATED_DATE
-		FROM COMPANY_INFO_TB C, USER_TB U
-		WHERE C.ID = U.ID AND C.ID = #{id}
-
-	</select>
+	
+	<update id ="updateCompany">
+	
+		UPDATE	COMPANY_INFO_TB
+		SET		ADDRESS = #{ address },
+				MANAGER_NAME = #{ manager_name },
+				COMPANY_MANAGERPHONE = #{ company_managerphone }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<update id ="updateUser">
+	
+		UPDATE	USER_TB
+		SET		PASSWORD = #{ password },
+				USER_EMAIL = #{ user_email }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<delete id = "deleteCompany">
+	
+		DELETE FROM COMPANY_INFO_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
+	
+	<delete id = "deleteUser">
+	
+		DELETE FROM USER_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
 
 	<select id="getpostList" parameterType="String"
 		resultType="com.green.domain.JobpostVo">
@@ -192,6 +225,5 @@
 		select count(*) from COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
 		#{arg1}
 	</select>
-
 
 </mapper>

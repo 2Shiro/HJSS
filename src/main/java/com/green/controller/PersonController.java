@@ -13,23 +13,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-//github.com/2Shiro/HJSS.git
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-//github.com/2Shiro/HJSS.git
+
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.PersonInfoVo;
-//github.com/2Shiro/HJSS.git
+
 import com.green.domain.PersonVo;
 import com.green.domain.PersonskillVo;
 import com.green.domain.PresumeVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.MainMapper;
-//github.com/2Shiro/HJSS.git
+
 import com.green.mapper.PersonMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -259,6 +259,7 @@ public class PersonController {
 		return "/person/updateok";
 	}
 
+	// /Person/Mypage
 	@RequestMapping("/Mypage")
 	public ModelAndView mypage(PersonVo personVo) {
 
@@ -267,10 +268,62 @@ public class PersonController {
 		log.info("vo : {}", vo);
 
 		ModelAndView mv = new ModelAndView();
+
 		mv.addObject("vo", vo);
 		mv.setViewName("/person/mypage");
 		return mv;
 
+	}
+	
+	// /Person/UpdateForm
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm( PersonVo personVo ) {
+		
+		PersonVo vo = personMapper.getPerson( personVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("person/mypageUpdate");
+		
+		return mv;
+	}
+	
+	// /Person/Update
+	@RequestMapping("/Update")
+	public ModelAndView update( PersonVo personVo ) {
+		
+		personMapper.updatePerson( personVo );
+		personMapper.updateUser( personVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Person/Mypage");
+		return mv;
+	}
+	
+	// /Person/DeleteForm
+	@RequestMapping("/DeleteForm")
+	public ModelAndView deleteForm( PersonVo personVo ) {
+		
+		PersonVo vo = personMapper.getPerson( personVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("/person/delete");
+		return mv;
+	}
+	
+	// /Person/DeleteForm
+	@RequestMapping("/Delete")
+	public ModelAndView delete( PersonVo personVo ) {
+	   
+		personMapper.deletePerson( personVo );
+		personMapper.deleteUser( personVo );
+		   
+		ModelAndView mv = new ModelAndView();
+		   
+		mv.setViewName("redirect:/main");
+		
+		return mv;
 	}
 
 	@RequestMapping("/joinForm")

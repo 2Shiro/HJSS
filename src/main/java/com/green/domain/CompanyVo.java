@@ -9,6 +9,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompanyVo {
 	
+	private String id;
+	private String password;	
+	private int cnumber;
+	private String cname;
+	private String com_logo;
+	private String crepresentive;
+	private String address;
+	private String manager_name;
+	private String company_managerphone;
+	private int    type;
+	private String user_email;
+	private String created_date;
+	private int csize;
+	private String cyear;
+	
 	public CompanyVo(String id, int cnumber, String cname, String com_logo, String crepresentive, String address,
 			String manager_name, String company_managerphone, int csize, String cyear) {
 		this.id = id;
@@ -23,19 +38,4 @@ public class CompanyVo {
 		this.cyear = cyear;
 	}
 
-	private String id;
-	private String password;
-	private int    type;
-	private String user_email;
-	private String created_date;
-	private int    cnumber;
-	private String cate;
-	private String cname;
-	private String com_logo;
-	private String crepresentive;
-	private String address;
-	private String manager_name;
-	private String company_managerphone;
-	private int    csize;
-	private String cyear;
 }

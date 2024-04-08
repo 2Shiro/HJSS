@@ -61,4 +61,12 @@ public interface CompanyMapper {
 
 	List<ComscrapListVo> getScrapList(ComscrapListVo scrapVo);
 
+	void updateCompany(CompanyVo companyVo);
+	void updateUser(CompanyVo companyVo);
+
+	void deleteCompany(CompanyVo companyVo);
+	void deleteUser(CompanyVo companyVo);
+
+	CompanyVo getCompany(CompanyVo companyVo);
+
 }

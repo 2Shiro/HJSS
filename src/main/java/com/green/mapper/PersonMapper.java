@@ -2,7 +2,6 @@ package com.green.mapper;
 
 import java.util.List;
 
-//github.com/2Shiro/HJSS.git
 import org.apache.ibatis.annotations.Mapper;
 
 import com.green.domain.PersonInfoVo;
@@ -10,7 +9,7 @@ import com.green.domain.PersonVo;
 import com.green.domain.PersonskillVo;
 import com.green.domain.PresumeVo;
 import com.green.domain.SkillVo;
-//github.com/2Shiro/HJSS.git
+
 import com.green.domain.UserVo;
 
 @Mapper
@@ -41,6 +40,12 @@ public interface PersonMapper {
 	int selectresumeidxmax();
 
 	PersonVo getPerson(PersonVo personVo);
+
+	void updatePerson(PersonVo personVo);
+	void updateUser(PersonVo personVo);
+
+	void deletePerson(PersonVo personVo);
+	void deleteUser(PersonVo personVo);
 
 	void insert(PersonVo personVo);
 
