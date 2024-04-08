@@ -1,7 +1,5 @@
 package com.green.controller;
 
-import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,16 +44,66 @@ public class PersonController {
 		return mv;
 	}
 
+	// /Person/Mypage
 	@RequestMapping("/Mypage")
 	public ModelAndView mypage( PersonVo personVo ) {
 		
 		PersonVo vo  =  personMapper.getPerson( personVo );
-
-		log.info("vo : {}", vo);
 		
 		ModelAndView  mv  =  new ModelAndView();
 		mv.addObject("vo", vo);
 		mv.setViewName("/person/mypage");
+		return mv;
+	}
+	
+	// /Person/UpdateForm
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm( PersonVo personVo ) {
+		
+		PersonVo vo = personMapper.getPerson( personVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("person/mypageUpdate");
+		
+		return mv;
+	}
+	
+	// /Person/Update
+	@RequestMapping("/Update")
+	public ModelAndView update( PersonVo personVo ) {
+		
+		personMapper.updatePerson( personVo );
+		personMapper.updateUser( personVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Person/Mypage");
+		return mv;
+	}
+	
+	// /Person/DeleteForm
+	@RequestMapping("/DeleteForm")
+	public ModelAndView deleteForm( PersonVo personVo ) {
+		
+		PersonVo vo = personMapper.getPerson( personVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("/person/delete");
+		return mv;
+	}
+	
+	// /Person/DeleteForm
+	@RequestMapping("/Delete")
+	public ModelAndView delete( PersonVo personVo ) {
+	   
+		personMapper.deletePerson( personVo );
+		personMapper.deleteUser( personVo );
+		   
+		ModelAndView mv = new ModelAndView();
+		   
+		mv.setViewName("redirect:/main");
+		
 		return mv;
 	}
 }

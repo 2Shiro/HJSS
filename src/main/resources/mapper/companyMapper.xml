@@ -7,20 +7,56 @@
 	
 	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
 		
-		SELECT	ID,
-				CNUMBER,
-				CNAME,
-				COM_LOGO,
-				CREPRESENTIVE,
-				ADDRESS,
-				MANAGER_NAME,
-				COMPANY_MANAGERPHONE,
-				CSIZE,
-				TO_CHAR( CYEAR, 'YY-MM-DD')	CYEAR
-		FROM	COMPANY_INFO_TB
-		WHERE	ID = 'cp1'
+		SELECT	C.ID,
+				U.PASSWORD,
+				C.CNUMBER,
+				C.CNAME,
+				C.COM_LOGO,
+				C.CREPRESENTIVE,
+				C.ADDRESS,
+				C.MANAGER_NAME,
+				C.COMPANY_MANAGERPHONE,
+				U.USER_EMAIL,
+				C.CSIZE,
+				TO_CHAR( C.CYEAR, 'YY-MM-DD')	CYEAR,
+				TO_CHAR( U.CREATED_DATE, 'YY-MM-DD')	CREATED_DATE
+		FROM	COMPANY_INFO_TB C, USER_TB U
+		WHERE	C.ID = U.ID AND C.ID = 'cp3'
 	
 	</select>
+	
+	<update id ="updateCompany">
+	
+		UPDATE	COMPANY_INFO_TB
+		SET		ADDRESS = #{ address },
+				MANAGER_NAME = #{ manager_name },
+				COMPANY_MANAGERPHONE = #{ company_managerphone }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<update id ="updateUser">
+	
+		UPDATE	USER_TB
+		SET		PASSWORD = #{ password },
+				USER_EMAIL = #{ user_email }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<delete id = "deleteCompany">
+	
+		DELETE FROM COMPANY_INFO_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
+	
+	<delete id = "deleteUser">
+	
+		DELETE FROM USER_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
 	
 	
 </mapper>

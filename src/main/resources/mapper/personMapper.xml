@@ -4,14 +4,49 @@
 
 	<select  id = "getPerson" resultType = "com.green.domain.PersonVo">
 		
-		SELECT	ID,
-				PNAME,
-				PHONE,
-				ADDRESS,
-				TO_CHAR( BIRTH, 'YY-MM-DD')	BIRTH
-		FROM	PERSON_INFO_TB
-		WHERE	ID = 'ps1'
+		SELECT	P.ID,
+				U.PASSWORD,
+				P.PNAME,
+				P.PHONE,
+				U.USER_EMAIL,
+				P.ADDRESS,
+				TO_CHAR( P.BIRTH, 'YY-MM-DD')			BIRTH,
+				TO_CHAR( U.CREATED_DATE, 'YY-MM-DD')	CREATED_DATE
+		FROM	PERSON_INFO_TB P, USER_TB U
+		WHERE	P.ID = U.ID AND P.ID = 'ps3'
 	
 	</select>
+	
+	<update id ="updatePerson">
+	
+		UPDATE	PERSON_INFO_TB
+		SET		PHONE = #{ phone },
+				ADDRESS = #{ address }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<update id ="updateUser">
+	
+		UPDATE	USER_TB
+		SET		PASSWORD = #{ password },
+				USER_EMAIL = #{ user_email }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<delete id = "deletePerson">
+	
+		DELETE FROM PERSON_INFO_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
+	
+	<delete id = "deleteUser">
+	
+		DELETE FROM USER_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
 
 </mapper>

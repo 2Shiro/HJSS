@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.green.domain.CompanyVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
+import com.green.domain.PersonVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
@@ -77,16 +78,67 @@ public class CompanyController {
 		return mv;
 	}
 	
+	// /Company/Mypage
 	@RequestMapping("/Mypage")
 	public ModelAndView mypage( CompanyVo companyVo ) {
 		
 		CompanyVo vo  =  companyMapper.getCompany( companyVo );
-
-		log.info("vo : {}", vo);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("vo", vo);
 		mv.setViewName("/company/mypage");
+		return mv;
+	}
+	
+	// /Company/UpdateForm
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm( CompanyVo companyVo ) {
+		
+		CompanyVo vo = companyMapper.getCompany( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("company/mypageUpdate");
+		
+		return mv;
+	}
+	
+	// /Company/Update
+	@RequestMapping("/Update")
+	public ModelAndView update( CompanyVo companyVo ) {
+		
+		companyMapper.updateCompany( companyVo );
+		companyMapper.updateUser( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Company/Mypage");
+		return mv;
+	}
+	
+	
+	// /Company/DeleteForm
+	@RequestMapping("/DeleteForm")
+	public ModelAndView deleteForm( CompanyVo companyVo ) {
+		
+		CompanyVo vo = companyMapper.getCompany( companyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.setViewName("/company/delete");
+		return mv;
+	}
+	
+	// /Company/DeleteForm
+	@RequestMapping("/Delete")
+	public ModelAndView delete( CompanyVo companyVo ) {
+	   
+		companyMapper.deleteCompany( companyVo );
+		companyMapper.deleteUser( companyVo );
+		   
+		ModelAndView mv = new ModelAndView();
+		   
+		mv.setViewName("redirect:/main");
+		
 		return mv;
 	}
 
