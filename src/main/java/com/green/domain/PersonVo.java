@@ -22,7 +22,6 @@ public class PersonVo {
    private String phone;
    private String address;
    private String birth;
-      
    private String password;
    private int type;
    private String user_email;

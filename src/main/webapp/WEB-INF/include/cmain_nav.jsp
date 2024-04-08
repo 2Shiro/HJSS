@@ -28,7 +28,7 @@
 	
 	MyPostEl.addEventListener('click', function(e) {
 		alert('mypost');
-		location.href = '/Company/jobs';
+		location.href = '/Company/MyPost';
 	});
 	
 	MyParticipateEl.addEventListener('click', function(e) {

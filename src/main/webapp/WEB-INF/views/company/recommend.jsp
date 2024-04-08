@@ -41,32 +41,36 @@
 $(document).ready(function() {
     const cid = $('#cid').val(); // 현재 사용자 ID
 
-    $('.scrap-button').each(function() {
-        const button = $(this);
-        const resume_idx = button.data('resume-idx'); // data-resume-idx 속성으로부터 resume_idx를 가져옴
+    function updateScrapButtons() {
+        $('.scrap-button').each(function() {
+            const button = $(this);
+            const resume_idx = button.data('resume-idx');
 
-        // 스크랩 상태 확인 요청
-        $.ajax({
-            url: `/Company/CheckScrap?resume_idx=`+resume_idx+'&cid=${cid}',
-            type: 'GET',
-            dataType: 'json',
-            success: function(isScraped) {
-                button.data('scraped', isScraped);
-                button.toggleClass('btn-primary', isScraped)
-                      .toggleClass('btn-outline-secondary', !isScraped)
-                      .val(isScraped ? '스크랩 해제' : '스크랩');
-            },
-            error: function(error) {
-                console.error('Error:', error);
-            }
+            // 스크랩 상태 확인 요청
+            $.ajax({
+                url: `/Company/CheckScrap?resume_idx=` + resume_idx + '&cid=${cid}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(isScraped) {
+                    button.data('scraped', isScraped);
+                    button.toggleClass('btn-primary', isScraped)
+                          .toggleClass('btn-outline-secondary', !isScraped)
+                          .val(isScraped ? '스크랩 해제' : '스크랩');
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
         });
-    });
+    }
+
+    updateScrapButtons(); // 페이지 로드 시 스크랩 버튼 상태 갱신
 
     $('.scrap-button').click(function() {
         const button = $(this);
         const resume_idx = button.data('resume-idx');
         const isScraped = button.data('scraped');
-
+		
         if (isScraped) {
             // 스크랩 삭제 요청
             $.ajax({
@@ -74,10 +78,7 @@ $(document).ready(function() {
                 type: 'POST',
                 success: function(response) {
                     alert('스크랩이 해제되었습니다.');
-                    button.data('scraped', false)
-                          .toggleClass('btn-primary', false)
-                          .toggleClass('btn-outline-secondary', true)
-                          .val('스크랩');
+                    updateScrapButtons(); // 모든 스크랩 버튼 상태 갱신
                 },
                 error: function(error) {
                     console.error('Error:', error);
@@ -96,10 +97,7 @@ $(document).ready(function() {
                 }),
                 success: function(response) {
                     alert('스크랩되었습니다.');
-                    button.data('scraped', true)
-                          .toggleClass('btn-primary', true)
-                          .toggleClass('btn-outline-secondary', false)
-                          .val('스크랩 해제');
+                    updateScrapButtons(); // 모든 스크랩 버튼 상태 갱신
                 },
                 error: function(error) {
                     console.error('Error:', error);
@@ -110,6 +108,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
