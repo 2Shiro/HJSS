@@ -18,4 +18,7 @@ public interface CompanyMapper {
 
 	CompanyVo login(String id, String password);
 
+	CompanyVo getCompanyById(String id);
+
+
 }

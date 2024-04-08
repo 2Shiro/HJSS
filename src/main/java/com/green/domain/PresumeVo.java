@@ -5,17 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CproposalVo {
-	
-	private int pro_idx;
-	
-	private String id;
-	
-	private int post_idx;
-	
+public class PresumeVo {
 	private int resume_idx;
-	
-	private int status;
-	
+	private String id;
+	private String profile;
+	private String title;
+	private String portfolio;
+	private String self_intro;
 	private String created_at;
 }

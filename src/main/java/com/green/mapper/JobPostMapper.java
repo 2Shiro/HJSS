@@ -19,4 +19,8 @@ public interface JobPostMapper {
 
 	void insertpost(JobpostVo postVo);
 
+	List<JobpostVo> getmainpostList();
+
+	JobpostVo getpostName(int post_idx);
+
 }

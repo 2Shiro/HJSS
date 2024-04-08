@@ -1,21 +1,16 @@
 package com.green.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CproposalVo {
-	
-	private int pro_idx;
-	
-	private String id;
-	
+@AllArgsConstructor
+public class MyProposalVo {
 	private int post_idx;
-	
+	private String post_name;
+	private String pname;
 	private int resume_idx;
-	
-	private int status;
-	
-	private String created_at;
+	private String status;
 }
