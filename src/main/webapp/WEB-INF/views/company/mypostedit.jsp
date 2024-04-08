@@ -30,12 +30,14 @@
 				<div class="mt-5 ms-3">
 					<h2>공고 수정하기</h2>
 					<hr>
-					<form class="container">
+					<form class="container"
+						action="/Company/MyPostUpdate?post_idx=${vo.post_idx}">
+						<input type="hidden" value="${vo.post_idx }" name="post_idx">
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="title" class="form-label">공고명</label> <input
-									type="text" class="form-control" id="title"
-									value="프론트엔드 개발자 구합니다">
+									type="text" class="form-control" id="title" name="post_name"
+									value="${vo.post_name }">
 							</div>
 						</div>
 						<div class="container-fluid border">
@@ -45,20 +47,16 @@
 									<label for="career" class="col-form-label">지원자격</label>
 								</div>
 								<div class="col-3 my-3">
-									<select class="form-select" aria-label="Default select example">
-										<option selected>Open this select menu</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
-									</select>
+									<input type="text" class="form-control" id="career"
+										name="career" value="${vo.career }">
 								</div>
 
 								<div class="col-1 my-3">
 									<label for="pay" class="col-form-label">연봉</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control" id="pay"
-										value="면접 후 결정">
+									<input type="text" class="form-control" id="pay" name="pay"
+										value="${vo.pay }">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -68,11 +66,13 @@
 									<label for="type" class="col-form-label">근무조건</label>
 								</div>
 								<div class="col-3 my-3">
-									<select class="form-select" aria-label="Default select example">
-										<option selected>Open this select menu</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
+									<select class="form-select" aria-label="job_type" id="job_type"
+										name="job_type">
+										<option>선택</option>
+										<option value="정규직"
+											<c:if test="${vo.job_type == '정규직'}">selected</c:if>>정규직</option>
+										<option value="계약직"
+											<c:if test="${vo.job_type == '계약직'}">selected</c:if>>계약직</option>
 									</select>
 								</div>
 
@@ -80,10 +80,10 @@
 									<label for="career" class="col-form-label">근무 시간</label>
 								</div>
 								<div class="col-3 my-3 d-flex">
-									<input class="form-control" type="time" name="gowork"
-										id="gowork" value="" required> <input
-										class="form-control ms-3" type="time" name="gohome"
-										id="gohome" value="" required>
+									<input class="form-control" type="time" name="go_work"
+										id="go_work" value="${vo.go_work }" required> <input
+										class="form-control ms-3" type="time" name="go_home"
+										id="go_home" value="${vo.go_home }" required>
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -93,50 +93,44 @@
 							<div class="mb-3">
 								<label for="deadline" class="form-label">마감 일자</label> <input
 									type="date" class="form-control" id="deadline"
-									style="width: 30%">
+									value="${vo.deadline }" name="deadline" style="width: 30%">
 							</div>
+						</div>
+						<p class="mb-0">기술/자격 조건</p>
+						<div class="my-2 row" id="skills">
+							<c:forEach var="skill" items="${allSkills}">
+								<div class="col-auto">
+									<input type="checkbox" class="btn-check"
+										id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
+										name="skillIdx" autocomplete="off"
+										<c:forEach var="postSkills" items="${postSkills}">
+                <c:if test="${skill.skill_idx == postSkills.skill_idx}">
+                    checked="checked"
+                </c:if>
+            </c:forEach>>
+									<label class="btn btn-outline-primary"
+										for="skill_${skill.skill_idx }">${skill.skill_name}</label>
+								</div>
+							</c:forEach>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label>
 								<textarea rows="10" class="form-control" id="c_intro"
-									name="c_intro"></textarea>
+									name="c_intro">${vo.c_intro }</textarea>
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
-								<label for="job-intro" class="form-label">업무 소개</label>
-								<textarea rows="10" class="form-control" id="job-intro"
-									name="job-intro"></textarea>
+								<label for="job_intro" class="form-label">업무 소개</label>
+								<textarea rows="10" class="form-control" id="job_intro"
+									name="job_intro">${vo.job_intro }</textarea>
 							</div>
 						</div>
-						<p class="mb-0">기술/자격 조건</p>
-						<div class="my-2 row" id="skills">
-							<div class="col-auto">
-								<input type="checkbox" class="btn-check" id="skill_1"
-									autocomplete="off"> <label
-									class="btn btn-outline-primary" for="skill_1">JAVA</label>
-							</div>
-							<div class="col-auto">
-								<input type="checkbox" class="btn-check" id="skill_1"
-									autocomplete="off"> <label
-									class="btn btn-outline-primary" for="skill_1">JAVA</label>
-							</div>
-							<div class="col-auto">
-								<input type="checkbox" class="btn-check" id="skill_1"
-									autocomplete="off"> <label
-									class="btn btn-outline-primary" for="skill_1">JAVA</label>
-							</div>
-							<div class="col-auto">
-								<input type="checkbox" class="btn-check" id="skill_1"
-									autocomplete="off"> <label
-									class="btn btn-outline-primary" for="skill_1">JAVA</label>
-							</div>
 
-						</div>
 
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>
+							<a href="/Company/Jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>
 							<button type="submit" id="btn-update"
 								class="btn btn-secondary mx-3">수정</button>
 						</div>

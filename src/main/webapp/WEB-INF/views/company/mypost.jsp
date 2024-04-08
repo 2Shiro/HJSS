@@ -32,13 +32,13 @@
 	margin-left: 0.5rem;
 }
 
-#jobDetailDiv {
+.linkDiv {
 	padding: 10px;
 	border-radius: 5px;
 	transition: background-color .3s;
 }
 
-#jobDetailDiv:hover {
+.linkDiv:hover {
 	cursor: pointer;
 }
 </style>
@@ -49,34 +49,27 @@
 					'DOMContentLoaded',
 					function() {
 						document.getElementById('postForm').addEventListener('submit', function(event) {
-							  event.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
-							  
-							  // 알림을 사용자에게 보여줍니다.
+							  event.preventDefault();
 							  alert('등록 되었습니다');
-							  
-							  // bootstrap Modal 인스턴스를 가져와서 숨깁니다.
 							  var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
 							  myModal.hide();
-							  var postsub = document.getElementById('postsub');
-						        postsub.submit();
+							  var postForm = document.getElementById('postForm');
+							  postForm.submit();
 							});
-
-						document
-								.getElementById('jobDetailDiv')
-								.addEventListener(
-										'click',
-										function(event) {
-
-											if (event.target
-													&& event.target.id === 'btn-delete') {
-
-												event.preventDefault();
-												alert('삭제 처리됨');
-												window.location.href = '/Company/postDelete?id=${user.id}';
-											} else {
-												window.location.href = '/Company/jobDetail?id=${user.id}';
-											}
-										});
+					    document.querySelectorAll('.linkDiv').forEach(function(linkDiv) {
+					        linkDiv.addEventListener('click', function(event) {
+					            if (event.target && event.target.id.startsWith('btn-delete')) {
+					                event.preventDefault();
+					                alert('삭제 처리됨');
+					                const postIdx = event.target.id.replace('btn-delete', ''); // 동적으로 생성된 ID에서 post_idx를 추출합니다.
+					                window.location.href = `/Company/MyPostDelete?post_idx=`+postIdx;
+					            } else if (event.target) {
+					                // 클릭된 요소에서 가장 가까운 .linkDiv의 ID를 찾아 마감기한 페이지로 이동합니다.
+					                const postIdx = event.target.closest('[id^="jobDetailDiv"]').id.replace('jobDetailDiv', '');
+					                window.location.href = `/Company/MyPostDetail?post_idx=`+postIdx;
+					            }
+					        });
+					    });
 					});
 </script>
 
@@ -105,20 +98,21 @@
 								data-bs-target="#jobPost">새로운 공고등록</button>
 						</div>
 						<!-- 공고 등록 모달 include -->
-						<%@include file="/WEB-INF/views/company/jobpostform.jsp"%>
+						<%@include file="/WEB-INF/views/company/mypostwrite.jsp"%>
 					</div>
+					
 					<c:forEach var="list" items="${ list }">
-						<div class="container border mb-3" id="jobDetailDiv">
+						<div class="linkDiv container border mb-3" id="jobDetailDiv${ list.post_idx }">
 							<!-- 공고 리스트 시작 -->
 							<div class="d-flex justify-content-between">
-								<div>
+								<div class="row">
 									<input type="text"
-										class="form-control border-0 shadow-none mb-2"
-										value="${ list.post_name }" id="title"> <input
-										type="text" class="form-control border-0 shadow-none"
-										value="마감기한 : ${ list.deadline }" id="deadline">
+										class="form-control border-0 shadow-none mb-2 ms-3"
+										value="${ list.post_name }" id="title${ list.post_idx }"> <input
+										type="text" class="form-control border-0 shadow-none ms-3"
+										value="마감기한 : ${ list.deadline }" id="deadline${ list.post_idx }">
 								</div>
-								<button id="btn-delete"
+								<button id="btn-delete${ list.post_idx }"
 									class="btn btn-dark align-self-center float-end mx-3">삭제</button>
 							</div>
 							<!-- 공고 리스트 끝 -->

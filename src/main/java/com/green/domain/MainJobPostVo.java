@@ -1,13 +1,11 @@
 package com.green.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class JobpostVo {
+public class MainJobPostVo {
 	private int post_idx;
 	private String id;
 	private String post_name;
@@ -20,4 +18,6 @@ public class JobpostVo {
 	private String job_intro;
 	private String c_intro;
 	private String created_date;
+	
+	private String com_logo;
 }

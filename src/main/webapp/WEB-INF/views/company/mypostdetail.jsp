@@ -30,7 +30,7 @@
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
 						<input type="text" class="border-0" id="title"
-							value="백엔드 개발자 구합니다">
+							value="${ vo.post_name }">
 					</h2>
 					<hr>
 					<div class="container">
@@ -43,7 +43,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="career"
-										value="신입" readonly="readonly">
+										value="${ vo.career }" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
@@ -51,7 +51,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="pay"
-										value="면접 후 결정" readonly="readonly">
+										value="${ vo.pay }" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -62,15 +62,15 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="type"
-										value="정규직" readonly="readonly">
+										value="${ vo.job_type }" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
 									<label for="career" class="col-form-label">근무 시간</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control border-0" id="career"
-										value="09:00 ~ 18:00" readonly="readonly">
+									<input type="text" class="form-control border-0" id="work_time"
+										value="${ vo.go_work } ~ ${ vo.go_home }" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -80,42 +80,32 @@
 							<div class="mb-3">
 								<label for="deadline" class="form-label">마감 일자</label> <input
 									type="text" class="form-control" id="deadline"
-									value="2024-04-11 09:00:00" readonly="readonly">
+									value="${ vo.deadline }" readonly="readonly">
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label> <input
-									type="text" class="form-control" id="c_intro" value="기업 소개란"
+									type="text" class="form-control" id="c_intro" value="${ vo.c_intro }"
 									readonly="readonly">
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="job-intro" class="form-label">업무 소개</label> <input
-									type="text" class="form-control" id="job-intro" value="업무 소개란"
+									type="text" class="form-control" id="job-intro" value="${ vo.job_intro }"
 									readonly="readonly">
 							</div>
 						</div>
 						<p class="mb-0">기술/자격 조건</p>
 						<div class="my-2 row" id="skills">
+						<c:forEach var="skill" items="${ skill }">
 							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="Javascript"
-									readonly="readonly">
+								<input type="checkbox" class="btn-check" id="skill_${skill.skill_idx }" value="${skill.skill_idx}" name="skillIdx"
+									autocomplete="off" readonly="readonly"> <label
+									class="btn btn-outline-primary" for="skill_${skill.skill_idx }">${skill.skill_name }</label>
 							</div>
-							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="SQL" readonly="readonly">
-							</div>
-							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="JAVA" readonly="readonly">
-							</div>
-							<div class="col-auto">
-								<input type="text" class="form-control text-center"
-									style="padding: 5px 0px;" value="HTML" readonly="readonly">
-							</div>
+						</c:forEach>
 
 						</div>
 						<p class="mb-0">기업 정보</p>
@@ -127,15 +117,15 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="csize"
-										value="12" readonly="readonly">
+										value="${ com.csize }" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
 									<label for="crep" class="col-form-label">대표자</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control border-0" id="crep"
-										value="아무개" readonly="readonly">
+									<input type="text" class="form-control border-0" id="crepresentive"
+										value="${ com.crepresentive }" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -146,15 +136,15 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="cyear"
-										value="2024" readonly="readonly">
+										value="${ com.cyear }" readonly="readonly">
 								</div>
 
 								<div class="col-1 my-3">
 									<label for="phone" class="col-form-label">전화번호</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control border-0" id="phone"
-										value="010-1234-5678" readonly="readonly">
+									<input type="text" class="form-control border-0" id="COMPANY_MANAGERPHONE"
+										value="${ com.company_managerphone }" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -165,7 +155,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="address"
-										value="부산시 부산진구">
+										value="${ com.address }">
 								</div>
 
 								<div class="col-1 my-3">
@@ -173,25 +163,19 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="email" class="form-control border-0" id="email"
-										value="example@green.com" readonly="readonly">
+										value="${ userVo.user_email }" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/jobs" id="btn-list"
+							<a href="/Company/Jobs" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/Company/jobUpdate" id="btn-update"
+								href="/Company/MyPostEdit?post_idx=${vo.post_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
 						</div>
 					</div>
-
-
 				</div>
-
-
-
-
 			</section>
 		</div>
 	</main>

@@ -107,8 +107,8 @@ CREATE TABLE proposal_status_tb (
     id          VARCHAR2(255)   NOT NULL,
     pro_idx     NUMBER(8)       NOT NULL,
     post_idx    NUMBER(8)       NOT NULL,
-    status      number(8)       DEFAULT 0       NOT NULL,
-    comments    VARCHAR2(255)   NOT NULL
+    status      number(8)       DEFAULT 0       			NOT NULL,
+    comments    VARCHAR2(255)   DEFAULT '미처리중입니다'	NOT NULL
 );
 
 

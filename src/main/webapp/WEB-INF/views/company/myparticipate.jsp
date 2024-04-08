@@ -42,19 +42,21 @@ h3 {
 				<h3>지원 현황</h3>
 				<table class="table table-hover">
 					<tr class="table-primary">
-						<th>번호</th>
+						<th>공고번호</th>
 						<th>공고이름</th>
 						<th>구직자이름</th>
 						<th>이력서</th>
 						<th>상태</th>
 					</tr>
-					<c:forEach var="proposalList" items="${proposalList}">   
+					<c:forEach var="myproposalList" items="${myproposalList}">   
 						<tr>                
-             <td>${proposalList.pro_idx}</td>
-             <td>${proposalList.id}</td>
-             <td>${proposalList.post_id}</td>
-             <td><a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#personResumeModal">${proposalList.resume_id}</a></td>
-             <td>${proposalList.status}</td>
+             <td>${myproposalList.post_idx}</td>
+             <td>${myproposalList.post_name}</td>
+             <td>${myproposalList.pname}</td>
+             	<td>
+             		<a href="/Person/GetResume?resume_idx=${myproposalList.resume_idx}" class="pop">이력서</a>
+             	</td>
+             <td>${myproposalList.status}</td>
          	</tr>
          </c:forEach>
 				</table>
@@ -64,4 +66,18 @@ h3 {
 	<%@include file="/WEB-INF/include/getresume.jsp" %>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
+<script>
+	let popuplist = document.querySelectorAll('.pop');
+	
+	popuplist.forEach(function( popup ) {
+			popup.onclick = function(e) {
+				e.preventDefault();
+				//alert(popup.href)
+				let popOption = 'width = 650px, height=550px;, top=300px, left=300px, scrollbars=yes';
+				let openUrl = popup.href
+				window.open(openUrl, 'popresume', popOption);
+		  }
+	})
+
+</script>
 </html>

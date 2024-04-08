@@ -32,14 +32,22 @@ INSERT INTO person_info_tb ( id, pname, phone, address, birth )
 
 -- 3) 기업 회원 테이블
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+<<<<<<< HEAD
   VALUES ( 'cp1', 1, 'NAVER', '/images/naver.png', '최수현', '경기도 성남시', '김범준', '051-111-1111', '10', '99/06/02' );
+=======
+  VALUES ( 'cp1', 1, 'NAVER', 'naver', '최수현', '경기도 성남시', '김범준', '051-111-1111', '10', '99/06/02' );
+>>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
 
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+<<<<<<< HEAD
   VALUES ( 'cp2', 2, 'kakao', '/images/kakao.png', '권기수', '제주특별자치도 제주시', '장윤중', '051-222-2222', '9', '10/07/20' );
 
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
   VALUES ( 'cp3', 1, '포스코DX', '/images/poscoDX.png', '정덕균', '경상북도 포항시', '김관리자', '054-280-1114', '2183', '89/11/18' );
 
+=======
+  VALUES ( 'cp2', 2, 'kakao', 'kakao', '권기수', '제주특별자치도 제주시', '장윤중', '051-222-2222', '9', '10/07/20' );
+>>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
 
 
 -- 4) 스킬 테이블
