@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.mapper.CompanyMapper">
+	<!-- 나의 지원 테이블 정보 가져오기 -->
 	<select id="getProposal">
-
-		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
-		'YY-MM-DD') FROM PERSON_PROPOSAL_TB
-
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
 		'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
 
 	</select>
 	
+	<!-- 기업 상세 정보 가져오기 -->
 	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
 		
 		SELECT	C.ID,
@@ -38,10 +36,23 @@
 		FROM JOB_POST_TB
 		ORDER BY POST_IDX
 	</select>
+	
+	<!-- 특정 공고 상세페이지 -->
+	<select id="viewPost" parameterType="int"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
 
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
 		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
+	</select>
+	
+	<select id="getpostList" parameterType="String"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE ID = #{id}
 	</select>
 
 	
@@ -78,26 +89,6 @@
 	
 	</delete>
 
-	<select id="getpostList" parameterType="String"
-		resultType="com.green.domain.JobpostVo">
-		select * from JOB_POST_TB
-		WHERE ID = #{id}
-	</select>
-
-	<insert id="insertpost" parameterType="com.green.domain.JobpostVo">
-		INSERT INTO JOB_POST_TB
-		(POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
-		DEADLINE, JOB_INTRO, C_INTRO)
-		VALUES
-		(#{post_idx}, #{id},
-		#{post_name}, #{career}, #{job_type}, #{pay},
-		#{go_work}, #{go_home}, #{deadline}, #{job_intro}, #{c_intro})
-	</insert>
-	<select id="viewPost" parameterType="int"
-		resultType="com.green.domain.JobpostVo">
-		select * from JOB_POST_TB
-		WHERE POST_IDX = #{post_idx}
-	</select>
 	<update id="updatePost">
 		UPDATE JOB_POST_TB
 		SET POST_NAME = #{post_name}, CAREER = #{career}, JOB_TYPE =
@@ -204,7 +195,49 @@
 		#{resume_idx})
 	</insert>
 
-	<delete id="deleteScrap">
+	
+	<select id="getSkillList">
+		SELECT SKILL_IDX, SKILL_NAME
+		FROM SKILL_TB
+	</select>
+
+	
+	<!-- 공고 이름 가져오기 -->
+	<select id="getpostName">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		TO_CHAR(DEADLINE, 'YY-MM-DD') DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+	
+	<!-- 특정 공고의 내용 가져오기 -->
+	<select id="getViewPost">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+	
+	<!-- 공고에 필요한 스킬들 idx 가져오기 -->
+	<select id="getPostSkill">
+		SELECT CSNO, POST_IDX, SKILL_IDX FROM POST_SKILL_TB WHERE POST_IDX = #{post_idx}
+	</select>
+	
+	<!-- 필요한 스킬 이름들 가져오기 -->
+	<select id="getSkillName">
+		SELECT SKILL_NAME FROM SKILL_TB WHERE SKILL_IDX = #{skill_idx}
+	</select>
+	
+	<insert id="insertpost" parameterType="com.green.domain.JobpostVo">
+		INSERT INTO JOB_POST_TB
+		(POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO)
+		VALUES
+		((SELECT NVL(MAX(POST_IDX),0) + 1 FROM JOB_POST_TB), #{id}, #{post_name}, #{career}, #{job_type}, #{pay},
+		#{go_work}, #{go_home}, #{deadline}, #{job_intro}, #{c_intro})
+
+	</insert>
+		<delete id="deleteScrap">
 		delete from COM_SCRAP_TB where resume_idx = #{resume_idx}
 	</delete>
 
@@ -225,5 +258,4 @@
 		select count(*) from COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
 		#{arg1}
 	</select>
-
 </mapper>

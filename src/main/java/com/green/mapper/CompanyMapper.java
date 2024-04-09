@@ -13,6 +13,7 @@ import com.green.domain.JobpostVo;
 import com.green.domain.MatchingResultVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.SkillVo;
+import com.green.domain.UserVo;
 
 @Mapper
 public interface CompanyMapper {
@@ -69,4 +70,16 @@ public interface CompanyMapper {
 
 	CompanyVo getCompany(CompanyVo companyVo);
 
+	
+	UserVo getUser(String id);
+
+	List<JobpostVo> getpostList(String id);
+
+	List<SkillVo> getSkillList();
+
+	JobpostVo getViewPost(int post_idx);
+
+	List<PostskillVo> getPostSkill(int post_idx);
+
+	String getSkillName(int skill_idx);
 }
