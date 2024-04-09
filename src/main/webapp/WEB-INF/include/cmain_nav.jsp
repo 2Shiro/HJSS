@@ -28,6 +28,7 @@
 	
 	MyPostEl.addEventListener('click', function(e) {
 		alert('mypost');
+		//id랑 그런거 필요
 		location.href = '/Company/MyPost';
 	});
 	

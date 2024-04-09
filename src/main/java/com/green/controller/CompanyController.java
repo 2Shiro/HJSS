@@ -68,7 +68,7 @@ public class CompanyController {
 		List<CompanyVo> companyVo = new ArrayList<>();
 		for (int i = 0; i < jobList.size(); i++) {
 			String id = jobList.get(i).getId();
-			System.out.println(id);
+			//System.out.println(id);
 			CompanyVo vo = companyMapper.getCompanyById(id);
 			companyVo.add(new CompanyVo(vo.getId(), vo.getCnumber(), vo.getCname(), vo.getCom_logo(),
 					vo.getCrepresentive(), vo.getAddress(), vo.getManager_name(), vo.getCompany_managerphone(),
@@ -80,7 +80,7 @@ public class CompanyController {
 			mainPageList.add(
 					new MainPageVo(jobList.get(i).getPost_idx(), jobList.get(i).getId(), jobList.get(i).getPost_name(),
 							jobList.get(i).getCareer(), jobList.get(i).getJob_type(), companyVo.get(i).getCom_logo()));
-			System.out.println(companyVo.get(i).getCom_logo());
+			//System.out.println(companyVo.get(i).getCom_logo());
 		}
 
 		ModelAndView mv = new ModelAndView();
@@ -120,7 +120,7 @@ public class CompanyController {
 		List<PersonVo> personList = new ArrayList<>();
 		for(int i = 0; i < proposalList.size(); i++) {
 			String id = proposalList.get(i).getId();
-			System.out.println(id);
+			//System.out.println(id);
 			PersonVo vo = personMapper.getPname(id);
 			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(),
 							vo.getAddress(), vo.getBirth()));
@@ -409,7 +409,7 @@ public class CompanyController {
 	@RequestMapping("/Join")
 	public ModelAndView ComJoin(CompanyVo companyVo) {
 
-		System.out.println("comVo" + companyVo);
+		//System.out.println("comVo" + companyVo);
 
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);

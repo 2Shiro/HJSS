@@ -54,11 +54,13 @@
 	
 	</delete>
 
+	<!-- 특정 개인 회원의 정보 테이블 데이터를 불러옴 -->
 	<select id="getPuser">
 		SELECT ID, PNAME, PHONE, ADDRESS, BIRTH FROM
 		PERSON_INFO_TB WHERE ID = #{id}
 	</select>
 
+	<!-- 특정 회원 정보를 회원 정보 테이블에서 데이터를 가져옴 -->
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL,
 		TO_CHAR(CREATED_DATE, 'YY-MM-DD')
@@ -70,14 +72,6 @@
 	<select id="getPname">
 
 		SELECT	ID, PNAME, PHONE, ADDRESS, TO_CHAR( BIRTH, 'YY-MM-DD')	BIRTH FROM	PERSON_INFO_TB WHERE ID = #{id}
-
-		SELECT ID,
-		PNAME,
-		PHONE,
-		ADDRESS,
-		TO_CHAR( BIRTH, 'YY-MM-DD') BIRTH
-		FROM PERSON_INFO_TB
-		WHERE ID = #{id}
 	</select>
 
 	
@@ -85,6 +79,12 @@
 	<select id="getResumeList">
 		SELECT RESUME_IDX, ID, PROFILE, TITLE, PORTFOLIO, PUBLISH, SELF_INTRO, TO_CHAR(created_at, 'YY-MM-DD') created_at FROM RESUME_TB WHERE ID = #{id}
 	</select>
+	
+<!-- 	<select id="getresumeList" parameterType="String" -->
+<!-- 		resultType="com.green.domain.PresumeVo"> -->
+<!-- 		select * from RESUME_TB -->
+<!-- 		WHERE ID = #{id} -->
+<!-- 	</select> -->
 	
 	<select id="login">
  	SELECT id,password,type
@@ -110,12 +110,7 @@
 		VALUES (#{id},#{password},2,#{user_email},#{created_date})
 		SELECT * FROM DUAL
 	</insert>
-
-	<select id="getresumeList" parameterType="String"
-		resultType="com.green.domain.PresumeVo">
-		select * from RESUME_TB
-		WHERE ID = #{id}
-	</select>
+	
 	<select id="getInfo">
 		select * from PERSON_INFO_TB WHERE ID = #{id}
 	</select>

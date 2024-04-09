@@ -58,7 +58,7 @@ public class PersonController {
 	//구직자의 메인페이지
 
 	@RequestMapping("/Pmain")
-	public ModelAndView cmain() {
+	public ModelAndView pmain() {
 		//JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
@@ -67,7 +67,7 @@ public class PersonController {
 		List<CompanyVo> companyVo = new ArrayList<>();
 		for (int i = 0; i < jobList.size(); i++) {
 			String id = jobList.get(i).getId();
-			System.out.println(id);
+			//System.out.println(id);
 			CompanyVo vo = companyMapper.getCompanyById(id);
 			companyVo.add(new CompanyVo(vo.getId(), 
 										vo.getCnumber(), 
@@ -89,27 +89,27 @@ public class PersonController {
 											jobList.get(i).getCareer(), 
 											jobList.get(i).getJob_type(), 
 											companyVo.get(i).getCom_logo()));
-			System.out.println(companyVo.get(i).getCom_logo());
+			//System.out.println(companyVo.get(i).getCom_logo());
 		}
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("jobList", jobList);
 		mv.addObject("mainPageList", mainPageList);
 		//세션별로 바꿔야할듯
-		mv.setViewName("/Person/Pmain");
+		mv.setViewName("/person/pmain");
 		return mv;
 	}
 	
 	//특정 구직자의 특정 공고에 지원하기
 	@RequestMapping("/JoinPost")
 	public ModelAndView joinPost( @RequestParam HashMap<String, Object> map) {
-		System.out.println("resume_idx" + map);
+		//System.out.println("resume_idx" + map);
 		String id = (String) map.get("id");
-		System.out.println("id" + id);
+		//System.out.println("id" + id);
 		int post_idx = Integer.parseInt((String.valueOf(map.get("post_idx"))));
-		System.out.println("post_idx" + post_idx);
+		//System.out.println("post_idx" + post_idx);
 		int resume_idx = Integer.parseInt((String.valueOf(map.get("resume_idx"))));
-		System.out.println("resume_idx" + resume_idx);
+		//System.out.println("resume_idx" + resume_idx);
 		
 		//insert MY_PROPOSAL_TB
 		personMapper.insertProposal(id, post_idx, resume_idx);
@@ -117,10 +117,6 @@ public class PersonController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/Person/MyProposal");
 		return mv;
-	}
-	public String pmain() {
-
-		return "/person/pmain";
 	}
 
 	@RequestMapping("/MyResume")
@@ -379,10 +375,10 @@ public class PersonController {
 	
 	@RequestMapping("/Pass")
 	public String pass(@RequestParam(value="resume_idx") int resume_idx, @RequestParam(value="status") int status) {
-		System.out.println("상태" + resume_idx);
+		//System.out.println("상태" + resume_idx);
 		personMapper.updateResumePass(resume_idx, status);
 		
-		System.out.println(status);
+		//System.out.println(status);
 		
 		return "/person/updateok";
 	}
@@ -470,7 +466,7 @@ public class PersonController {
 
 	@RequestMapping("/join")
 	public ModelAndView join(PersonVo personVo) {
-		System.out.println("개인회원" + personVo);
+		//System.out.println("개인회원" + personVo);
 
 		personMapper.insert(personVo);
 

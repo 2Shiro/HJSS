@@ -26,8 +26,8 @@
 	MainEl.addEventListener('click', function(e) {
 		alert('pmain');
 		location.href = '/Person/Pmain';
-		MainEl.removeClass("btn-outline-secondary");
-		MainEl.addClass("btn-secondary");
+		//MainEl.removeClass("btn-outline-secondary");
+		//MainEl.addClass("btn-secondary");
 	});
 	
 	MyResumeEl.addEventListener('click', function(e) {

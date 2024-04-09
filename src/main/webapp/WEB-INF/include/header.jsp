@@ -15,7 +15,8 @@
    
     <ul class="nav nav-pills mt-auto me-3">
         <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="#" >로그아웃</a></li>
-        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="#">마이페이지</a></li>
+        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="/Company/Mypage">기업마이페이지</a></li>
+        <li class="nav-item"><a class="mx-3 text-decoration-none text-black" href="/Person/Mypage">개인마이페이지</a></li>
     </ul>
     
 <%--    
@@ -38,9 +39,6 @@
 
 
  --%>
-    
-    
-    
 </header>
 </body>
 </html>

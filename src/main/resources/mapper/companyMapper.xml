@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.mapper.CompanyMapper">
+	<!-- 나의 지원 테이블 정보 가져오기 -->
 	<select id="getProposal">
 		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at,
 		'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
@@ -35,10 +36,23 @@
 		FROM JOB_POST_TB
 		ORDER BY POST_IDX
 	</select>
+	
+	<!-- 특정 공고 상세페이지 -->
+	<select id="viewPost" parameterType="int"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
 
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL, TO_CHAR(CREATED_DATE,
 		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
+	</select>
+	
+	<select id="getpostList" parameterType="String"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE ID = #{id}
 	</select>
 
 	
@@ -75,17 +89,6 @@
 	
 	</delete>
 
-	<select id="getpostList" parameterType="String"
-		resultType="com.green.domain.JobpostVo">
-		select * from JOB_POST_TB
-		WHERE ID = #{id}
-	</select>
-
-	<select id="viewPost" parameterType="int"
-		resultType="com.green.domain.JobpostVo">
-		select * from JOB_POST_TB
-		WHERE POST_IDX = #{post_idx}
-	</select>
 	<update id="updatePost">
 		UPDATE JOB_POST_TB
 		SET POST_NAME = #{post_name}, CAREER = #{career}, JOB_TYPE =

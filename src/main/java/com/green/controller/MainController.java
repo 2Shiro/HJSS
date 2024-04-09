@@ -42,7 +42,7 @@ public class MainController {
 		//JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
-		System.out.println("jobList = " + jobList);
+		//System.out.println("jobList = " + jobList);
 		
 		//기업 이미지 객체리스트 -> companyVo
 		List<CompanyVo> companyVo = new ArrayList<>();
