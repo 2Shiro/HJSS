@@ -24,16 +24,12 @@ import com.green.domain.ComscrapListVo;
 import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
-
-import com.green.domain.PersonVo;
-
 import com.green.domain.MainPageVo;
 import com.green.domain.MatchingResultVo;
 import com.green.domain.MyProposalVo;
 import com.green.domain.PersonVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.PresumeVo;
-
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
@@ -50,8 +46,10 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyController {
 	@Autowired
 	private CompanyMapper companyMapper;
+
 	@Autowired
 	private PersonMapper personMapper;
+
 	@Autowired
 	private MainMapper mainMapper;
 
@@ -62,11 +60,15 @@ public class CompanyController {
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
 
+		//기업 이미지 객체리스트 -> companyVo
+
+
 		// 기업 이미지 객체리스트 -> companyVo
+
 		List<CompanyVo> companyVo = new ArrayList<>();
 		for (int i = 0; i < jobList.size(); i++) {
 			String id = jobList.get(i).getId();
-			System.out.println(id);
+			//System.out.println(id);
 			CompanyVo vo = companyMapper.getCompanyById(id);
 			companyVo.add(new CompanyVo(vo.getId(), vo.getCnumber(), vo.getCname(), vo.getCom_logo(),
 					vo.getCrepresentive(), vo.getAddress(), vo.getManager_name(), vo.getCompany_managerphone(),
@@ -78,13 +80,74 @@ public class CompanyController {
 			mainPageList.add(
 					new MainPageVo(jobList.get(i).getPost_idx(), jobList.get(i).getId(), jobList.get(i).getPost_name(),
 							jobList.get(i).getCareer(), jobList.get(i).getJob_type(), companyVo.get(i).getCom_logo()));
-			System.out.println(companyVo.get(i).getCom_logo());
+			//System.out.println(companyVo.get(i).getCom_logo());
 		}
-
+		log.info("jobList = {}",jobList);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("jobList", jobList);
 		mv.addObject("mainPageList", mainPageList);
 		mv.setViewName("/company/cmain");
+		return mv;
+	}
+
+	//특정 기업회원이 지원 받은 이력서
+	//로그인한 회사에 구직자들이 제안한 현황
+	@RequestMapping("/MyParticipate") // /Company/MyParticipate
+	public ModelAndView getProposal() {
+		//공고에 제안한 것들 테이블
+		List<CproposalVo> proposalList = companyMapper.getProposal();
+		//System.out.println(proposalList);
+		
+		//공고 리스트
+		List<JobpostVo> jobpostList = new ArrayList<>();
+		for(int i = 0; i < proposalList.size(); i++) {
+			JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
+			jobpostList.add(new JobpostVo(vo.getPost_idx(),
+										  vo.getId(),
+										  vo.getPost_name(),
+										  vo.getCareer(),
+										  vo.getJob_type(),
+										  vo.getPay(),
+										  vo.getGo_work(),
+										  vo.getGo_home(),
+										  vo.getDeadline(),
+										  vo.getJob_intro(),
+										  vo.getC_intro(),
+										  vo.getCreated_date()));
+		}
+		
+		//구직자 이름
+		List<PersonVo> personList = new ArrayList<>();
+		for(int i = 0; i < proposalList.size(); i++) {
+			String id = proposalList.get(i).getId();
+			//System.out.println(id);
+			PersonVo vo = personMapper.getPname(id);
+			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(),
+							vo.getAddress(), vo.getBirth()));
+		}
+		
+		List<MyProposalVo> myproposalList = new ArrayList<>();
+		for(int i = 0; i < proposalList.size(); i++) {
+			String status;
+			//System.out.println(proposalList.get(i).getStatus());
+			if (proposalList.get(i).getStatus() == 1) {
+				status = "합격";
+			} else if (proposalList.get(i).getStatus() == 2) {
+				status = "불합격";
+			} else {
+				status = "미채점";
+			}
+			myproposalList.add(new MyProposalVo(jobpostList.get(i).getPost_idx(),
+												jobpostList.get(i).getPost_name(),
+												personList.get(i).getPname(),
+												proposalList.get(i).getResume_idx(),
+												status));
+		}
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("proposalList", proposalList);
+		mv.addObject("myproposalList", myproposalList);
+		mv.setViewName("company/myparticipate");
 		return mv;
 	}
 
@@ -95,10 +158,14 @@ public class CompanyController {
 		String id = "";
 		id = "cp2";
 		userVo.setId(id);
+
+		userVo = companyMapper.getUser(id);
+		List<JobpostVo> list = companyMapper.getpostList(vo);
+		List<SkillVo> skill = companyMapper.getSkillList();
+
 		userVo = mainMapper.getUser(id);
 		vo.setId(id);
-		List<JobpostVo> list = companyMapper.getpostList(vo);
-		List<SkillVo> skill = mainMapper.getSkillList();
+
 		log.info("list = {}", list);
 
 		mv.addObject("user", userVo);		
@@ -108,26 +175,7 @@ public class CompanyController {
 		mv.setViewName("/company/jobs");
 		return mv;
 	}
-	@RequestMapping("/jobPost")
-	public ModelAndView jobPost(JobpostVo postVo) {
-		ModelAndView mv = new ModelAndView();
-		companyMapper.insertpost(postVo);
-		mv.setViewName("redirect:/jobs");
-		return mv;
-	}
-	@RequestMapping("/jobDetail")
-	public ModelAndView jobDetail() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/company/jobDetail");
-		return mv;
-	}
-	@RequestMapping("/jobUpdate")
-	public ModelAndView jobUpdate() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/company/jobUpdate");
-		return mv;
-	}
-	
+
 	// /Company/Mypage
 	@RequestMapping("/Mypage")
 	public ModelAndView mypage( CompanyVo companyVo ) {
@@ -267,54 +315,6 @@ public class CompanyController {
 		return mv;
 	}
 
-	// 특정 기업회원이 지원 받은 이력서
-	// 로그인한 회사에 구직자들이 제안한 현황
-	@RequestMapping("/MyParticipate") // /Company/MyParticipate
-	public ModelAndView getProposal() {
-		// 공고에 제안한 것들 테이블
-		List<CproposalVo> proposalList = companyMapper.getProposal();
-		System.out.println(proposalList);
-
-		// 공고 리스트
-		List<JobpostVo> jobpostList = new ArrayList<>();
-		for (int i = 0; i < proposalList.size(); i++) {
-			JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
-			jobpostList.add(new JobpostVo(vo.getPost_idx(), vo.getId(), vo.getPost_name(), vo.getCareer(),
-					vo.getJob_type(), vo.getPay(), vo.getGo_work(), vo.getGo_home(), vo.getDeadline(),
-					vo.getJob_intro(), vo.getC_intro(), vo.getCreated_date()));
-		}
-
-		// 구직자 이름
-		List<PersonVo> personList = new ArrayList<>();
-		for (int i = 0; i < proposalList.size(); i++) {
-			String id = proposalList.get(i).getId();
-			System.out.println(id);
-			PersonVo vo = personMapper.getPname(id);
-			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(), vo.getAddress(), vo.getBirth()));
-		}
-
-		List<MyProposalVo> myproposalList = new ArrayList<>();
-		for (int i = 0; i < proposalList.size(); i++) {
-			String status;
-			// System.out.println(proposalList.get(i).getStatus());
-			if (proposalList.get(i).getStatus() == 1) {
-				status = "합격";
-			} else if (proposalList.get(i).getStatus() == 2) {
-				status = "불합격";
-			} else {
-				status = "미채점";
-			}
-			myproposalList.add(new MyProposalVo(jobpostList.get(i).getPost_idx(), jobpostList.get(i).getPost_name(),
-					personList.get(i).getPname(), proposalList.get(i).getResume_idx(), status));
-		}
-
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("proposalList", proposalList);
-		mv.addObject("myproposalList", myproposalList);
-		mv.setViewName("company/myparticipate");
-		return mv;
-	}
-
 	// 특정 기업회원의 공고에 대한 인재 추천
 	@ResponseBody
 	@RequestMapping("/Recommend")
@@ -409,7 +409,7 @@ public class CompanyController {
 	@RequestMapping("/Join")
 	public ModelAndView ComJoin(CompanyVo companyVo) {
 
-		System.out.println("comVo" + companyVo);
+		//System.out.println("comVo" + companyVo);
 
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +32,7 @@
   table
   
   a {text-decoration-line:none;
-     color:grey;}
+     color : grey;}
   
 #logch{ td:first-child{border-bottom:7px solid lightgrey; }
          td:nth-child(2){border-bottom:7px solid #5215a6;}
@@ -60,40 +60,41 @@ footer{
 </style>
 </head>
 <body>
-<div class="main">
-         <div>
-            <a href="/">
-                 <img alt="Logo" src="/images/logo.png" style="width:150px;">
-             </a><br><br><br>
-<main>
+	<main>
+		<div>
+			<a href="/"> <img alt="Logo" src="/images/logo.png"
+				style="width: 150px;">
+			</a><br> <br> <br>
+			<main>
 
-</hr>
-<table id="logch">
-  <tr>
-    <td ><a href="/loginForm" id="perlog">개인회원</a></td>
-    <td ><a href="Company/loginForm" id="comlog">기업회원</a></td>
-  </tr>
-</table>
-   <form  action="/Company/login" method="post" id="login">
-   <div class="log">
-     <table>
-       <tr>
-         <td colspan="2"><input type="text" id="id" name="id" 
-                    style="width: 250px;" placeholder="아이디"></td>
-       <tr>
-         <td colspan="2"><input type="password" id="password" name="password" 
-                    style="width: 250px;" placeholder="비밀번호"></td>
-       </tr>
-       <tr id="btn">
-         <td ><input type="submit" value="로그인" ></td>
-         <td><input type="button" value="회원가입" onClick="location.href='/Company/JoinForm'"></td>
-        </tr>     
-     </table> 
-     </div>  
-   </form>
- </main>
-
- <%@include file="/WEB-INF/include/footer.jsp" %>
-
+				</hr>
+				<table id="logch">
+					<tr>
+						<td><a href="/loginForm" id="perlog">개인회원</a></td>
+						<td><a href="/Company/loginForm" id="comlog">기업회원</a></td>
+					</tr>
+				</table>
+				<form action="/Company/login" method="post" id="login">
+					<div class="log">
+						<table>
+							<tr>
+								<td colspan="2"><input type="text" id="id" name="id"
+									style="width: 250px;" placeholder="아이디"></td>
+							<tr>
+								<td colspan="2"><input type="password" id="password"
+									name="password" style="width: 250px;" placeholder="비밀번호"></td>
+							</tr>
+							<tr id="btn">
+								<td><input type="submit" value="로그인"></td>
+								<td><input type="button" value="회원가입"
+									onClick="location.href='/Company/JoinForm'"></td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</main>
+		</div>
+	</main>
+	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
