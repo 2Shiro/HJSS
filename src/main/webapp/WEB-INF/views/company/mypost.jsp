@@ -51,8 +51,8 @@
 						document.getElementById('postForm').addEventListener('submit', function(event) {
 							  event.preventDefault();
 							  alert('등록 되었습니다');
-							  var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
-							  myModal.hide();
+							    var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
+							    myModal.hide();
 							  var postForm = document.getElementById('postForm');
 							  postForm.submit();
 							});

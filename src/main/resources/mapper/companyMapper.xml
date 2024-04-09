@@ -54,8 +54,7 @@
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL,
 		TO_CHAR(CREATED_DATE,
-		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID
-		= #{id}
+		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
 	</select>
 
 	<select id="getpostList" parameterType="String"

@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -245,15 +246,18 @@ public class PersonController {
 		        if (!directory.exists()) {
 		            directory.mkdirs();
 		        }
-
+		        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+		        ZonedDateTime current = ZonedDateTime.now();
+		        String namePattern = current.format(format);
+		        System.out.println(namePattern);
 		        String fileName = file.getOriginalFilename();
 		        String filePath = Paths.get(imagesDirPath, fileName).toString();
-
+		        
 		        // 파일 저장
 		        Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
 		        // 데이터베이스에 저장할 파일 경로 설정
-		        String relativePath = "/images/" + fileName;
+		        String relativePath = "/images/" + namePattern + fileName;
 		        vo.setProfile(relativePath);
 
 		    } catch (IOException e) {
@@ -262,7 +266,7 @@ public class PersonController {
 		    }
 		} else {
 		    // 파일이 선택되지 않았거나 비어 있는 경우, 기존 이미지 경로를 사용
-		    String relativePath = vo.getPortfolio();
+		    String relativePath = vo.getProfile();
 		    vo.setProfile(relativePath);
 		}
 
@@ -385,7 +389,7 @@ public class PersonController {
 
 	// /Person/Mypage
 	@RequestMapping("/Mypage")
-	public ModelAndView mypage(PersonVo personVo) {
+	public ModelAndView mypage(@SessionAttribute("login") PersonVo personVo) {
 
 		PersonVo vo = personMapper.getPerson(personVo);
 

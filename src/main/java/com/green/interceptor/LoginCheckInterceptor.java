@@ -21,7 +21,6 @@ public class LoginCheckInterceptor implements  HandlerInterceptor {
 			return false;
 		} else {
 			System.out.println("로그인 상태 : ");
-			System.out.println(session.getAttribute("login"));
 			return true;
 		}
 	}

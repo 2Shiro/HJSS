@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CompanyVo;
@@ -151,31 +152,6 @@ public class CompanyController {
 		return mv;
 	}
 
-	// 특정 기업회원의 등록 공고 관리
-	@RequestMapping("/MyPost")
-	public ModelAndView myPost(UserVo userVo, JobpostVo vo) {
-		ModelAndView mv = new ModelAndView();
-		String id = "";
-		id = "cp2";
-		userVo.setId(id);
-
-		userVo = companyMapper.getUser(id);
-		List<JobpostVo> list = companyMapper.getpostList(vo);
-		List<SkillVo> skill = companyMapper.getSkillList();
-
-		userVo = mainMapper.getUser(id);
-		vo.setId(id);
-
-		log.info("list = {}", list);
-
-		mv.addObject("user", userVo);		
-		mv.addObject("id", id);		
-		mv.addObject("list", list);		
-		mv.addObject("skill", skill);		
-		mv.setViewName("/company/jobs");
-		return mv;
-	}
-
 	// /Company/Mypage
 	@RequestMapping("/Mypage")
 	public ModelAndView mypage( CompanyVo companyVo ) {
@@ -241,6 +217,29 @@ public class CompanyController {
 		return mv;
 	}
 
+	// 특정 기업회원의 등록 공고 관리
+	@RequestMapping("/MyPost")
+	public ModelAndView myPost(UserVo userVo, JobpostVo vo, @SessionAttribute("login") CompanyVo comVo) {
+		ModelAndView mv = new ModelAndView();
+		String id = comVo.getId();
+		userVo.setId(id);
+		vo.setId(id);
+		List<JobpostVo> list = companyMapper.getpostList(vo);
+		List<SkillVo> skill = companyMapper.getSkillList();
+		userVo = mainMapper.getUser(id);
+		log.info("id = {}", id);
+		log.info("userVo = {}", userVo);
+		log.info("skill = {}", skill);
+		log.info("list = {}", list);
+
+		mv.addObject("user", userVo);		
+		mv.addObject("id", id);		
+		mv.addObject("list", list);		
+		mv.addObject("skill", skill);		
+		mv.setViewName("/company/mypost");
+		return mv;
+	}
+	
 	// 특정 기업회원의 공고 등록
 	@RequestMapping("/MyPostWrite")
 	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {

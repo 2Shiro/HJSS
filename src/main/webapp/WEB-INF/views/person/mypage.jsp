@@ -72,8 +72,8 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<a class="btn btn-primary float-end me-2" href  = "/Person/UpdateForm?id=${ vo.id }" />수정</a>
-						<a class="btn btn-danger float-end me-2" href  = "/Person/DeleteForm?id=${ vo.id }" />탈퇴</a>
+						<a class="btn btn-primary float-end me-2" href="/Person/UpdateForm?id=${ sessionScope.login.id }" >수정</a>
+						<a class="btn btn-danger float-end me-2" href="/Person/DeleteForm?id=${ sessionScope.login.id }" >탈퇴</a>
 					</div>
 			</div>
 			</section>
