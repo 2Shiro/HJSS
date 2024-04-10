@@ -229,13 +229,6 @@
 		#{resume_idx})
 	</insert>
 
-
-	<select id="getSkillList">
-		SELECT SKILL_IDX, SKILL_NAME
-		FROM SKILL_TB
-	</select>
-
-
 	<!-- 공고 이름 가져오기 -->
 	<select id="getpostName">
 		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,

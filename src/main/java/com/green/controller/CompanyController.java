@@ -61,15 +61,14 @@ public class CompanyController {
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
 
-		//기업 이미지 객체리스트 -> companyVo
-
+		// 기업 이미지 객체리스트 -> companyVo
 
 		// 기업 이미지 객체리스트 -> companyVo
 
 		List<CompanyVo> companyVo = new ArrayList<>();
 		for (int i = 0; i < jobList.size(); i++) {
 			String id = jobList.get(i).getId();
-			//System.out.println(id);
+			// System.out.println(id);
 			CompanyVo vo = companyMapper.getCompanyById(id);
 			companyVo.add(new CompanyVo(vo.getId(), vo.getCnumber(), vo.getCname(), vo.getCom_logo(),
 					vo.getCrepresentive(), vo.getAddress(), vo.getManager_name(), vo.getCompany_managerphone(),
@@ -81,9 +80,9 @@ public class CompanyController {
 			mainPageList.add(
 					new MainPageVo(jobList.get(i).getPost_idx(), jobList.get(i).getId(), jobList.get(i).getPost_name(),
 							jobList.get(i).getCareer(), jobList.get(i).getJob_type(), companyVo.get(i).getCom_logo()));
-			//System.out.println(companyVo.get(i).getCom_logo());
+			// System.out.println(companyVo.get(i).getCom_logo());
 		}
-		log.info("jobList = {}",jobList);
+		log.info("jobList = {}", jobList);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("jobList", jobList);
 		mv.addObject("mainPageList", mainPageList);
@@ -91,46 +90,36 @@ public class CompanyController {
 		return mv;
 	}
 
-	//특정 기업회원이 지원 받은 이력서
-	//로그인한 회사에 구직자들이 제안한 현황
+	// 특정 기업회원이 지원 받은 이력서
+	// 로그인한 회사에 구직자들이 제안한 현황
 	@RequestMapping("/MyParticipate") // /Company/MyParticipate
 	public ModelAndView getProposal() {
-		//공고에 제안한 것들 테이블
+		// 공고에 제안한 것들 테이블
 		List<CproposalVo> proposalList = companyMapper.getProposal();
-		//System.out.println(proposalList);
-		
-		//공고 리스트
+		// System.out.println(proposalList);
+
+		// 공고 리스트
 		List<JobpostVo> jobpostList = new ArrayList<>();
-		for(int i = 0; i < proposalList.size(); i++) {
+		for (int i = 0; i < proposalList.size(); i++) {
 			JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
-			jobpostList.add(new JobpostVo(vo.getPost_idx(),
-										  vo.getId(),
-										  vo.getPost_name(),
-										  vo.getCareer(),
-										  vo.getJob_type(),
-										  vo.getPay(),
-										  vo.getGo_work(),
-										  vo.getGo_home(),
-										  vo.getDeadline(),
-										  vo.getJob_intro(),
-										  vo.getC_intro(),
-										  vo.getCreated_date()));
+			jobpostList.add(new JobpostVo(vo.getPost_idx(), vo.getId(), vo.getPost_name(), vo.getCareer(),
+					vo.getJob_type(), vo.getPay(), vo.getGo_work(), vo.getGo_home(), vo.getDeadline(),
+					vo.getJob_intro(), vo.getC_intro(), vo.getCreated_date()));
 		}
-		
-		//구직자 이름
+
+		// 구직자 이름
 		List<PersonVo> personList = new ArrayList<>();
-		for(int i = 0; i < proposalList.size(); i++) {
+		for (int i = 0; i < proposalList.size(); i++) {
 			String id = proposalList.get(i).getId();
-			//System.out.println(id);
+			// System.out.println(id);
 			PersonVo vo = personMapper.getPname(id);
-			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(),
-							vo.getAddress(), vo.getBirth()));
+			personList.add(new PersonVo(vo.getId(), vo.getPname(), vo.getPhone(), vo.getAddress(), vo.getBirth()));
 		}
-		
+
 		List<MyProposalVo> myproposalList = new ArrayList<>();
-		for(int i = 0; i < proposalList.size(); i++) {
+		for (int i = 0; i < proposalList.size(); i++) {
 			String status;
-			//System.out.println(proposalList.get(i).getStatus());
+			// System.out.println(proposalList.get(i).getStatus());
 			if (proposalList.get(i).getStatus() == 1) {
 				status = "합격";
 			} else if (proposalList.get(i).getStatus() == 2) {
@@ -138,13 +127,10 @@ public class CompanyController {
 			} else {
 				status = "미채점";
 			}
-			myproposalList.add(new MyProposalVo(jobpostList.get(i).getPost_idx(),
-												jobpostList.get(i).getPost_name(),
-												personList.get(i).getPname(),
-												proposalList.get(i).getResume_idx(),
-												status));
+			myproposalList.add(new MyProposalVo(jobpostList.get(i).getPost_idx(), jobpostList.get(i).getPost_name(),
+					personList.get(i).getPname(), proposalList.get(i).getResume_idx(), status));
 		}
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("proposalList", proposalList);
 		mv.addObject("myproposalList", myproposalList);
@@ -154,66 +140,65 @@ public class CompanyController {
 
 	// /Company/Mypage
 	@RequestMapping("/Mypage")
-	public ModelAndView mypage( CompanyVo companyVo ) {
-		
-		CompanyVo vo  =  companyMapper.getCompany( companyVo );
-		
+	public ModelAndView mypage(CompanyVo companyVo) {
+
+		CompanyVo vo = companyMapper.getCompany(companyVo);
+
 		ModelAndView mv = new ModelAndView();
 
 		mv.addObject("vo", vo);
 		mv.setViewName("/company/mypage");
 		return mv;
 	}
-	
+
 	// /Company/UpdateForm
 	@RequestMapping("/UpdateForm")
-	public ModelAndView updateForm( CompanyVo companyVo ) {
-		
-		CompanyVo vo = companyMapper.getCompany( companyVo );
-		
+	public ModelAndView updateForm(CompanyVo companyVo) {
+
+		CompanyVo vo = companyMapper.getCompany(companyVo);
+
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("vo", vo);
 		mv.setViewName("company/mypageUpdate");
-		
+
 		return mv;
 	}
-	
+
 	// /Company/Update
 	@RequestMapping("/Update")
-	public ModelAndView update( CompanyVo companyVo ) {
-		
-		companyMapper.updateCompany( companyVo );
-		companyMapper.updateUser( companyVo );
-		
+	public ModelAndView update(CompanyVo companyVo) {
+
+		companyMapper.updateCompany(companyVo);
+		companyMapper.updateUser(companyVo);
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/Company/Mypage");
 		return mv;
 	}
-	
-	
+
 	// /Company/DeleteForm
 	@RequestMapping("/DeleteForm")
-	public ModelAndView deleteForm( CompanyVo companyVo ) {
-		
-		CompanyVo vo = companyMapper.getCompany( companyVo );
-		
+	public ModelAndView deleteForm(CompanyVo companyVo) {
+
+		CompanyVo vo = companyMapper.getCompany(companyVo);
+
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("vo", vo);
 		mv.setViewName("/company/delete");
 		return mv;
 	}
-	
+
 	// /Company/DeleteForm
 	@RequestMapping("/Delete")
-	public ModelAndView delete( CompanyVo companyVo ) {
-	   
-		companyMapper.deleteCompany( companyVo );
-		companyMapper.deleteUser( companyVo );
-		   
+	public ModelAndView delete(CompanyVo companyVo) {
+
+		companyMapper.deleteCompany(companyVo);
+		companyMapper.deleteUser(companyVo);
+
 		ModelAndView mv = new ModelAndView();
-		   
+
 		mv.setViewName("redirect:/main");
-		
+
 		return mv;
 	}
 
@@ -221,32 +206,44 @@ public class CompanyController {
 	@RequestMapping("/MyPost")
 	public ModelAndView myPost(UserVo userVo, JobpostVo vo, @SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
+
+		// session에서 id를 가져옴
 		String id = comVo.getId();
+
+		// 가져온 id를 UserVo와 JobpostVo에 입력
 		userVo.setId(id);
 		vo.setId(id);
-		List<JobpostVo> list = companyMapper.getpostList(vo);
-		List<SkillVo> skill = companyMapper.getSkillList();
-		userVo = mainMapper.getUser(id);
-		log.info("id = {}", id);
-		log.info("userVo = {}", userVo);
-		log.info("skill = {}", skill);
-		log.info("list = {}", list);
 
-		mv.addObject("user", userVo);		
-		mv.addObject("id", id);		
-		mv.addObject("list", list);		
-		mv.addObject("skill", skill);		
+		// 가져온 id를 통해 해당 id의 등록 공고 목록 불러오기
+		List<JobpostVo> list = companyMapper.getpostList(vo);
+
+		// 모든 기술자격 리스트 불러오기
+		List<SkillVo> skill = mainMapper.getSkillList();
+
+		// 회사 정보 불러오기
+		userVo = mainMapper.getUser(id);
+
+		mv.addObject("user", userVo);
+		mv.addObject("id", id);
+		mv.addObject("list", list);
+		mv.addObject("skill", skill);
 		mv.setViewName("/company/mypost");
 		return mv;
 	}
-	
+
 	// 특정 기업회원의 공고 등록
 	@RequestMapping("/MyPostWrite")
 	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
+
+		// 기술자격 데이터를 넣기 위해 미리 post_idx를 확정함
 		int post_idx = companyMapper.selectpostidxmax();
 		postVo.setPost_idx(post_idx);
+
+		// 공고 등록 모달에서 입력한 데이터를 데이터베이스 insert
 		companyMapper.insertpost(postVo);
+
+		// 공고 등록 모달에서 선택된 기술자격 정보를 for문을 이용해서 하나씩 데이터베이스 저장
 		for (Integer skillIdx : skillIdxList) {
 			PostskillVo skillVo = new PostskillVo();
 			skillVo.setPost_idx(post_idx);
@@ -260,12 +257,25 @@ public class CompanyController {
 	@RequestMapping("/MyPostDetail")
 	public ModelAndView myPostDetail(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
+
+		// 공고의 상세정보를 가져옴
 		JobpostVo vo = companyMapper.viewPost(postVo);
+
+		// 해당 공고의 id를 확정하기 위해 id값을 가져옴
 		String id = vo.getId();
+
+		// 가져온 id값을 사용하여 해당 공고의 기업 정보를 가져옴
 		CompanyVo com = companyMapper.getCompany(id);
+
+		// 해당 공고 기업의 이메일 주소를 가져오기 위해 UserVo 정보를 가져옴
 		UserVo userVo = mainMapper.getUser(id);
+
+		// 공고의 기술자격 정보를 가져오기 위해 post_idx를 확정
 		int post_idx = vo.getPost_idx();
+
+		// 해당 공고의 기술자격 정보를 가져옴
 		List<SkillVo> skill = companyMapper.loadskills(post_idx);
+
 		mv.addObject("vo", vo);
 		mv.addObject("com", com);
 		mv.addObject("userVo", userVo);
@@ -277,10 +287,15 @@ public class CompanyController {
 	@RequestMapping("/MyPostEdit")
 	public ModelAndView editMyPost(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
+
+		// 공고의 상세정보를 가져옴
 		JobpostVo vo = companyMapper.viewPost(postVo);
+
+		// 모든 기술 자격을 불러온 후 사전에 작성된 기술 자격을 selected 하기 위해 2개의 list를 만듦
 		int post_idx = vo.getPost_idx();
 		List<SkillVo> postSkills = companyMapper.loadskills(post_idx);
 		List<SkillVo> allSkills = mainMapper.getSkillList();
+
 		mv.addObject("vo", vo);
 		mv.addObject("allSkills", allSkills);
 		mv.addObject("postSkills", postSkills);
@@ -291,10 +306,18 @@ public class CompanyController {
 	@RequestMapping("/MyPostUpdate")
 	public ModelAndView updateMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
+
+		// 해당 공고의 post_idx를 확정
 		int post_idx = postVo.getPost_idx();
 		postVo.setPost_idx(post_idx);
+
+		// 해당 공고의 정보를 update
 		companyMapper.updatePost(postVo);
+
+		// 해당 공고의 모든 기술자격 데이터를 삭제
 		companyMapper.deletepostskills(postVo);
+
+		// 해당 공고의 기술자격 데이터를 다시 입력
 		for (Integer skillIdx : skillIdxList) {
 			PostskillVo skillVo = new PostskillVo();
 			skillVo.setPost_idx(post_idx);
@@ -308,7 +331,10 @@ public class CompanyController {
 	@RequestMapping("/MyPostDelete")
 	public ModelAndView postDelete(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
+		// 해당 공고의 모든 기술자격 데이터 삭제
 		companyMapper.deletepostskills(postVo);
+
+		// 해당 공고 삭제
 		companyMapper.postDelete(postVo);
 		mv.setViewName("redirect:/Company/MyPost");
 		return mv;
@@ -317,64 +343,72 @@ public class CompanyController {
 	// 특정 기업회원의 공고에 대한 인재 추천
 	@ResponseBody
 	@RequestMapping("/Recommend")
-	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume, HttpServletRequest request) {
+	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume,
+			@SessionAttribute("login") CompanyVo comVo) {
 		
 		ModelAndView mv = new ModelAndView();
-		String id = "";
-		id = "cp2";
-		userVo.setId(id);
-		userVo = mainMapper.getUser(id);
-		jobpostVo.setId(id);
-		// 회사의 공고 목록을 가져옵니다.
-		List<JobpostVo> jobPosts = companyMapper.getpostList(jobpostVo);
-		log.info("jobPosts = {}", jobPosts);
 
+		// session에서 id를 가져옴
+		String id = comVo.getId();
+		userVo.setId(id);
+
+		// 가져온 id를 통해 유저 정보를 가져옴
+		userVo = mainMapper.getUser(id);
+
+		// 회사의 공고 목록을 가져옵니다.
+		jobpostVo.setId(id);
+		List<JobpostVo> jobPosts = companyMapper.getpostList(jobpostVo);
+
+		// MatchingResultVo는 해당 페이지가 여러 테이블의 컬럼을 JOIN하여 가져오기 때문에 만든 Vo
 		// 각 공고에 대한 후보자 목록을 담을 맵
 		Map<Integer, List<MatchingResultVo>> candidatesPerPost = new HashMap<>();
-		
+
 		// 공고 ID와 공고명을 매핑할 맵
 		Map<Integer, String> postNames = new HashMap<>();
-		
-		// 공고 ID와 마감일을 매핑할 맵을 추가 (Date 타입으로 변경)
+
+		// 공고 ID와 마감일을 매핑할 맵 (Date 타입으로 변경)
 		Map<Integer, Date> deadlines = new HashMap<>();
-		
+
 		// 공고의 직무 소개를 매핑할 맵
 		Map<Integer, String> job_intros = new HashMap<>();
-		
+
 		// 이력서의 생일을 만 나이로 매핑할 맵
 		Map<Integer, Integer> candidateAges = new HashMap<>();
 
+		// for문을 통해 각 맵에 데이터를 추가
 		for (JobpostVo post : jobPosts) {
 			int postIdx = post.getPost_idx();
+
 			// 공고명을 postNames 맵에 추가
 			postNames.put(postIdx, post.getPost_name());
+
 			// 마감일을 deadlines 맵에 추가 (String에서 Date로 변환)
 			deadlines.put(postIdx, parseStringToDate(post.getDeadline()));
+
 			// 직무소개를 job_intro 맵에 추가
 			job_intros.put(postIdx, post.getJob_intro());
-			// postId를 사용하여 해당 공고에 추천된 후보자 목록을 가져옵니다.
-			
+
+			// post_idx를 사용하여 해당 공고에 추천된 후보자 목록을 가져옴
 			List<MatchingResultVo> candidates = companyMapper.recommended(postIdx);
-			
-			log.info("candidates for post {} = {}", postIdx, candidates);
-			
+
 			// 후보자 목록을 candidatesPerPost 맵에 추가
 			candidatesPerPost.put(postIdx, candidates);
-			
-			
+
+			// 다시 for문을 통해 각 후보자들의 나이 정보를 가져옴
 			for (MatchingResultVo candidate : candidates) {
+
 				// 후보자의 만 나이를 계산하여 맵에 저장합니다.
 				candidateAges.put(candidate.getResume_idx(), AgeUtil.calculateAgeFromDate(candidate.getBirth()));
 			}
 
 		}
-		// candidatesPerPost, postNames, deadlines를 모델에 추가
+
 		mv.addObject("cid", id);
 		mv.addObject("candidateAges", candidateAges);
 		mv.addObject("candidatesPerPost", candidatesPerPost);
 		mv.addObject("postNames", postNames);
-		mv.addObject("deadlines", deadlines); // deadlines 맵을 모델에 추가
-		mv.addObject("job_intros", job_intros); // deadlines 맵을 모델에 추가
+		mv.addObject("deadlines", deadlines);
+		mv.addObject("job_intros", job_intros);
 		mv.setViewName("/company/recommend");
 		return mv;
 	}
@@ -408,7 +442,7 @@ public class CompanyController {
 	@RequestMapping("/Join")
 	public ModelAndView ComJoin(CompanyVo companyVo) {
 
-		//System.out.println("comVo" + companyVo);
+		// System.out.println("comVo" + companyVo);
 
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);
@@ -455,16 +489,26 @@ public class CompanyController {
 			return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
 		}
 	}
-	
+
 	@RequestMapping("/MyScrap")
-	public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo) {
+	public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo, @SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
-		String id = "";
-		id = "cp2";
+		
+		// ComscrapListVo는 스크랩 리스트를 가져오기 위해 만든 Vo	
+		// session에서 id를 가져옴
+		String id = comVo.getId();
 		userVo.setId(id);
+		userVo.setId(id);
+		
+		// 가져온 id를 사용해서 유저 정보를 가져옴
 		userVo = mainMapper.getUser(id);
+		
+		// 가져온 id를 사용해서 ComscrapListVo의 id값을 확정함
 		scrapVo.setCid(id);
+		
+		// ComscrapListVo 정보를 list로 가져옴
 		List<ComscrapListVo> comScrapList = companyMapper.getScrapList(scrapVo);
+		
 		mv.addObject("ScrapList", comScrapList);
 		mv.setViewName("company/myscrap");
 		return mv;

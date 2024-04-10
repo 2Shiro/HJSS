@@ -46,9 +46,6 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonController {
 
 	@Autowired
-	private Environment env; // application.properties에 접근하기 위한 Environment 객체
-
-	@Autowired
 	private MainMapper mainMapper;
 
 	@Autowired
