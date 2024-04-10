@@ -37,7 +37,9 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
-
+.linkDiv input {
+	cursor: pointer;
+}
 .linkDiv:hover {
 	cursor: pointer;
 }
