@@ -416,8 +416,12 @@ public class CompanyController {
 	// 날짜 문자열을 Date 객체로 변환하는 메소드
 	private Date parseStringToDate(String dateString) {
 		try {
+			//impleDateFormat 객체를 생성. 날짜와 시간을 "yyyy-MM-dd"으로 파싱
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			
+			// dateString 변수에 저장된 날짜 문자열을 Date 객체로 변환
 			return formatter.parse(dateString);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -454,38 +458,70 @@ public class CompanyController {
 	// 이력서 스크랩 기능
 	@RequestMapping("/ScrapAdd")
 	public ResponseEntity<?> addScrap(@RequestBody ComscrapVo scrapvo) {
+		
+		//데이터 추가 성공시
 		try {
+		
+			// COM_SCRAP_TB에 스크랩 정보 insert	
 			companyMapper.insertScrap(scrapvo);
+			
+			//HTTP 상태 코드 200(OK)와 함께 빈 본문을 반환	
 			return ResponseEntity.ok().build();
+		
+			//데이터 추가 실패시
 		} catch (Exception e) {
+			
+			//400(Bad Request)과 함께 "스크랩 삭제에 실패했습니다." 메시지를 반환
 			return ResponseEntity.badRequest().body("스크랩 추가에 실패했습니다.");
 		}
 	}
 
 	@RequestMapping("/ScrapDelete")
 	public ResponseEntity<?> deleteScrap(@RequestParam("resume_idx") int resume_idx) {
+		
+		//데이터 삭제 성공시
 		try {
+			
+			// COM_SCRAP_TB에 스크랩 정보 delete	
 			companyMapper.deleteScrap(resume_idx);
+			
+			//HTTP 상태 코드 200(OK)와 함께 빈 본문을 반환
 			return ResponseEntity.ok().build();
+			
+			//데이터 삭제 실패시
 		} catch (Exception e) {
+			
+			//400(Bad Request)과 함께 "스크랩 삭제에 실패했습니다." 메시지를 반환
 			return ResponseEntity.badRequest().body("스크랩 삭제에 실패했습니다.");
 		}
 	}
 
 	@RequestMapping("/CheckScrap")
 	public ResponseEntity<?> checkScrap(@RequestParam("resume_idx") int resume_idx, @RequestParam("cid") String cid) {
+		
+		// resume_idx와 cid를 Param으로 불러와 해당 정보가 들어있는 데이터가 있는지 확인
 		int scarapCount = companyMapper.countScrap(cid, resume_idx);
+		
+		//데이터 조회 성공시
 		try {
-
-			if (scarapCount != 0) {
+			
+			// count sql문을 통해 조회한 데이터가 0이 아닐경우
+			if (scarapCount != 0) {		
 				boolean isScraped = true;
+				
+				// HTTP 상태 코드 200(OK)와 함께 true값을 페이지에 반환하여 스크랩 버튼의 요소를 변경함
 				return ResponseEntity.ok(isScraped);
 			} else {
 				boolean isScraped = false;
+				
+				// HTTP 상태 코드 200(OK)와 함께 false값을 페이지에 반환하여 스크랩 버튼의 요소를 변경함
 				return ResponseEntity.ok(isScraped);
 			}
 
+			//데이터 조회 실패시
 		} catch (Exception e) {
+			
+			//400(Bad Request)과 함께 "스크랩 상태 확인에 실패했습니다." 메시지를 반환
 			return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
 		}
 	}

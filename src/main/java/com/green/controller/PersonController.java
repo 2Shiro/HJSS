@@ -144,17 +144,24 @@ public class PersonController {
 
 		String id = userVo.getId();
 		vo.setId(id);
+
 		if (file != null && !file.isEmpty()) {
 		    try {
 		        // 파일 저장 경로 구성
 		        String baseDir = System.getProperty("user.dir");
 		        String imagesDirPath = baseDir + uploadDir; // application.properties에서 설정된 값을 사용
-
+		        
+		        // 파일 저장 시 폴더가 없을 경우 폴더를 생성함
 		        File directory = new File(imagesDirPath);
 		        if (!directory.exists()) {
 		            directory.mkdirs();
 		        }
-
+		        
+		        // 파일 저장시 중복된 이름을 피하기 위해서 날짜정보를 파일 이름에 추가
+		        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+		        ZonedDateTime current = ZonedDateTime.now();
+		        String namePattern = current.format(format);
+		        System.out.println(namePattern);
 		        String fileName = file.getOriginalFilename();
 		        String filePath = Paths.get(imagesDirPath, fileName).toString();
 
@@ -162,7 +169,7 @@ public class PersonController {
 		        Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
 		        // 데이터베이스에 저장할 파일 경로 설정
-		        String relativePath = "/images/" + fileName;
+		        String relativePath = "/images/" + namePattern + fileName;
 		        vo.setProfile(relativePath);
 
 		    } catch (IOException e) {

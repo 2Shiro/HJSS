@@ -29,7 +29,7 @@
 
 	UserEl.addEventListener('click', function(e) {
 		alert('company mypage');
-		location.href = '/Company/Mypage';
+		location.href = '/Company/Mypage?id=' + sessionid;;
 	});
 
 	MyPostEl.addEventListener('click', function(e) { // 수정된 부분
