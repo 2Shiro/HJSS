@@ -75,7 +75,10 @@ public class MainController {
 
 	// 메인에서 선택한 공고 보러 들어가기
 	@RequestMapping("/ViewPost")
-	public ModelAndView viewPost(@RequestParam("post_idx") int post_idx, @RequestParam("id") String id, @SessionAttribute("login") PersonVo personVo) {
+	public ModelAndView viewPost(@RequestParam("post_idx") int post_idx, @RequestParam("id") String id, PersonVo personVo, HttpServletRequest request) {
+		
+
+		
 		// job_post_tb에서 해당 공고 찾기
 		JobpostVo jobpostvo = companyMapper.getViewPost(post_idx);
 		log.info("[==jobpostvo==] : {}", jobpostvo);
@@ -104,6 +107,21 @@ public class MainController {
 		log.info("==presumeVo== {}", presumeVo);
 
 		ModelAndView mv = new ModelAndView();
+		
+		//기업 회원 로그인 시 지원하기 목록을 제거하기 위한 코드
+		//세션에서 PersonVo를 받아와서 jstl문법을 이용하여 지원하기 부분을 가리려고 함
+		HttpSession session = request.getSession();
+		Object loginYn = session.getAttribute("login");
+
+		if (loginYn instanceof PersonVo) {
+		    PersonVo sessionVo = (PersonVo) loginYn;
+		    mv.addObject("sessionVo",sessionVo);
+		} else {
+			mv.setViewName("/viewpost");
+			return mv;
+		}
+		
+		
 		mv.addObject("jobpostvo", jobpostvo);
 		mv.addObject("jobnameList", jobnameList);
 		mv.addObject("companyVo", companyVo);

@@ -30,7 +30,7 @@
 		FROM COMPANY_INFO_TB C,
 		USER_TB U
 		WHERE C.ID = U.ID AND C.ID
-		= 'cp1'
+		= #{id}
 
 	</select>
 
