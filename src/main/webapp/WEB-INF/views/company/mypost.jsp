@@ -37,7 +37,9 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
-
+.linkDiv input {
+	cursor: pointer;
+}
 .linkDiv:hover {
 	cursor: pointer;
 }
@@ -51,8 +53,8 @@
 						document.getElementById('postForm').addEventListener('submit', function(event) {
 							  event.preventDefault();
 							  alert('등록 되었습니다');
-							  var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
-							  myModal.hide();
+							    var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
+							    myModal.hide();
 							  var postForm = document.getElementById('postForm');
 							  postForm.submit();
 							});
@@ -81,7 +83,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -108,9 +110,9 @@
 								<div class="row">
 									<input type="text"
 										class="form-control border-0 shadow-none mb-2 ms-3"
-										value="${ list.post_name }" id="title${ list.post_idx }"> <input
+										value="${ list.post_name }" id="title${ list.post_idx }" readonly="readonly"> <input
 										type="text" class="form-control border-0 shadow-none ms-3"
-										value="마감기한 : ${ list.deadline }" id="deadline${ list.post_idx }">
+										value="마감기한 : ${ list.deadline }" id="deadline${ list.post_idx }" readonly="readonly">
 								</div>
 								<button id="btn-delete${ list.post_idx }"
 									class="btn btn-dark align-self-center float-end mx-3">삭제</button>
@@ -126,3 +128,4 @@
 </body>
 
 </html>
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

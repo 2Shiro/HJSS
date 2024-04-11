@@ -75,3 +75,5 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/pmypage_nav_active.jsp"%>

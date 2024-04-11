@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기업 등록 공고 관리 페이지</title>
+<title>나의 스크랩</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -122,7 +122,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -166,3 +166,5 @@
 </body>
 
 </html>
+
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

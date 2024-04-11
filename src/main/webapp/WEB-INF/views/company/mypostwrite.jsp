@@ -7,7 +7,7 @@
 		<div class="modal-content">
 			<form class="needs-validation container"
 				action="/Company/MyPostWrite?id=${id }" novalidate id="postForm"
-				method="post" enctype="multipart/form-data">
+				method="post">
 				<div class="modal-body">
 					<h2 class="modal-title" id="staticBackdropLabel">공고 등록하기</h2>
 					<hr>

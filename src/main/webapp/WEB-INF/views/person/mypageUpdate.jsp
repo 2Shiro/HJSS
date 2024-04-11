@@ -33,40 +33,40 @@
 							value="${ vo.pname }님의 마이페이지 수정" readonly>
 					</h2>
 					<hr>
-					<form  action="/Person/Update" method="POST">
+					<form action="/Person/Update?id=${ vo.id }" method="POST">
 						<div class="my-1 mx-auto row">
 							<div class="row mt-2  d-flex justify-content-center">
 								<div class="col-6 row ms-4" >
 									<div class="input-group mb-3 ">
-										<span class="input-group-text text-center" id="pname">이름</span>
+										<span class="input-group-text text-center" >이름</span>
 										<input type="text" class="form-control" id="pname" name="pname" value="${ vo.pname }" readonly style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="id">아이디</span>
+										<span class="input-group-text" >아이디</span>
 										<input type="text" class="form-control" id="id" name="id" value="${ vo.id }" readonly style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="password">비밀번호</span>
+										<span class="input-group-text" >비밀번호</span>
 										<input type="password" class="form-control" id="password" name="password" value="${ vo.password }" style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="phone">전화번호</span>
+										<span class="input-group-text" >전화번호</span>
 										<input type="text" class="form-control" id="phone" name="phone" value="${ vo.phone }" style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="user_email">이메일</span>
+										<span class="input-group-text" >이메일</span>
 										<input type="text" class="form-control" id="user_email" name="user_email" value="${ vo.user_email }" style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="address">주소</span>
+										<span class="input-group-text" >주소</span>
 										<input type="text" class="form-control" id="address" name="address" value="${ vo.address }" style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="birth">생년월일</span>
+										<span class="input-group-text" >생년월일</span>
 										<input type="text" class="form-control" id="birth" name="birth" value="${ vo.birth }" readonly style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
-										<span class="input-group-text" id="created_date">생성일</span>
+										<span class="input-group-text" >생성일</span>
 										<input type="text" class="form-control" id="created_date" name="created_date" value="${ vo.created_date }" readonly style="height: 70px; text-align: center;">
 									</div>
 								</div>
@@ -85,8 +85,9 @@
 	
 	<script>
 		const goListEl = document.getElementById('goMypage');
+		const id = document.getElementById('id').value;
 		goListEl.addEventListener('click', function(e) {
-			location.href = '/Person/Mypage';
+			location.href = '/Person/Mypage?id='+id;
 		})
 	</script>
 </body>
