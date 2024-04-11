@@ -10,26 +10,11 @@
 <body>
 	<header
 		class="d-flex flex-column flex-md-row justify-content-between align-items-center py-3 border-bottom">
-		<c:choose>
-			<c:when test="${sessionScope.login.type == 1}">
-				<a href="/Company/Cmain"
-					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto ms-3">
-					<img alt="Logo" src="/images/logo.png" style="width: 150px;">
-				</a>
-			</c:when>
-			<c:when test="${sessionScope.login.type == 2}">
-				<a href="/Person/Pmain"
-					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto ms-3">
-					<img alt="Logo" src="/images/logo.png" style="width: 150px;">
-				</a>
-			</c:when>
-			<c:otherwise>
-				<a href="/"
-					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto ms-3">
-					<img alt="Logo" src="/images/logo.png" style="width: 150px;">
-				</a>
-			</c:otherwise>
-		</c:choose>
+		<a href="/"
+			class="d-flex align-items-center mb-3 mb-md-0 me-md-auto ms-3"> <img
+			alt="Logo" src="/images/logo.png" style="width: 150px;">
+		</a>
+
 		<ul class="nav nav-pills mt-auto me-3">
 			<c:choose>
 				<c:when test="${sessionScope.isLoggedIn}">
@@ -54,7 +39,6 @@
 						class="mx-3 text-decoration-none text-black" href="/loginForm">로그인</a></li>
 				</c:otherwise>
 			</c:choose>
-
 		</ul>
 	</header>
 </body>

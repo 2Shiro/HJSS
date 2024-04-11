@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기업 등록 공고 관리 페이지</title>
+<title>인재 추천</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -174,7 +174,9 @@
 											<td class="skill-column align-middle"><c:forEach
 													var="skill" items="${fn:split(resume.skills, ',')}"
 													varStatus="status">
-													<button type="button" class="btn btn-primary btn-sm m-1">${skill}</button>
+													<c:if test="${not skill.trim().equals('무자격 지원가능')}">
+														<button type="button" class="btn btn-primary btn-sm m-1">${skill}</button>
+													</c:if>
 												</c:forEach></td>
 											<td class="action-column align-middle"><input
 												class="btn btn-outline-secondary scrap-button" type="button"
@@ -202,3 +204,5 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/cmain_nav_active.jsp"%>

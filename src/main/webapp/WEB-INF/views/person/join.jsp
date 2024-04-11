@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Rolling Stone</title>
+<title>HJSS</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <style>
    .main {
@@ -75,14 +75,14 @@
 </div>
      <div class="input-group input-group-sm mb-3">
   <span class="input-group-text" id="inputGroup-sizing-sm">이메일</span>
-  <input type="text" class="form-control" aria-label="Sizing example input"
+  <input type="email" class="form-control" aria-label="Sizing example input"
          name="user_email" aria-describedby="inputGroup-sizing-sm">
 </div>
 
   <input type="hidden" name="created_date" value=${ now } readonly>
 
       <div id="btn"><input type="submit" value="작성완료"> 
-           <input type="button" onClick="location.href='/main'"value="home"></div></div>
+           <input type="button" onClick="location.href='/'"value="home"></div></div>
    </form>
    <%@include file="/WEB-INF/include/footer.jsp" %>
    </main>

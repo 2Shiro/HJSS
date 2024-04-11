@@ -34,3 +34,5 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/pmain_nav_active.jsp"%>

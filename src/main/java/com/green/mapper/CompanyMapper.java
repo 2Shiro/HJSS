@@ -75,8 +75,6 @@ public interface CompanyMapper {
 
 	List<JobpostVo> getpostList(String id);
 
-	List<SkillVo> getSkillList();
-
 	JobpostVo getViewPost(int post_idx);
 
 	List<PostskillVo> getPostSkill(int post_idx);

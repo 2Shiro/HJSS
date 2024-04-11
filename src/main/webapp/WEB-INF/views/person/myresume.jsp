@@ -37,97 +37,62 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
-
+.linkDiv input {
+	cursor: pointer;
+}
 .linkDiv:hover {
 	cursor: pointer;
 }
 </style>
 
 <script type="text/javascript">
-	document
-			.addEventListener(
-					'DOMContentLoaded',
-					function() {
-						document
-								.getElementById('resumeFormsub')
-								.addEventListener(
-										'submit',
-										function(event) {
-											event.preventDefault();
-											alert('등록 되었습니다');
-											var myModal = bootstrap.Modal
-													.getInstance(document
-															.getElementById('resumeForm'));
-											myModal.hide();
-											var postForm = document
-													.getElementById('resumeFormsub');
-											postForm.submit();
-										});
-						document
-								.querySelectorAll('.linkDiv')
-								.forEach(
-										function(linkDiv) {
-											linkDiv
-													.addEventListener(
-															'click',
-															function(event) {
-																if (event.target
-																		&& event.target.id
-																				.startsWith('btn-delete')) {
-																	event
-																			.preventDefault();
-																	alert('삭제 처리됨');
-																	const resumeIdx = event.target.id
-																			.replace(
-																					'btn-delete',
-																					''); // 동적으로 생성된 ID에서 resume_idx를 추출합니다.
-																	window.location.href = `/Person/MyResumeDelete?resume_idx=`
-																			+ resumeIdx;
-																} else if (event.target) {
-																	// 클릭된 요소에서 가장 가까운 .linkDiv의 ID를 찾아 마감기한 페이지로 이동합니다.
-																	const resumeIdx = event.target
-																			.closest('[id^="resumeDetailDiv"]').id
-																			.replace(
-																					'resumeDetailDiv',
-																					'');
-																	window.location.href = `/Person/MyResumeDetail?resume_idx=`
-																			+ resumeIdx;
-																}
-															});
-										});
+document.addEventListener('DOMContentLoaded', function() {
+    // 이력서 제출 폼 이벤트 리스너
+    document.getElementById('resumeFormsub').addEventListener('submit', function(event) {
+        event.preventDefault();
+        alert('등록 되었습니다');
+        var myModal = bootstrap.Modal.getInstance(document.getElementById('resumeForm'));
+        myModal.hide();
+        this.submit(); // 현재 폼 제출
+    });
 
-						// 파일 인풋 필드를 선택
-						var fileInput = document.getElementById('file');
-						// 이미지를 미리보여줄 위치를 선택
-						var previewArea = document
-								.querySelector('.col-md-auto img');
+    // 삭제 링크 이벤트 리스너
+    document.querySelectorAll('.linkDiv').forEach(function(linkDiv) {
+        linkDiv.addEventListener('click', function(event) {
+            if (event.target && event.target.id.startsWith('btn-delete')) {
+                event.preventDefault();
+                alert('삭제 처리됨');
+                const resumeIdx = event.target.id.replace('btn-delete', '');
+                window.location.href = `/Person/MyResumeDelete?resume_idx=` + resumeIdx;
+            } else if (event.target) {
+                const resumeIdx = event.target.closest('[id^="resumeDetailDiv"]').id.replace('resumeDetailDiv', '');
+                window.location.href = `/Person/MyResumeDetail?resume_idx=` + resumeIdx;
+            }
+        });
+    });
 
-						// 기본 이미지 URL 설정
-						var defaultImage = '/images/logo.png';
+    // 파일 입력과 이미지 미리보기 기능
+    var fileInput = document.getElementById('file');
+    var previewArea = document.querySelector('.col-md-auto img');
+    var defaultImage = '/images/logo.png';
 
-						// 파일 인풋 필드에 변화가 생기면 실행할 함수
-						fileInput.addEventListener('change', function(e) {
-							// 파일이 선택되지 않았다면, 미리보기를 기본 이미지로 설정
-							if (fileInput.files.length === 0) {
-								previewArea.src = defaultImage;
-								return; // 함수 실행을 여기서 중단
-							}
+    fileInput.addEventListener('change', function(e) {
+        if (fileInput.files.length === 0) {
+            previewArea.src = defaultImage;
+            return;
+        }
 
-							// 선택된 파일을 가져옴
-							var file = e.target.files[0];
-							// FileReader 객체 생성
-							var reader = new FileReader();
+        var file = e.target.files[0];
+        var reader = new FileReader();
 
-							// 파일이 읽히면 실행될 함수 정의
-							reader.onload = function(e) {
-								// 미리보기 이미지의 src 속성을 읽은 파일의 내용으로 설정
-								previewArea.src = e.target.result;
-							}
+        reader.onload = function(e) {
+            previewArea.src = e.target.result;
+        };
 
-							// FileReader로 파일 읽기를 시작함
-							reader.readAsDataURL(file);
-						});
-					});
+        reader.readAsDataURL(file);
+    });
+});
+
 </script>
 
 </head>
@@ -138,7 +103,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -194,3 +159,5 @@
 </body>
 
 </html>
+
+<%@include file="/WEB-INF/include/pmypage_nav_active.jsp"%>

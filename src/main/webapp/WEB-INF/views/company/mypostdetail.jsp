@@ -182,3 +182,4 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

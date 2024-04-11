@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,9 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/Person")
 public class PersonController {
-
-	@Autowired
-	private Environment env; // application.properties에 접근하기 위한 Environment 객체
 
 	@Autowired
 	private MainMapper mainMapper;
@@ -120,14 +119,13 @@ public class PersonController {
 	}
 
 	@RequestMapping("/MyResume")
-	public ModelAndView resume(UserVo userVo, PresumeVo presume) {
+	public ModelAndView resume(UserVo userVo, PresumeVo presume, @SessionAttribute("login") PersonVo personVo) {
 		ModelAndView mv = new ModelAndView();
-		String id = "";
-		id = "ps2";
+		String id = personVo.getId();
 		userVo.setId(id);
 		userVo = mainMapper.getUser(id);
 		presume.setId(id);
-		List<PresumeVo> list = personMapper.getresumeList(presume);
+		List<PresumeVo> list = personMapper.getResumeList(id);
 		PersonInfoVo info = personMapper.getInfo(id);
 		List<SkillVo> skill = mainMapper.getSkillList();
 		mv.addObject("info", info);
@@ -245,15 +243,18 @@ public class PersonController {
 		        if (!directory.exists()) {
 		            directory.mkdirs();
 		        }
-
+		        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+		        ZonedDateTime current = ZonedDateTime.now();
+		        String namePattern = current.format(format);
+		        //System.out.println(namePattern);
 		        String fileName = file.getOriginalFilename();
 		        String filePath = Paths.get(imagesDirPath, fileName).toString();
-
+		        
 		        // 파일 저장
 		        Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
 		        // 데이터베이스에 저장할 파일 경로 설정
-		        String relativePath = "/images/" + fileName;
+		        String relativePath = "/images/" + namePattern + fileName;
 		        vo.setProfile(relativePath);
 
 		    } catch (IOException e) {
@@ -262,7 +263,7 @@ public class PersonController {
 		    }
 		} else {
 		    // 파일이 선택되지 않았거나 비어 있는 경우, 기존 이미지 경로를 사용
-		    String relativePath = vo.getPortfolio();
+		    String relativePath = vo.getProfile();
 		    vo.setProfile(relativePath);
 		}
 
@@ -385,7 +386,7 @@ public class PersonController {
 
 	// /Person/Mypage
 	@RequestMapping("/Mypage")
-	public ModelAndView mypage(PersonVo personVo) {
+	public ModelAndView mypage(@SessionAttribute("login") PersonVo personVo) {
 
 		PersonVo vo = personMapper.getPerson(personVo);
 
@@ -445,13 +446,14 @@ public class PersonController {
 		   
 		ModelAndView mv = new ModelAndView();
 		   
-		mv.setViewName("redirect:/main");
+		mv.setViewName("redirect:/");
 		
 		return mv;
 	}
 
-	@RequestMapping("/joinForm")
-	public ModelAndView joinForm() {
+	// /Person/JoinForm
+	@RequestMapping("/JoinForm")
+	public ModelAndView personJoinForm() {
 		ModelAndView mv = new ModelAndView();
 
 		LocalDateTime today = LocalDateTime.now();
@@ -471,7 +473,7 @@ public class PersonController {
 		personMapper.insert(personVo);
 
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/main");
+		mv.setViewName("redirect:/");
 
 		return mv;
 	}

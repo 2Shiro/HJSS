@@ -23,7 +23,7 @@
 		<div class="row">
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmypage_nav.jsp"%>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
@@ -72,8 +72,8 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<a class="btn btn-primary float-end me-2" href  = "/Person/UpdateForm?id=${ vo.id }" />수정</a>
-						<a class="btn btn-danger float-end me-2" href  = "/Person/DeleteForm?id=${ vo.id }" />탈퇴</a>
+						<a class="btn btn-primary float-end me-2" href="/Person/UpdateForm?id=${ sessionScope.login.id }" >수정</a>
+						<a class="btn btn-danger float-end me-2" href="/Person/DeleteForm?id=${ sessionScope.login.id }" >탈퇴</a>
 					</div>
 			</div>
 			</section>
@@ -82,3 +82,5 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/pmypage_nav_active.jsp"%>
