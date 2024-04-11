@@ -1,5 +1,7 @@
 package com.green.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +22,7 @@ import com.green.mapper.CompanyMapper;
 import com.green.mapper.JobPostMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -112,15 +115,49 @@ public class CompanyController {
 	//기업회원가입
 	@RequestMapping("/Join")
 	public ModelAndView ComJoin(CompanyVo companyVo) {
-		
+	
 		System.out.println("comVo" +companyVo);
 		
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);
 		
-		mv.setViewName("redirect:/main");
+		mv.setViewName("company/login");
 		return mv;
 	}
+	//기업로그인폼
+	@RequestMapping("/loginForm")
+	public String companyLoginForm() {
+		return "company/login";
+	}
 
+	//기업로그인
+	@PostMapping("/login")
+	public ModelAndView companyLogin(HttpServletRequest request, CompanyVo comVo,
+	                           HttpServletResponse response) throws IOException {
+	ModelAndView mv = new ModelAndView();
+	      
+	String id = request.getParameter("id");
+	String password = request.getParameter("password");
 
+     comVo= companyMapper.login(id,password);
+	      
+	 if(comVo != null) {//아이디와 암호 일치시 수행
+	 HttpSession session = request.getSession();
+	 session.setMaxInactiveInterval(60*60); //60분동안 로그인 유지	      
+	 session.setAttribute("login", comVo);            
+	 mv.setViewName("redirect:/main");
+	            
+	 }
+	else {//로그인 실패시
+	      PrintWriter out = response.getWriter();
+	      response.setCharacterEncoding("UTF-8");
+	      response.setContentType("text/html; charset=UTF-8;");
+	      out.println("<script> alert('Please check your ID password');");
+	      out.println("history.go(-1); </script>"); 
+	      out.close();             
+	      mv.setViewName("redirect:/Company/loginForm");
+	      }	   
+	      return  mv;	   
+	   }
+	   
 }

@@ -22,16 +22,18 @@
 	
 	</select>
 	<!-- logo default값 넣을 예정 -->
+	
+	
 <insert id="insert">
-INSERT ALL
-	INTO user_tb (id, password, type,user_email, created_date)
-	VALUES(#{id},#{password},1,#{user_email},#{created_date})
+	INSERT ALL
+		INTO user_tb (id, password, type,user_email, created_date)
+		VALUES(#{id},#{password},1,#{user_email},#{created_date})
 
-	INTO company_info_tb (id,cnumber, cname, com_logo,crepresentive, address,
-	                      manager_name,company_managerphone,csize,cyear)
-	VALUES(#{id}, #{cnumber}, #{cname}, 'logo' , #{crepresentive}, #{address},
-	       #{manager_name}, #{company_managerphone},#{csize}, #{cyear})
-SELECT * FROM DUAL
+		INTO company_info_tb (id,cnumber, cname, com_logo,crepresentive, address,
+		                      manager_name,company_managerphone,csize,cyear)
+		VALUES(#{id}, #{cnumber}, #{cname}, '/' , #{crepresentive}, #{address},
+		       #{manager_name}, #{company_managerphone},#{csize}, #{cyear})
+	SELECT * FROM DUAL
 </insert> 
 
 <select id="login">
@@ -39,5 +41,6 @@ SELECT * FROM DUAL
  FROM   user_tb
  WHERE  id=#{arg0} AND password=#{arg1} AND type=1
 </select>
+
 	
 </mapper>

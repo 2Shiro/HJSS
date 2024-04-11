@@ -29,6 +29,8 @@
  	WHERE  id=#{arg0} AND password=#{arg1} AND type=2
 	</select>
 	
+
+	
 	
 	
 

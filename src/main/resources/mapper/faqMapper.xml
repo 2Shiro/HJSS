@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.mapper.FaqMapper"> 
+
+	<select id="getList">
+		SELECT Q_IDX,TYPE,QUESTION,ANSWER
+		 FROM   USER_FAQ_TB
+		 WHERE  TYPE=2
+	</select>
+	
+	<select id="getList2">
+		SELECT Q_IDX,TYPE,QUESTION,ANSWER
+		 FROM   USER_FAQ_TB
+		 WHERE  TYPE=1
+	</select>
+
+
+</mapper> 

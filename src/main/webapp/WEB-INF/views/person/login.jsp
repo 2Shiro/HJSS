@@ -70,11 +70,11 @@ footer{
 </hr>
 <table id="logch">
   <tr>
-    <td ><a href="/loginForm" id="perlog">개인회원</a></td>
-    <td ><a href="Company/loginForm" id="comlog">기업회원</a></td>
+    <td ><a href="/Person/loginForm" id="perlog">개인회원</a></td>
+    <td ><a href="/Company/loginForm" id="comlog">기업회원</a></td>
   </tr>
 </table>
-   <form  action="/login" method="post" id="login">
+   <form  action="/Person/login" method="post" id="login">
    <div class="log">
      <table>
        <tr>
@@ -85,8 +85,9 @@ footer{
                     style="width: 250px;" placeholder="비밀번호"></td>
        </tr>
        <tr id="btn">
-         <td ><input type="submit" value="로그인" ></td>
-         <td><input type="button" value="회원가입" onClick="location.href='Person/joinForm'"></td>
+         <td><br><button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">작성완료</button>
+         <td><br><button type="button" class="btn btn-primary"  onClick="location.href='/Person/joinForm'" style="background-color:#5215a6; color : white; border:white; width: 120px;">
+              회원가입</button></td>
         </tr>     
      </table> 
      </div>  
