@@ -30,14 +30,24 @@
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
 					<!-- 세션에 따라 바뀌는 코드로 변경해야함 -->
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+					<c:choose>
+						<c:when test="${sessionVo.type == 1}">
+							<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+						</c:when>
+						<c:when test="${sessionVo.type == 2}">
+							<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+						</c:when>
+						<c:otherwise>
+							<%@include file="/WEB-INF/include/main_nav.jsp"%>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<!-- 공고 보는 부분 -->
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
-						<input type="text" class="border-0" id="title"
+						<input type="text" class="border-0 inputtitle" id="title"
 							value="${jobpostvo.post_name}">
 					</h2>
 					<hr>
@@ -179,10 +189,8 @@
 								<div class="col-2 my-3"></div>
 							</div>
 						</div>
-						<!-- 버튼도 구직자의 경우 지원하기 있어야함 -->
-						<!-- 기업이면 자기껀 마이페이지로 가게 해야하나? -->
 						<div class="my-3 d-flex justify-content-center">
-							<!-- 드롭다운해야징 -->
+							<!-- 개인회원일때 -->
 							<c:if test="${sessionVo.type == 2}">
 								<form action="/Person/JoinPost" method="POST">
 									<input type="hidden" name="id" value="ps1" /> <input
@@ -200,9 +208,24 @@
 									<button type="submit" class="btn btn-primary mx-3">지원하기</button>
 								</form>
 							</c:if>
+							<!-- 기업회원일때 -->
+							<c:if test="${sessionVo.type == 1}">
+									<input type="hidden" name="id" value="cp1" />
+									<a href="/Company/MyPost?id=${sessionVo.id}" class="btn btn-primary mx-3">등록 공고 관리</a>
+							</c:if>
 							<!-- history back 사용? -->
 							<!-- 세션별로 다르게 -->
-							<a href="/" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
+							<c:choose>
+								<c:when test="${sessionVo.type == 1}">
+									<a href="/Company/Cmain" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
+								</c:when>
+								<c:when test="${sessionVo.type == 2}">
+									<a href="/Person/Pmain" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
+								</c:when>
+								<c:otherwise>
+									<a href="/" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 				</div>

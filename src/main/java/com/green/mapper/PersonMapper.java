@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.green.domain.JobpostVo;
 import com.green.domain.PersonInfoVo;
 import com.green.domain.PersonVo;
 import com.green.domain.PersonskillVo;
 import com.green.domain.PresumeVo;
+import com.green.domain.RecommendPostVo;
 import com.green.domain.SkillVo;
 
 import com.green.domain.UserVo;
@@ -60,5 +62,7 @@ public interface PersonMapper {
 	List<PresumeVo> getResumeList(String puserId);
 
 	void insertProposal(String id, int post_idx, int resume_idx);
+
+	List<RecommendPostVo> recommendPost(String id);
 
 }

@@ -13,7 +13,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/**").addPathPatterns("/**/*").excludePathPatterns("/loginForm")
 				.excludePathPatterns("/Company/loginForm").excludePathPatterns("/logout").excludePathPatterns("/").excludePathPatterns("/login").excludePathPatterns("/ViewPost").excludePathPatterns("/Company/login")
-				.excludePathPatterns("/Company/JoinForm").excludePathPatterns("Person/joinForm").excludePathPatterns("/log*","/css/**", "/images/**", "/js/**");;
+				.excludePathPatterns("/Company/JoinForm").excludePathPatterns("/Company/Join").excludePathPatterns("/Person/JoinForm").excludePathPatterns("/Person/Join").excludePathPatterns("/log*","/css/**", "/images/**", "/js/**");;
 
 	}	
 	

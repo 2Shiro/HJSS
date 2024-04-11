@@ -37,7 +37,8 @@
 							<div class="mb-3">
 								<label for="title" class="form-label">공고명</label> <input
 									type="text" class="form-control" id="title" name="post_name"
-									value="${vo.post_name }">
+									value="${vo.post_name }" required>
+
 							</div>
 						</div>
 						<div class="container-fluid border">
@@ -47,7 +48,7 @@
 									<label for="career" class="col-form-label">지원자격</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control" id="career"
+									<input type="text" class="form-control" id="career" required
 										name="career" value="${vo.career }">
 								</div>
 
@@ -56,7 +57,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control" id="pay" name="pay"
-										value="${vo.pay }">
+										required value="${vo.pay }">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -67,7 +68,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<select class="form-select" aria-label="job_type" id="job_type"
-										name="job_type">
+										required name="job_type">
 										<option>선택</option>
 										<option value="정규직"
 											<c:if test="${vo.job_type == '정규직'}">selected</c:if>>정규직</option>
@@ -81,9 +82,9 @@
 								</div>
 								<div class="col-3 my-3 d-flex">
 									<input class="form-control" type="time" name="go_work"
-										id="go_work" value="${vo.go_work }" required> <input
+										id="go_work" value="${goWorkTime }" required> <input
 										class="form-control ms-3" type="time" name="go_home"
-										id="go_home" value="${vo.go_home }" required>
+										id="go_home" value="${goHomeTime }" required>
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -92,7 +93,7 @@
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="deadline" class="form-label">마감 일자</label> <input
-									type="date" class="form-control" id="deadline"
+									type="date" class="form-control" id="deadline" required
 									value="${vo.deadline }" name="deadline" style="width: 30%">
 							</div>
 						</div>
@@ -104,10 +105,10 @@
 										id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
 										name="skillIdx" autocomplete="off"
 										<c:forEach var="postSkills" items="${postSkills}">
-                <c:if test="${skill.skill_idx == postSkills.skill_idx}">
-                    checked="checked"
-                </c:if>
-            </c:forEach>>
+							                <c:if test="${skill.skill_idx == postSkills.skill_idx}">
+							                    checked="checked"
+							                </c:if>
+							            </c:forEach>>
 									<label class="btn btn-outline-primary"
 										for="skill_${skill.skill_idx }">${skill.skill_name}</label>
 								</div>
@@ -117,20 +118,21 @@
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label>
 								<textarea rows="10" class="form-control" id="c_intro"
-									name="c_intro">${vo.c_intro }</textarea>
+									name="c_intro" required>${vo.c_intro }</textarea>
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="job_intro" class="form-label">업무 소개</label>
 								<textarea rows="10" class="form-control" id="job_intro"
-									name="job_intro">${vo.job_intro }</textarea>
+									name="job_intro" required>${vo.job_intro }</textarea>
 							</div>
 						</div>
 
 
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/Jobs" id="btn-list" class="btn btn-danger mx-3">취소</a>
+							<a href="#" id="btn-list" class="btn btn-danger mx-3"
+								onclick="history.back(); return false;">취소</a>
 							<button type="submit" id="btn-update"
 								class="btn btn-secondary mx-3">수정</button>
 						</div>

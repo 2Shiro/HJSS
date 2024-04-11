@@ -51,22 +51,46 @@
 					'DOMContentLoaded',
 					function() {
 						document.getElementById('postForm').addEventListener('submit', function(event) {
-							  event.preventDefault();
-							  alert('등록 되었습니다');
-							    var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
-							    myModal.hide();
-							  var postForm = document.getElementById('postForm');
-							  postForm.submit();
-							});
+		                      const requiredFields = document.querySelectorAll('#postForm [required]');
+		                      let allFieldsFilled = true;
+		                      requiredFields.forEach(function(field) {
+		                          if (!field.value.trim()) {
+		                              allFieldsFilled = false;
+		                              field.classList.add('is-invalid');
+		                          } else {
+		                              field.classList.remove('is-invalid');
+		                          }
+		                      });
+
+		                      if (!allFieldsFilled) {
+		                          alert('모든 필수 항목을 입력해주세요.');
+		                          event.preventDefault();
+		                          return; 
+		                      }
+
+		                      var hiddenField = document.querySelector('input[type="hidden"][name="skillIdx"]');
+		                      var checkboxes = document.querySelectorAll('input[type="checkbox"][name="skillIdx"]');
+		                      var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+		                      if (!isChecked) {
+		                          document.getElementById('defaultSkillIdx').type = 'text';
+		                          hiddenField.value = '0';
+		                          hiddenField.disabled = false;
+		                      } else {
+		                          hiddenField.disabled = true;
+		                      }
+
+		                      alert('등록 되었습니다');
+		                      var myModal = bootstrap.Modal.getInstance(document.getElementById('jobPost'));
+		                      myModal.hide();
+		                  });
 					    document.querySelectorAll('.linkDiv').forEach(function(linkDiv) {
 					        linkDiv.addEventListener('click', function(event) {
 					            if (event.target && event.target.id.startsWith('btn-delete')) {
 					                event.preventDefault();
 					                alert('삭제 처리됨');
-					                const postIdx = event.target.id.replace('btn-delete', ''); // 동적으로 생성된 ID에서 post_idx를 추출합니다.
+					                const postIdx = event.target.id.replace('btn-delete', ''); 
 					                window.location.href = `/Company/MyPostDelete?post_idx=`+postIdx;
 					            } else if (event.target) {
-					                // 클릭된 요소에서 가장 가까운 .linkDiv의 ID를 찾아 마감기한 페이지로 이동합니다.
 					                const postIdx = event.target.closest('[id^="jobDetailDiv"]').id.replace('jobDetailDiv', '');
 					                window.location.href = `/Company/MyPostDetail?post_idx=`+postIdx;
 					            }
@@ -83,7 +107,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -128,3 +152,4 @@
 </body>
 
 </html>
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

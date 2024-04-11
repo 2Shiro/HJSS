@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HJSS</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -87,7 +87,7 @@ footer{
 							<tr id="btn">
 								<td><input type="submit" value="로그인"></td>
 								<td><input type="button" value="회원가입"
-									onClick="location.href='Person/joinForm'"></td>
+									onClick="location.href='/Person/JoinForm'"></td>
 							</tr>
 						</table>
 					</div>

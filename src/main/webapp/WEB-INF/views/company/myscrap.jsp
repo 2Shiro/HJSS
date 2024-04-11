@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기업 등록 공고 관리 페이지</title>
+<title>나의 스크랩</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -122,7 +123,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -131,6 +132,7 @@
 				<div class="mt-5 ms-3 mb-5">
 					<h2>스크랩한 이력서 목록</h2>
 					<hr>
+					<input type="hidden" value="${cid }" id="cid">
 					<table class="table fixed-width-table text-center mt-3">
 						<thead class="table-secondary text-white">
 							<tr>
@@ -141,20 +143,22 @@
 							</tr>
 						</thead>
 						<c:forEach var="scrap" items="${ScrapList}">
-						<tbody>
-							<tr>
-								<td class="name-column text-center pt-3 align-middle">
-									<p class="pt-3">${scrap.pname}</p>
-								<td class="info-column align-middle"><a
-									class="text-decoration-none text-dark"></a>${scrap.title}</td>
-								<td class="skill-column align-middle">
-									<button type="button" class="btn btn-primary btn-sm m-1">${scrap.skills}</button>
-								</td>
-								<td class="action-column align-middle"><input
-									class="btn btn-outline-secondary scrap-button" type="button"
-									value="스크랩"></td>
-							</tr>
-						</tbody>
+							<tbody>
+								<tr>
+									<td class="name-column text-center pt-3 align-middle">
+										<p class="pt-3">${scrap.pname}</p>
+									<td class="info-column align-middle"><a
+										class="text-decoration-none text-dark"></a>${scrap.title}</td>
+									<td class="skill-column align-middle"><c:forEach
+											var="skill" items="${fn:split(scrap.skills, ',')}"
+											varStatus="status">
+											<button type="button" class="btn btn-primary btn-sm m-1">${skill}</button>
+										</c:forEach></td>
+									<td class="action-column align-middle"><input
+										class="btn btn-outline-secondary scrap-button" type="button"
+										data-resume-idx="${scrap.resume_idx}" value="스크랩"></td>
+								</tr>
+							</tbody>
 						</c:forEach>
 					</table>
 				</div>
@@ -166,3 +170,5 @@
 </body>
 
 </html>
+
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

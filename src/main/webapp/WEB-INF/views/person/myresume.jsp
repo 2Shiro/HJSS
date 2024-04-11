@@ -48,14 +48,52 @@
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
     // 이력서 제출 폼 이벤트 리스너
-    document.getElementById('resumeFormsub').addEventListener('submit', function(event) {
-        event.preventDefault();
-        alert('등록 되었습니다');
-        var myModal = bootstrap.Modal.getInstance(document.getElementById('resumeForm'));
-        myModal.hide();
-        this.submit(); // 현재 폼 제출
+document.getElementById('resumeFormsub').addEventListener('submit', function(event) {
+    // 필수 필드가 모두 채워졌는지 확인
+    const requiredFields = document.querySelectorAll('#resumeFormsub [required]');
+    let allFieldsFilled = true;
+    requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+            allFieldsFilled = false; // 필수 필드 중 하나라도 비어있으면 false
+            field.classList.add('is-invalid'); // 유효하지 않은 필드에 클래스 추가
+        } else {
+            field.classList.remove('is-invalid'); // 유효한 필드에는 클래스 제거
+        }
     });
 
+    // 필수 필드가 모두 채워지지 않았다면 경고 메시지를 띄우고 기본 이벤트 중지
+    if (!allFieldsFilled) {
+        alert('모든 필수 항목을 입력해주세요.');
+        event.preventDefault(); // 기본 폼 제출 이벤트 중지
+        return; 
+    }
+
+    // 체크박스가 선택되었는지 확인
+    var hiddenField = document.querySelector('input[type="hidden"][name="skillIdx"]');
+    var checkboxes = document.querySelectorAll('input[type="checkbox"][name="skillIdx"]');
+    var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+    if (!isChecked) {
+        // 체크박스가 하나도 선택되지 않았다면 hidden 필드를 텍스트로 변경하고 기본값 설정
+        document.getElementById('defaultSkillIdx').type = 'text';
+        hiddenField.value = '0';
+        hiddenField.disabled = false;
+    } else {
+        // 체크박스가 선택되었다면 hidden 필드 비활성화
+        hiddenField.disabled = true;
+    }
+
+    // 모든 검사가 통과되면 등록되었다는 알림을 띄우고, 모달 창을 닫음
+    alert('등록 되었습니다');
+    var myModal = bootstrap.Modal.getInstance(document.getElementById('resumeForm'));
+    myModal.hide();
+});
+
+    
+    
+    
+    
+    
+    
     // 삭제 링크 이벤트 리스너
     document.querySelectorAll('.linkDiv').forEach(function(linkDiv) {
         linkDiv.addEventListener('click', function(event) {
@@ -91,10 +129,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
         reader.readAsDataURL(file);
     });
+      
+    
 });
 
 </script>
+<script type="text/javascript">
+document.getElementById('resumeFormsub').addEventListener('submit', function(e) {
+    var hiddenField = document.querySelector('input[type="hidden"]');
+    // 체크박스를 모두 선택합니다. 체크박스의 정확한 선택자를 지정해야 합니다.
+    var checkboxes = document.querySelectorAll('input[type="checkbox"][name="skillIdx"]'); // 'name="skillIdx"'는 예시이며, 실제 체크박스의 name 속성에 맞게 변경해야 합니다.
 
+    // skillIdx가 선택되었는지 확인합니다.
+    var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+    // skillIdx가 하나도 체크되지 않았다면, 숨겨진 필드를 활성화하여 기본값 0을 전송합니다.
+    if (!isChecked) {
+        document.getElementById('defaultSkillIdx').type = 'text';
+        hiddenField.value = '0'; // 기본값을 0으로 설정합니다.
+        hiddenField.disabled = false; // 숨겨진 필드를 활성화합니다.
+    } else {
+        // 여기서 선택된 체크박스에 따라 필요한 조치를 취할 수 있습니다.
+        hiddenField.disabled = true; // 기본값을 전송하지 않도록 숨겨진 필드를 비활성화합니다.
+    }
+});
+</script>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -103,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -159,3 +218,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </body>
 
 </html>
+
+<%@include file="/WEB-INF/include/pmypage_nav_active.jsp"%>

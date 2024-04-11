@@ -93,9 +93,29 @@ public class CompanyController {
 	// 특정 기업회원이 지원 받은 이력서
 	// 로그인한 회사에 구직자들이 제안한 현황
 	@RequestMapping("/MyParticipate") // /Company/MyParticipate
-	public ModelAndView getProposal() {
+	public ModelAndView getProposal(@SessionAttribute("login") CompanyVo companyVo) {
+		String cid = companyVo.getId();
+		// System.out.println(cid);
+		// 기업의 공고 번호
+		List<JobpostVo> mypost = companyMapper.getMyPost(cid);
+		log.info("==mypost==", mypost);
+		System.out.println(mypost.size());
+
 		// 공고에 제안한 것들 테이블
-		List<CproposalVo> proposalList = companyMapper.getProposal();
+		List<CproposalVo> proposalList = new ArrayList<>();
+		for (int i = 0; i < mypost.size(); i++) {
+			List<CproposalVo> vo = companyMapper.getProposal(mypost.get(i).getPost_idx());
+			System.out.println("vo : " + vo.size());
+			for (int j = 0; j < vo.size(); j++) {
+				proposalList.add(new CproposalVo(vo.get(j).getPro_idx(), vo.get(j).getId(), vo.get(j).getPost_idx(),
+						vo.get(j).getResume_idx(), vo.get(j).getStatus(), vo.get(j).getCreated_at()));
+			}
+		}
+		log.info("==proposalList==", proposalList);
+
+		// 공고에 제안한 것들 테이블
+		// String cid = companyVo.getId();
+		// List<CproposalVo> proposalList = companyMapper.getProposal(cid);
 		// System.out.println(proposalList);
 
 		// 공고 리스트
@@ -106,6 +126,7 @@ public class CompanyController {
 					vo.getJob_type(), vo.getPay(), vo.getGo_work(), vo.getGo_home(), vo.getDeadline(),
 					vo.getJob_intro(), vo.getC_intro(), vo.getCreated_date()));
 		}
+		log.info("==jobpostList==", jobpostList);
 
 		// 구직자 이름
 		List<PersonVo> personList = new ArrayList<>();
@@ -130,6 +151,7 @@ public class CompanyController {
 			myproposalList.add(new MyProposalVo(jobpostList.get(i).getPost_idx(), jobpostList.get(i).getPost_name(),
 					personList.get(i).getPname(), proposalList.get(i).getResume_idx(), status));
 		}
+		log.info("==myproposalList==", myproposalList);
 
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("proposalList", proposalList);
@@ -140,7 +162,7 @@ public class CompanyController {
 
 	// /Company/Mypage
 	@RequestMapping("/Mypage")
-	public ModelAndView mypage(CompanyVo companyVo) {
+	public ModelAndView mypage(@SessionAttribute("login") CompanyVo companyVo) {
 
 		CompanyVo vo = companyMapper.getCompany(companyVo);
 
@@ -197,7 +219,7 @@ public class CompanyController {
 
 		ModelAndView mv = new ModelAndView();
 
-		mv.setViewName("redirect:/main");
+		mv.setViewName("redirect:/");
 
 		return mv;
 	}
@@ -284,6 +306,25 @@ public class CompanyController {
 		return mv;
 	}
 
+	//시간을 오전 오후 **시로 바꿔주기 위한 메소드
+	private String convertTimeFormat(String time) {
+	    try {
+	        String[] parts = time.split(" ");
+	        int hour = Integer.parseInt(parts[1].replaceAll("[^0-9]", ""));
+
+	        if ("오후".equals(parts[0]) && hour != 12) {
+	            hour += 12;
+	        } else if ("오전".equals(parts[0]) && hour == 12) {
+	            hour = 0;
+	        }
+
+	        return String.format("%02d:00", hour); // 분은 00으로 설정
+	    } catch (Exception e) {
+	        return "00:00"; // 예외 처리, 기본값 반환
+	    }
+	}
+
+    
 	@RequestMapping("/MyPostEdit")
 	public ModelAndView editMyPost(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
@@ -296,6 +337,17 @@ public class CompanyController {
 		List<SkillVo> postSkills = companyMapper.loadskills(post_idx);
 		List<SkillVo> allSkills = mainMapper.getSkillList();
 
+		String goWork = vo.getGo_work();
+		String goHome = vo.getGo_home();
+
+		String goWorkTime = convertTimeFormat(goWork);
+		String goHomeTime = convertTimeFormat(goHome);
+		log.info("goWorkTime = {}",goWorkTime);
+		log.info("goHomeTime = {}" , goHomeTime);
+
+		mv.addObject("goHomeTime", goHomeTime);
+		mv.addObject("goWorkTime", goWorkTime);
+		
 		mv.addObject("vo", vo);
 		mv.addObject("allSkills", allSkills);
 		mv.addObject("postSkills", postSkills);
@@ -345,7 +397,7 @@ public class CompanyController {
 	@RequestMapping("/Recommend")
 	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume,
 			@SessionAttribute("login") CompanyVo comVo) {
-		
+
 		ModelAndView mv = new ModelAndView();
 
 		// session에서 id를 가져옴
@@ -416,12 +468,8 @@ public class CompanyController {
 	// 날짜 문자열을 Date 객체로 변환하는 메소드
 	private Date parseStringToDate(String dateString) {
 		try {
-			//impleDateFormat 객체를 생성. 날짜와 시간을 "yyyy-MM-dd"으로 파싱
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			
-			// dateString 변수에 저장된 날짜 문자열을 Date 객체로 변환
 			return formatter.parse(dateString);
-		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -458,70 +506,38 @@ public class CompanyController {
 	// 이력서 스크랩 기능
 	@RequestMapping("/ScrapAdd")
 	public ResponseEntity<?> addScrap(@RequestBody ComscrapVo scrapvo) {
-		
-		//데이터 추가 성공시
 		try {
-		
-			// COM_SCRAP_TB에 스크랩 정보 insert	
 			companyMapper.insertScrap(scrapvo);
-			
-			//HTTP 상태 코드 200(OK)와 함께 빈 본문을 반환	
 			return ResponseEntity.ok().build();
-		
-			//데이터 추가 실패시
 		} catch (Exception e) {
-			
-			//400(Bad Request)과 함께 "스크랩 삭제에 실패했습니다." 메시지를 반환
 			return ResponseEntity.badRequest().body("스크랩 추가에 실패했습니다.");
 		}
 	}
 
 	@RequestMapping("/ScrapDelete")
 	public ResponseEntity<?> deleteScrap(@RequestParam("resume_idx") int resume_idx) {
-		
-		//데이터 삭제 성공시
 		try {
-			
-			// COM_SCRAP_TB에 스크랩 정보 delete	
 			companyMapper.deleteScrap(resume_idx);
-			
-			//HTTP 상태 코드 200(OK)와 함께 빈 본문을 반환
 			return ResponseEntity.ok().build();
-			
-			//데이터 삭제 실패시
 		} catch (Exception e) {
-			
-			//400(Bad Request)과 함께 "스크랩 삭제에 실패했습니다." 메시지를 반환
 			return ResponseEntity.badRequest().body("스크랩 삭제에 실패했습니다.");
 		}
 	}
 
 	@RequestMapping("/CheckScrap")
 	public ResponseEntity<?> checkScrap(@RequestParam("resume_idx") int resume_idx, @RequestParam("cid") String cid) {
-		
-		// resume_idx와 cid를 Param으로 불러와 해당 정보가 들어있는 데이터가 있는지 확인
 		int scarapCount = companyMapper.countScrap(cid, resume_idx);
-		
-		//데이터 조회 성공시
 		try {
-			
-			// count sql문을 통해 조회한 데이터가 0이 아닐경우
-			if (scarapCount != 0) {		
+
+			if (scarapCount != 0) {
 				boolean isScraped = true;
-				
-				// HTTP 상태 코드 200(OK)와 함께 true값을 페이지에 반환하여 스크랩 버튼의 요소를 변경함
 				return ResponseEntity.ok(isScraped);
 			} else {
 				boolean isScraped = false;
-				
-				// HTTP 상태 코드 200(OK)와 함께 false값을 페이지에 반환하여 스크랩 버튼의 요소를 변경함
 				return ResponseEntity.ok(isScraped);
 			}
 
-			//데이터 조회 실패시
 		} catch (Exception e) {
-			
-			//400(Bad Request)과 함께 "스크랩 상태 확인에 실패했습니다." 메시지를 반환
 			return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
 		}
 	}
@@ -529,22 +545,22 @@ public class CompanyController {
 	@RequestMapping("/MyScrap")
 	public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo, @SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
-		
-		// ComscrapListVo는 스크랩 리스트를 가져오기 위해 만든 Vo	
+
+		// ComscrapListVo는 스크랩 리스트를 가져오기 위해 만든 Vo
 		// session에서 id를 가져옴
 		String id = comVo.getId();
 		userVo.setId(id);
 		userVo.setId(id);
-		
+
 		// 가져온 id를 사용해서 유저 정보를 가져옴
 		userVo = mainMapper.getUser(id);
-		
+
 		// 가져온 id를 사용해서 ComscrapListVo의 id값을 확정함
 		scrapVo.setCid(id);
-		
+
 		// ComscrapListVo 정보를 list로 가져옴
 		List<ComscrapListVo> comScrapList = companyMapper.getScrapList(scrapVo);
-		
+		mv.addObject("cid", id);
 		mv.addObject("ScrapList", comScrapList);
 		mv.setViewName("company/myscrap");
 		return mv;

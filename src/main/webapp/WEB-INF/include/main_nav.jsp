@@ -3,7 +3,7 @@
 
 		<ul class="nav flex-column">
 			<li class="nav-item mx-auto">
-				<button type="button" class="btn btn-secondary nav" id="main">채용공고</button>
+				<button type="button" class="btn btn-secondary navc" id="main">채용공고</button>
 			</li>
 		</ul>
 	
@@ -11,7 +11,7 @@
 	const MainEl = document.getElementById("main");
 	
 	MainEl.addEventListener('click', function(e) {
-		alert('main');
+		//alert('main');
 		location.href = '/';
 	});
 </script>

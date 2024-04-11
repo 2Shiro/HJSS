@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -27,10 +27,31 @@
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
-				<%@include file="/WEB-INF/include/main_section.jsp"%>
+				<c:forEach var="list" items="${ jobPosts }">
+					<div class="linkDiv container border mb-3"
+						id="jobDetailDiv${ list.post_idx }">
+						<!-- 공고 리스트 시작 -->
+						<div class="d-flex justify-content-between">
+							<div class="row">
+								<input type="text"
+									class="form-control border-0 shadow-none mb-2 ms-3"
+									value="${ list.post_name }" id="title${ list.post_idx }"
+									readonly="readonly"> <input type="text"
+									class="form-control border-0 shadow-none ms-3"
+									value="마감기한 : ${ list.deadline }"
+									id="deadline${ list.post_idx }" readonly="readonly">
+							</div>
+							<button id="btn-delete${ list.post_idx }"
+								class="btn btn-dark align-self-center float-end mx-3">삭제</button>
+						</div>
+						<!-- 공고 리스트 끝 -->
+					</div>
+				</c:forEach>
 			</section>
 		</div>
 	</main>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/pmain_nav_active.jsp"%>

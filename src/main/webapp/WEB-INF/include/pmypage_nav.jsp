@@ -2,16 +2,16 @@
 	pageEncoding="UTF-8"%>
 <ul class="nav flex-column">
 	<li class="nav-item mx-auto">
-		<button type="button" class="btn btn-outline-secondary" id="user">회원정보</button>
+		<button type="button" class="btn btn-outline-secondary navc" id="user">회원정보</button>
 	</li>
 	<li class="nav-item mx-auto">
-		<button type="button" class="btn btn-outline-secondary" id="myresume">등록 이력서 관리</button>
+		<button type="button" class="btn btn-outline-secondary navc" id="myresume">등록 이력서 관리</button>
 	</li>
 	<li class="nav-item mx-auto">
-		<button type="button" class="btn btn-outline-secondary" id="myproposal">지원한 공고</button>
+		<button type="button" class="btn btn-outline-secondary navc" id="myproposal">지원한 공고</button>
 	</li>
 	<li class="nav-item mx-auto">
-		<button type="button" class="btn btn-outline-secondary" id="scrap">스크랩한 회사</button>
+		<button type="button" class="btn btn-outline-secondary navc" id="scrap">스크랩한 회사</button>
 	</li>
 	<li class="nav-item mx-auto">
         <input type="hidden" value="${ sessionScope.login.id }" id="sessionid">
@@ -24,29 +24,25 @@
 	const MyProposalEl = document.getElementById("myproposal");
 	const ScrapEl = document.getElementById("scrap");
 	const sessionid = document.getElementById("sessionid").value;
+	var NavEl = document.querySelectorAll(".navc");
 	
 	UserEl.addEventListener('click', function(e) {
-		alert('person mypage');
+		//alert('person mypage');
 		location.href = '/Person/Mypage?id=' + sessionid;
-		//UserEl.removeClass("btn-outline-secondary");
-		//UserEl.addClass("btn-secondary");
 	});
 	
 	MyResumeEl.addEventListener('click', function(e) {
-		alert('myresume');
+		//alert('myresume');
 		location.href = '/Person/MyResume?id=' + sessionid;
-		//btn();
 	});
 	
 	MyProposalEl.addEventListener('click', function(e) {
-		alert('myproposal');
+		//alert('myproposal');
 		location.href = '/Person/MyProposal?id=' + sessionid;
-		//btn();
 	});
 	
 	ScrapEl.addEventListener('click', function(e) {
-		alert('pscrap');
+		//alert('pscrap');
 		location.href = '/Person/Scrap?id=' + sessionid;
-		//btn();
 	});
 </script>

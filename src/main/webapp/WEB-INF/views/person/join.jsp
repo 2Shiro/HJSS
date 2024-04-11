@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Rolling Stone</title>
+<title>HJSS</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <style>
    .main {
@@ -41,7 +41,7 @@
                  <img alt="Logo" src="/images/logo.png" style="width:150px;">
              </a> </div>
    <h2>개인회원 가입</h2>
-   <form action="/Person/join" method="post">
+   <form action="/Person/Join" method="post">
     <div class="input-group-sm mb-3">
       <div class="input-group input-group-sm mb-3">
   <span class="input-group-text" id="inputGroup-sizing-sm">아이디</span>
