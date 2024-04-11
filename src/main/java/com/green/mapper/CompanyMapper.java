@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.green.domain.CompanyInfoVo;
 import com.green.domain.CompanyVo;
 import com.green.domain.ComscrapListVo;
 import com.green.domain.ComscrapVo;
@@ -37,8 +36,6 @@ public interface CompanyMapper {
 	void updatePost(JobpostVo postVo);
 
 	void postDelete(JobpostVo postVo);
-
-	CompanyInfoVo getInfo(String id);
 
 	void insertskills(PostskillVo postSkill);
 
