@@ -39,7 +39,7 @@
 									readonly="readonly"> <input type="text"
 									class="form-control border-0 shadow-none ms-3"
 									value="마감기한 : ${ list.deadline }"
-									id="deadline${ list.post_idx }" readonly="readonly">
+									id="deadline${ list.post_idx }" readonly="readonly">a
 							</div>
 							<button id="btn-delete${ list.post_idx }"
 								class="btn btn-dark align-self-center float-end mx-3">삭제</button>
