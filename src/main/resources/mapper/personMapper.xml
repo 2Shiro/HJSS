@@ -1,37 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.green.mapper.PersonMapper">  
+<mapper namespace="com.green.mapper.PersonMapper">
+	<!-- 이력서 아이디로 이력서 불러오기 -->
+	<select id="getResume">
+		SELECT RESUME_IDX, ID, PROFILE, TITLE, PORTFOLIO, PUBLISH, SELF_INTRO, TO_CHAR(created_at, 'YY-MM-DD') created_at FROM RESUME_TB WHERE RESUME_IDX = #{resume_id}
+	</select>
+
 
 	<select  id = "getPerson" resultType = "com.green.domain.PersonVo">
 		
-		SELECT	ID,
-				PNAME,
-				PHONE,
-				ADDRESS,
-				TO_CHAR( BIRTH, 'YY-MM-DD')	BIRTH
-		FROM	PERSON_INFO_TB
-		WHERE	ID = 'ps1'
+		SELECT	P.ID,
+				U.PASSWORD,
+				P.PNAME,
+				P.PHONE,
+				U.USER_EMAIL,
+				P.ADDRESS,
+				TO_CHAR( P.BIRTH, 'YY-MM-DD')			BIRTH,
+				TO_CHAR( U.CREATED_DATE, 'YY-MM-DD')	CREATED_DATE
+		FROM	PERSON_INFO_TB P, USER_TB U
+		WHERE	P.ID = U.ID AND P.ID = #{ id }
 	
 	</select>
+
+	<update id ="updatePerson">
 	
-	<insert id="insert">
-	INSERT ALL	
-	INTO person_info_tb ( id, pname, phone, address, birth )
-	VALUES (#{id},#{pname},#{phone},#{address},#{birth})
-	INTO user_tb (id,password,type,user_email,created_date)
-	VALUES (#{id},#{password},2,#{user_email},#{created_date})
-	SELECT * FROM DUAL
-	</insert>
+		UPDATE	PERSON_INFO_TB
+		SET		PHONE = #{ phone },
+				ADDRESS = #{ address }
+		WHERE	ID = #{ id }
 	
+	</update>
+	
+	<update id ="updateUser">
+	
+		UPDATE	USER_TB
+		SET		PASSWORD = #{ password },
+				USER_EMAIL = #{ user_email }
+		WHERE	ID = #{ id }
+	
+	</update>
+	
+	<delete id = "deletePerson">
+	
+		DELETE FROM PERSON_INFO_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
+	
+	<delete id = "deleteUser">
+	
+		DELETE FROM USER_TB
+		WHERE  ID = #{ id }
+	
+	</delete>
+
+	<!-- 특정 개인 회원의 정보 테이블 데이터를 불러옴 -->
+	<select id="getPuser">
+		SELECT ID, PNAME, PHONE, ADDRESS, BIRTH FROM
+		PERSON_INFO_TB WHERE ID = #{id}
+	</select>
+
+	<!-- 특정 회원 정보를 회원 정보 테이블에서 데이터를 가져옴 -->
+	<select id="getUser">
+		SELECT ID, PASSWORD, TYPE, USER_EMAIL,
+		TO_CHAR(CREATED_DATE, 'YY-MM-DD')
+		CREATED_DATE FROM USER_TB WHERE ID =
+		#{id}
+	</select>
+
+	<!-- 기업의 공고 리스트에 구직자 이름을 위한 id String으로 구직자 데이터 가져오기 -->
+	<select id="getPname">
+
+		SELECT	ID, PNAME, PHONE, ADDRESS, TO_CHAR( BIRTH, 'YY-MM-DD')	BIRTH FROM	PERSON_INFO_TB WHERE ID = #{id}
+	</select>
+
+	
+	<!-- 구직자의 이력서 리스트 가져오기 -->
+	<select id="getResumeList">
+		SELECT RESUME_IDX, ID, PROFILE, TITLE, PORTFOLIO, PUBLISH, SELF_INTRO, TO_CHAR(created_at, 'YY-MM-DD') created_at FROM RESUME_TB WHERE ID = #{id}
+	</select>
+	
+	<!-- 개인회원 로그인 -->
 	<select id="login">
  	SELECT id,password,type
  	FROM   user_tb
  	WHERE  id=#{arg0} AND password=#{arg1} AND type=2
 	</select>
-	
 
-	
-	
-	
+	<!-- 구직자가 지원하기 -->
+	<insert id="insertProposal">
+		INSERT INTO PERSON_PROPOSAL_TB ( PRO_IDX, ID, POST_IDX, RESUME_IDX )
+  	VALUES ( (SELECT NVL(MAX(PRO_IDX), 0) + 1 FROM PERSON_PROPOSAL_TB), #{arg0}, #{arg1}, #{arg2})
+	</insert> 
 
+
+	<update id="updateResumePass">
+		UPDATE PERSON_PROPOSAL_TB SET STATUS = #{arg1} WHERE RESUME_IDX = #{arg0}
+	</update>
+	
+    <!-- 개인회원 회원가입 -->
+	<insert id="insert">
+		INSERT ALL
+		INTO person_info_tb ( id, pname, phone, address, birth )
+		VALUES (#{id},#{pname},#{phone},#{address},#{birth})
+		INTO user_tb (id,password,type,user_email)
+		VALUES (#{id},#{password},2,#{user_email})
+		SELECT * FROM DUAL
+	</insert>
+	
+	<select id="getInfo">
+		select * from PERSON_INFO_TB WHERE ID = #{id}
+	</select>
+
+	<select id="loadskills" parameterType="String">
+		select p.skill_idx, s.skill_name, p.id
+		from person_skill_tb p, skill_tb s
+		where s.skill_idx = p.skill_idx
+		and p.id = #{id}
+	</select>
+	<insert id="insertResume"
+		parameterType="com.green.domain.PresumeVo">
+		INSERT INTO RESUME_TB
+		(RESUME_IDX, ID, TITLE, PORTFOLIO, PUBLISH, profile , SELF_INTRO)
+		VALUES
+		((SELECT NVL(MAX(resume_idx),0) + 1 FROM RESUME_TB), #{id},
+		#{title}, #{portfolio}, #{publish}, #{profile},
+		#{self_intro})
+	</insert>
+	<insert id="insertskills"
+		parameterType="com.green.domain.PersonskillVo">
+		INSERT INTO PERSON_SKILL_TB (psno, ID, skill_idx)
+		VALUES ((SELECT NVL(MAX(psno),0) + 1 FROM PERSON_SKILL_TB), #{id},
+		#{skill_idx})
+	</insert>
+	<delete id="resumeDelete">
+		DELETE FROM RESUME_TB WHERE RESUME_IDX = #{resume_idx}
+	</delete>
+	<delete id="deletepersonskills">
+		DELETE FROM PERSON_SKILL_TB WHERE ID = #{id}
+	</delete>
+	<update id="updateResume">
+		UPDATE RESUME_TB
+		SET TITLE = #{title},PORTFOLIO = #{portfolio},PUBLISH = #{publish},
+		profile = #{profile}, SELF_INTRO = #{self_intro}
+		WHERE RESUME_IDX = #{resume_idx}
+		AND ID = #{id}
+	</update>
 </mapper>

@@ -42,24 +42,28 @@
      
   <h2>기업회원 가입</h2>
    
-    <form action="/Company/Join" id="join"  method="post" >
+    <form action="/Company/Join" id="join" name="join" method="post" >
       
       <div><input type="hidden" name="type" value="1"></div>
       
      <div class="input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>아이디</span>
-        <input type="text" class="form-control" name="id" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        <input type="text" class="form-control" name="id" required aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" >
+        <button type="button" id="btnIdCheck" class="btn btn-outline-secondary" value="중복확인">중복확인</button>
       </div>
+      <div id="idck"></div>
     
      <div class="input-group-sm mb-3">
            <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>비밀번호</span>
            <input type="password" class="form-control" name="password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
       </div>
-     
-  
+    
+      
      <div class="input-group-sm mb-3">
+
            <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>이메일</span>
            <input type="text" class="form-control" name="user_email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+
       </div>
       
      <div class="input-group-sm mb-3">
@@ -97,24 +101,28 @@
               <input type="text" class="form-control" name="csize" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
       </div>
    
-    <div class="input-group-sm mb-3">
+      <div class="input-group-sm mb-3">
            <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>설립 연도</span>
            <input type="date" class="form-control" name="cyear" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
       </div>   
-              <input type="hidden" class="form-control"  name="created_date"
-              value=${ now } readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+           <input type="hidden" class="form-control"  name="created_date"
+             value=${ now } readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
       
-      <button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white;">작성완료</button>
-      <button type="button" class="btn btn-outline-secondary" onClick="location.href='/Company/loginForm'">기업로그인</button>
+      <button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white;" onClick="alert('가입완료')">작성완료</button>
+      <button type="button" class="btn btn-outline-secondary" onClick="location.href='/Company/LoginForm'">기업로그인</button>
       <button type="button" class="btn btn-outline-secondary" onClick="location.href='/'">HOME</button>
-    
-    
+       
     </form>
-   
+
     <%@include file="/WEB-INF/include/footer.jsp" %>
   </div>
   </main>
 
 
+
+
 </body>
+
+
 </html>
+

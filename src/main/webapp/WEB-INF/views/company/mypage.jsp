@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>기업 회원 마이페이지</title>
+<title>${ vo.cname }님의 마이페이지</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -23,14 +23,14 @@
 		<div class="row">
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmypage_nav.jsp"%>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
 						<input type="text" class="border-0" id="title"
-							value="마이페이지" readonly>
+							value="${ vo.cname }님의 마이페이지" readonly>
 					</h2>
 					<hr>
 					<div class="my-1 mx-auto row">
@@ -46,56 +46,64 @@
 									<input type="text" class="form-control" id="cname" name="cname" value="${ vo.cname }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="cnum">사업자 번호</span>
-									<input type="text" class="form-control" id="cnum" name="cnum" value="${ vo.cnumber }" readonly style="height: 70px;">
+									<span class="input-group-text" id="cnumber">사업자 번호</span>
+									<input type="text" class="form-control" id="cnumber" name="cnumber" value="${ vo.cnumber }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="cid">ID</span>
-									<input type="text" class="form-control" id="cid" name="cid" value="${ vo.id }" readonly style="height: 70px;">
+									<span class="input-group-text" id="id">아이디</span>
+									<input type="text" class="form-control" id="id" name="id" value="${ vo.id }" readonly style="height: 70px;">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="password">비밀번호</span>
+									<input type="text" class="form-control" id="password" name="password" value="${ vo.password }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="crepresentive">대표자</span>
 									<input type="text" class="form-control" id="crepresentive" name="crepresentive" value="${ vo.crepresentive }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="caddress">주소</span>
-									<input type="email" class="form-control" id="caddress" name="caddress" value="${ vo.address }" readonly style="height: 70px;">
+									<span class="input-group-text" id="address">주소</span>
+									<input type="text" class="form-control" id="address" name="address" value="${ vo.address }" readonly style="height: 70px;">
 								</div>
 							</div>
 							<div class="col-5 row ms-4">
 								<div class="input-group mb-3 ">
-									<span class="input-group-text text-center" id="mname">담당자</span>
-									<input type="text" class="form-control" id="mname" name="mname" value="${ vo.manager_name }" readonly style="height: 70px;">
+									<span class="input-group-text text-center" id="manager_name">담당자</span>
+									<input type="text" class="form-control" id="manager_name" name="manager_name" value="${ vo.manager_name }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="mnum">담당자 번호</span>
-									<input type="text" class="form-control" id="mnum" name="mnum" value="${ vo.company_managerphone }" readonly style="height: 70px;">
+									<span class="input-group-text" id="company_managerphone">담당자 번호</span>
+									<input type="text" class="form-control" id="company_managerphone" name="company_managerphone" value="${ vo.company_managerphone }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="address">규모</span>
-									<input type="text" class="form-control" id="address" name="address" value="${ vo.csize }" readonly style="height: 70px;">
+									<span class="input-group-text" id="user_email">이메일</span>
+									<input type="text" class="form-control" id="user_email" name="user_email" value="${ vo.user_email }" readonly style="height: 70px;">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="csize">규모</span>
+									<input type="text" class="form-control" id="csize" name="csize" value="${ vo.csize }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="cyear">창립일</span>
 									<input type="text" class="form-control" id="cyear" name="cyear" value="${ vo.cyear }" readonly style="height: 70px;">
 								</div>
-								<div class="input-group mb-3" style="height: 70px;">
-									&nbsp;
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="created_date">생성일</span>
+									<input type="text" class="form-control" id="created_date" name="created_date" value="${ vo.created_date }" readonly style="height: 70px;">
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-primary float-end me-2" href = "/Company/UpdateForm?id=${ vo.id }" />수정</a>
+						<a class="btn btn-danger float-end me-2" href = "/Company/DeleteForm?id=${ vo.id }" />탈퇴</a>
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="submit" id="post-submit"
-						class="btn btn-primary float-end me-2">수정</button>
-					<button type="reset" id="btn-cancel"
-						class="btn btn-danger float-end" data-bs-dismiss="modal">탈퇴</button>
-				</div>
-
-			</div>
 			</section>
 		</div>
 	</main>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

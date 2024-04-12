@@ -1,46 +1,308 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.mapper.CompanyMapper">
+	<!-- 나의 지원 테이블 정보 가져오기 -->
 	<select id="getProposal">
-		SELECT pro_idx, id, post_idx, resume_idx, status, TO_CHAR(created_at, 'YY-MM-DD') FROM PERSON_PROPOSAL_TB
+		SELECT pro_idx, id, post_idx, resume_idx, status,
+		TO_CHAR(created_at,
+		'YY-MM-DD') created_at FROM PERSON_PROPOSAL_TB
+
 	</select>
-	
-	<select  id = "getCompany" resultType = "com.green.domain.CompanyVo">
-		
-		SELECT	ID,
-				CNUMBER,
-				CNAME,
-				COM_LOGO,
-				CREPRESENTIVE,
-				ADDRESS,
-				MANAGER_NAME,
-				COMPANY_MANAGERPHONE,
-				CSIZE,
-				TO_CHAR( CYEAR, 'YY-MM-DD')	CYEAR
-		FROM	COMPANY_INFO_TB
-		WHERE	ID = 'cp1'
-	
+
+	<!-- 기업 상세 정보 가져오기 -->
+	<select id="getCompany" resultType="com.green.domain.CompanyVo">
+
+		SELECT C.ID,
+		U.PASSWORD,
+		C.CNUMBER,
+		C.CNAME,
+		C.COM_LOGO,
+		C.CREPRESENTIVE,
+		C.ADDRESS,
+		C.MANAGER_NAME,
+		C.COMPANY_MANAGERPHONE,
+		U.USER_EMAIL,
+		C.CSIZE,
+		TO_CHAR(
+		C.CYEAR, 'YY-MM-DD') CYEAR,
+		TO_CHAR( U.CREATED_DATE, 'YY-MM-DD')
+		CREATED_DATE
+		FROM COMPANY_INFO_TB C,
+		USER_TB U
+		WHERE C.ID = U.ID AND C.ID
+		= #{id}
+
+	</select>
+
+	<!-- 전체 공고 가져오기 -->
+	<select id="getmainpostList">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,
+		PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM
+		JOB_POST_TB
+		ORDER BY POST_IDX
+	</select>
+
+	<!-- 특정 공고 상세페이지 -->
+	<select id="viewPost" parameterType="int"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+
+	<select id="getUser">
+		SELECT ID, PASSWORD, TYPE, USER_EMAIL,
+		TO_CHAR(CREATED_DATE,
+		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
+	</select>
+
+	<select id="getpostList" parameterType="String"
+		resultType="com.green.domain.JobpostVo">
+		select * from JOB_POST_TB
+		WHERE ID = #{id}
+	</select>
+
+
+	<update id="updateCompany">
+
+		UPDATE COMPANY_INFO_TB
+		SET ADDRESS = #{ address },
+		MANAGER_NAME = #{ manager_name },
+		COMPANY_MANAGERPHONE = #{
+		company_managerphone }
+		WHERE ID = #{ id }
+
+	</update>
+
+	<update id="updateUser">
+
+		UPDATE USER_TB
+		SET PASSWORD = #{ password },
+		USER_EMAIL = #{ user_email }
+		WHERE ID = #{ id }
+
+	</update>
+
+	<delete id="deleteCompany">
+
+		DELETE FROM COMPANY_INFO_TB
+		WHERE ID = #{ id }
+
+	</delete>
+
+	<delete id="deleteUser">
+
+		DELETE FROM USER_TB
+		WHERE ID = #{ id }
+
+	</delete>
+
+	<update id="updatePost">
+		UPDATE JOB_POST_TB
+		SET POST_NAME = #{post_name},
+		CAREER = #{career}, JOB_TYPE =
+		#{job_type}, PAY = #{pay}, GO_WORK =
+		#{go_work}, GO_HOME = #{go_home},
+		DEADLINE = #{deadline}, JOB_INTRO =
+		#{job_intro}, C_INTRO = #{c_intro}
+		WHERE POST_IDX = #{ post_idx }
+	</update>
+	<delete id="postDelete">
+		DELETE FROM JOB_POST_TB WHERE POST_IDX = #{ post_idx
+		}
+	</delete>
+	<insert id="insertskills"
+		parameterType="com.green.domain.PostskillVo">
+		INSERT INTO POST_SKILL_TB (csno, post_idx, skill_idx)
+		VALUES ((SELECT NVL(MAX(csno),0) + 1 FROM POST_SKILL_TB), #{post_idx},
+		#{skill_idx})
+	</insert>
+	<select id="selectpostidxmax" resultType="int">
+		SELECT
+		NVL(MAX(POST_IDX),0) + 1 FROM JOB_POST_TB
+	</select>
+	<delete id="deletepostskills">
+		DELETE FROM POST_SKILL_TB WHERE POST_IDX = #{
+		post_idx }
+	</delete>
+
+	<!-- 기업 회원 중 특정 아이디의 컴퍼니 info를 가져옴 -->
+	<select id="getCompanyById">
+		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE,
+		ADDRESS,
+		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
+		FROM
+		COMPANY_INFO_TB
+		WHERE ID = #{id}
 	</select>
 	<!-- logo default값 넣을 예정 -->
-	
-	
-<insert id="insert">
-	INSERT ALL
-		INTO user_tb (id, password, type,user_email, created_date)
+
+	<insert id="insert">
+		INSERT ALL
+		INTO user_tb (id, password,
+		type,user_email, created_date)
 		VALUES(#{id},#{password},1,#{user_email},#{created_date})
+		INTO
+		company_info_tb (id,cnumber, cname, com_logo,crepresentive,
+		address,
+		manager_name,company_managerphone,csize,cyear)
+		VALUES(#{id},
+		#{cnumber}, #{cname}, 'logo' , #{crepresentive},
+		#{address},
+		#{manager_name}, #{company_managerphone},#{csize}, #{cyear})
+		SELECT *
+		FROM DUAL
+	</insert>
 
-		INTO company_info_tb (id,cnumber, cname, com_logo,crepresentive, address,
-		                      manager_name,company_managerphone,csize,cyear)
-		VALUES(#{id}, #{cnumber}, #{cname}, '/' , #{crepresentive}, #{address},
-		       #{manager_name}, #{company_managerphone},#{csize}, #{cyear})
-	SELECT * FROM DUAL
-</insert> 
+	<select id="login">
+		SELECT id,password,type
+		FROM user_tb
+		WHERE id=#{arg0}
+		AND password=#{arg1} AND type=1
+	</select>
 
-<select id="login">
- SELECT id,password,type
- FROM   user_tb
- WHERE  id=#{arg0} AND password=#{arg1} AND type=1
-</select>
+	<select id="loadskills" parameterType="int">
+		select p.post_idx,
+		p.skill_idx, s.skill_name
+		from POST_SKILL_TB p, SKILL_TB s
+		where
+		p.skill_idx = s.skill_idx
+		and p.post_idx = #{post_idx}
+		order by
+		p.skill_idx
+	</select>
 
+	<select id="getPersonInfoByResumeId" parameterType="String"
+		resultType="com.green.domain.PersonInfoVo">
+		SELECT * FROM PERSON_INFO_TB WHERE resume_id = #{resumeId}
+	</select>
+	<select id="recommended"
+		resultType="com.green.domain.MatchingResultVo">
+		SELECT J.post_name, J.deadline, J.POST_IDX, J.JOB_INTRO,
+		R.id AS resumeId, R.RESUME_IDX, R.title, R.PROFILE,
+		PI.ID AS personId, PI.PNAME, PI.PHONE, PI.ADDRESS, PI.BIRTH,
+		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		FROM PERSON_SKILL_TB PS
+		JOIN SKILL_TB S ON PS.skill_idx = S.skill_idx OR S.skill_idx = 0
+		WHERE PS.id = PI.ID) AS skills
+		FROM RESUME_TB R
+		JOIN PERSON_INFO_TB PI ON R.id = PI.ID
+		JOIN JOB_POST_TB J ON J.post_idx = #{post_idx}
+		JOIN (
+		SELECT id, MAX(created_at) AS latest
+		FROM RESUME_TB
+		GROUP BY id
+		) LR ON R.id = LR.id AND R.created_at = LR.latest
+		WHERE R.id IN (
+		SELECT PS.id
+		FROM PERSON_SKILL_TB PS
+		WHERE PS.id IN (
+		SELECT PS2.id
+		FROM PERSON_SKILL_TB PS2
+		JOIN POST_SKILL_TB PS3 ON PS2.skill_idx = PS3.skill_idx
+		WHERE PS3.POST_IDX = #{post_idx}
+		GROUP BY PS2.id
+		HAVING COUNT(DISTINCT PS2.skill_idx) >= (
+		SELECT COUNT(DISTINCT PS3.skill_idx)
+		FROM POST_SKILL_TB PS3
+		WHERE PS3.POST_IDX = #{post_idx}
+		)
+		)
+		OR EXISTS (
+		SELECT 1
+		FROM POST_SKILL_TB PS3
+		WHERE PS3.POST_IDX = #{post_idx} AND PS3.skill_idx = 0
+		)
+		)
+		GROUP BY J.POST_IDX, J.post_name, J.deadline, J.JOB_INTRO, R.id,
+		RESUME_IDX, R.title, PI.ID, PI.PNAME, R.PROFILE,
+		PI.PHONE, PI.ADDRESS, PI.BIRTH
+	</select>
+
+
+	<insert id="insertScrap">
+		insert into COM_SCRAP_TB (cscrap_idx, cid,
+		resume_idx)
+		values((SELECT NVL(MAX(cscrap_idx),0) + 1 FROM
+		COM_SCRAP_TB), #{cid} ,
+		#{resume_idx})
+	</insert>
+
+	<!-- 공고 이름 가져오기 -->
+	<select id="getpostName">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,
+		PAY, GO_WORK, GO_HOME,
+		TO_CHAR(DEADLINE, 'YY-MM-DD') DEADLINE,
+		JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM JOB_POST_TB
+		WHERE POST_IDX =
+		#{post_idx}
+	</select>
+
+	<!-- 특정 공고의 내용 가져오기 -->
+	<select id="getViewPost">
+		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,
+		PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+		FROM
+		JOB_POST_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+
+	<!-- 공고에 필요한 스킬들 idx 가져오기 -->
+	<select id="getPostSkill">
+		SELECT CSNO, POST_IDX, SKILL_IDX FROM POST_SKILL_TB
+		WHERE POST_IDX = #{post_idx}
+	</select>
+
+	<!-- 필요한 스킬 이름들 가져오기 -->
+	<select id="getSkillName">
+		SELECT SKILL_NAME FROM SKILL_TB WHERE SKILL_IDX =
+		#{skill_idx}
+	</select>
+
+	<insert id="insertpost"
+		parameterType="com.green.domain.JobpostVo">
+		INSERT INTO JOB_POST_TB
+		(POST_IDX, ID, POST_NAME, CAREER,
+		JOB_TYPE, PAY, GO_WORK, GO_HOME,
+		DEADLINE, JOB_INTRO, C_INTRO)
+		VALUES
+		((SELECT NVL(MAX(POST_IDX),0) + 1 FROM JOB_POST_TB), #{id},
+		#{post_name}, #{career}, #{job_type}, #{pay},
+		#{go_work}, #{go_home},
+		#{deadline}, #{job_intro}, #{c_intro})
+
+	</insert>
+	<delete id="deleteScrap">
+		delete from COM_SCRAP_TB where resume_idx =
+		#{resume_idx}
+	</delete>
+
+	<select id="getScrapList"
+		resultType="com.green.domain.ComscrapListVo">
+		SELECT CS.resume_idx,
+		CS.cid,
+		R.title,
+		(SELECT
+		LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		FROM
+		skill_tb S) AS skills,
+		I.pname
+		FROM COM_SCRAP_TB CS
+		JOIN resume_tb R ON
+		CS.resume_idx = R.resume_idx
+		JOIN PERSON_INFO_TB I ON R.ID = I.ID
+		WHERE
+		CS.cid = #{cid}
+		GROUP BY CS.resume_idx, CS.cid, R.title, I.pname
+	</select>
+	
+	<select id="countScrap" resultType="int">
+		select count(*) from
+		COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
+		#{arg1}
+	</select>
 	
 </mapper>

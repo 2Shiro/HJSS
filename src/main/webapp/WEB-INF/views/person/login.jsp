@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HJSS</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -60,21 +60,22 @@ footer{
 </style>
 </head>
 <body>
+			<main>
 <div class="main">
          <div>
             <a href="/">
                  <img alt="Logo" src="/images/logo.png" style="width:150px;">
              </a><br><br><br>
-<main>
+
 
 </hr>
 <table id="logch">
   <tr>
-    <td ><a href="/Person/loginForm" id="perlog">개인회원</a></td>
-    <td ><a href="/Company/loginForm" id="comlog">기업회원</a></td>
+    <td ><a href="/Person/LoginForm" id="perlog">개인회원</a></td>
+    <td ><a href="/Company/LoginForm" id="comlog">기업회원</a></td>
   </tr>
 </table>
-   <form  action="/Person/login" method="post" id="login">
+   <form  action="/Person/Login" method="post" id="login">
    <div class="log">
      <table>
        <tr>
@@ -85,8 +86,8 @@ footer{
                     style="width: 250px;" placeholder="비밀번호"></td>
        </tr>
        <tr id="btn">
-         <td><br><button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">작성완료</button>
-         <td><br><button type="button" class="btn btn-primary"  onClick="location.href='/Person/joinForm'" style="background-color:#5215a6; color : white; border:white; width: 120px;">
+         <td><br><button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">로그인</button>
+         <td><br><button type="button" class="btn btn-primary"  onClick="location.href='/Person/JoinForm'" style="background-color:#5215a6; color : white; border:white; width: 120px;">
               회원가입</button></td>
         </tr>     
      </table> 
@@ -94,7 +95,9 @@ footer{
    </form>
  </main>
 
- <%@include file="/WEB-INF/include/footer.jsp" %>
+
+
+			<%@include file="/WEB-INF/include/footer.jsp" %>
 
 </body>
 </html>

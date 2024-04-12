@@ -6,9 +6,8 @@
 	<div class="modal-dialog modal-xl modal-dialog-centered">
 		<div class="modal-content">
 			<form class="needs-validation container"
-				action="/Company/jobPost?id=${id }" novalidate id="postForm"
-				method="post" enctype="multipart/form-data">
-				<input type="hidden" name="id" value="${id}" />
+				action="/Company/MyPostWrite?id=${id }" novalidate id="postForm"
+				method="post">
 				<div class="modal-body">
 					<h2 class="modal-title" id="staticBackdropLabel">공고 등록하기</h2>
 					<hr>
@@ -47,8 +46,8 @@
 									<select class="form-select" aria-label="job_type" id="job_type"
 										name="job_type">
 										<option selected>선택</option>
-										<option value="1">정규직</option>
-										<option value="2">계약직</option>
+										<option value="정규직">정규직</option>
+										<option value="계약직">계약직</option>
 									</select>
 								</div>
 							</div>
@@ -83,7 +82,7 @@
 					<div class="mt-3 mx-auto row">
 						<c:forEach var="skill" items="${ skill }">
 							<div class="col-auto">
-								<input type="checkbox" class="btn-check" id="skill_${skill.skill_idx }"
+								<input type="checkbox" class="btn-check" id="skill_${skill.skill_idx }" value="${skill.skill_idx}" name="skillIdx"
 									autocomplete="off"> <label
 									class="btn btn-outline-primary" for="skill_${skill.skill_idx }">${skill.skill_name }</label>
 							</div>

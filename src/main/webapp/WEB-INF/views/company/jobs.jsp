@@ -88,7 +88,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/cmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -105,7 +105,7 @@
 								data-bs-target="#jobPost">새로운 공고등록</button>
 						</div>
 						<!-- 공고 등록 모달 include -->
-						<%@include file="/WEB-INF/views/company/jobpostform.jsp"%>
+						<%@include file="/WEB-INF/views/company/mypostwrite.jsp"%>
 					</div>
 					<c:forEach var="list" items="${ list }">
 						<div class="container border mb-3" id="jobDetailDiv">

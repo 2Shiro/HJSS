@@ -1,11 +1,12 @@
 package com.green.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class JobpostVo {
 	private int post_idx;
 	private String id;

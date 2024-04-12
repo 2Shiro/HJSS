@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Rolling Stone</title>
+<title>HJSS</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <style>
    .main {
@@ -33,7 +33,7 @@
                  <img alt="Logo" src="/images/logo.png" style="width:150px;">
              </a> </div>
    <h2>개인회원 가입</h2>
-   <form action="/Person/join" method="post">
+   <form action="/Person/Join" method="post">
     <div class="input-group-sm mb-3">
       <div class="input-group input-group-sm mb-3">
   <span class="input-group-text" id="inputGroup-sizing-sm"><span class="star">*</span>아이디</span>
@@ -68,13 +68,14 @@
      <div class="input-group input-group-sm mb-3">
   <span class="input-group-text" id="inputGroup-sizing-sm"><span class="star">*</span>이메일</span>
   <input type="text" class="form-control" aria-label="Sizing example input"
-         name="user_email" aria-describedby="inputGroup-sizing-sm">
+         name="email" aria-describedby="inputGroup-sizing-sm">
 </div>
 
   <input type="hidden" name="created_date" value=${ now } readonly>
 
+
       <button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white;">작성완료</button>
-      <button type="button" class="btn btn-outline-secondary" onClick="location.href='/Person/loginForm'">개인로그인</button>
+      <button type="button" class="btn btn-outline-secondary" onClick="location.href='/Person/LoginForm'">개인로그인</button>
       <button type="button" class="btn btn-outline-secondary" onClick="location.href='/'">HOME</button>
       </div>
    </form>
