@@ -181,7 +181,7 @@ document.getElementById('resumeFormsub').addEventListener('submit', function(e) 
 						<!-- 공고 등록 모달 include -->
 						<%@include file="/WEB-INF/views/person/myresumewrite.jsp"%>
 					</div>
-					<c:forEach var="list" items="${list}">
+					<c:forEach var="list" items="${response.list}">
 						<div class="linkDiv container border mb-3"
 							id="resumeDetailDiv${list.resume_idx}">
 							<!-- 공고 리스트 시작 -->
@@ -211,6 +211,7 @@ document.getElementById('resumeFormsub').addEventListener('submit', function(e) 
 						</div>
 					</c:forEach>
 				</div>
+				<%@include file="/WEB-INF/include/resume_paging.jsp" %>
 			</section>
 		</div>
 	</main>

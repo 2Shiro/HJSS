@@ -12,7 +12,8 @@
 		DEADLINE,
 		JOB_INTRO,
 		C_INTRO,
-		TO_CHAR(created_date, 'YY-MM-DD') created_date FROM JOB_POST_TB
+		TO_CHAR(created_date,
+		'YY-MM-DD') created_date FROM JOB_POST_TB
 		WHERE ID = #{id}
 	</select>
 
@@ -24,7 +25,7 @@
 		WHERE post_idx = #{post_idx}
 
 	</select>
-	
+
 	<select id="getmyProposal">
 		SELECT pro_idx, id, post_idx, resume_idx, status,
 		TO_CHAR(created_at,
@@ -78,7 +79,8 @@
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL,
 		TO_CHAR(CREATED_DATE,
-		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
+		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID
+		= #{id}
 	</select>
 
 	<select id="getpostList" parameterType="String"
@@ -205,53 +207,61 @@
 		resultType="com.green.domain.MatchingResultVo">
 		SELECT J.post_name, J.deadline, J.POST_IDX, J.JOB_INTRO,
 		R.id AS resumeId, R.RESUME_IDX, R.title, R.PROFILE,
-		PI.ID AS personId, PI.PNAME, PI.PHONE, PI.ADDRESS, PI.BIRTH,
-		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		PI.ID AS personId,
+		PI.PNAME, PI.PHONE, PI.ADDRESS, PI.BIRTH,
+		(SELECT LISTAGG(S.SKILL_NAME,
+		', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
 		FROM PERSON_SKILL_TB PS
-		JOIN SKILL_TB S ON PS.skill_idx = S.skill_idx OR S.skill_idx = 0
-		WHERE PS.id = PI.ID) AS skills
+		JOIN
+		SKILL_TB S ON PS.skill_idx = S.skill_idx OR S.skill_idx = 0
+		WHERE PS.id
+		= PI.ID) AS skills
 		FROM RESUME_TB R
-		JOIN PERSON_INFO_TB PI ON R.id = PI.ID
+		JOIN PERSON_INFO_TB PI ON R.id =
+		PI.ID
 		JOIN JOB_POST_TB J ON J.post_idx = #{post_idx}
 		JOIN (
-		SELECT id, MAX(created_at) AS latest
+		SELECT id,
+		MAX(created_at) AS latest
 		FROM RESUME_TB
 		GROUP BY id
-		) LR ON R.id = LR.id AND R.created_at = LR.latest
+		) LR ON R.id = LR.id
+		AND R.created_at = LR.latest
 		WHERE R.id IN (
 		SELECT PS.id
-		FROM PERSON_SKILL_TB PS
+		FROM
+		PERSON_SKILL_TB PS
 		WHERE PS.id IN (
 		SELECT PS2.id
-		FROM PERSON_SKILL_TB PS2
+		FROM PERSON_SKILL_TB
+		PS2
 		JOIN POST_SKILL_TB PS3 ON PS2.skill_idx = PS3.skill_idx
-		WHERE PS3.POST_IDX = #{post_idx}
+		WHERE
+		PS3.POST_IDX = #{post_idx}
 		GROUP BY PS2.id
-		HAVING COUNT(DISTINCT PS2.skill_idx) >= (
+		HAVING COUNT(DISTINCT
+		PS2.skill_idx) >= (
 		SELECT COUNT(DISTINCT PS3.skill_idx)
-		FROM POST_SKILL_TB PS3
+		FROM
+		POST_SKILL_TB PS3
 		WHERE PS3.POST_IDX = #{post_idx}
 		)
 		)
 		OR EXISTS (
 		SELECT 1
 		FROM POST_SKILL_TB PS3
-		WHERE PS3.POST_IDX = #{post_idx} AND PS3.skill_idx = 0
+		WHERE PS3.POST_IDX = #{post_idx} AND
+		PS3.skill_idx = 0
 		)
 		)
-		GROUP BY J.POST_IDX, J.post_name, J.deadline, J.JOB_INTRO, R.id,
+		GROUP BY J.POST_IDX, J.post_name, J.deadline,
+		J.JOB_INTRO, R.id,
 		RESUME_IDX, R.title, PI.ID, PI.PNAME, R.PROFILE,
 		PI.PHONE, PI.ADDRESS, PI.BIRTH
 	</select>
 
 
-	<insert id="insertScrap">
-		insert into COM_SCRAP_TB (cscrap_idx, cid,
-		resume_idx)
-		values((SELECT NVL(MAX(cscrap_idx),0) + 1 FROM
-		COM_SCRAP_TB), #{cid} ,
-		#{resume_idx})
-	</insert>
+
 
 	<!-- 공고 이름 가져오기 -->
 	<select id="getpostName">
@@ -299,30 +309,46 @@
 		#{deadline}, #{job_intro}, #{c_intro})
 
 	</insert>
+
+	<insert id="insertScrap">
+		insert into COM_SCRAP_TB (cscrap_idx, cid,
+		resume_idx)
+		values((SELECT NVL(MAX(cscrap_idx),0) + 1 FROM
+		COM_SCRAP_TB), #{cid} ,
+		#{resume_idx})
+	</insert>
+
 	<delete id="deleteScrap">
 		delete from COM_SCRAP_TB where resume_idx =
 		#{resume_idx}
 	</delete>
 
-   <select id="getScrapList"
-      resultType="com.green.domain.ComscrapListVo">
-      SELECT distinct CS.resume_idx,
-      CS.cid,
-      R.title,
-      (SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
-      FROM skill_tb S
-      JOIN person_skill_tb PS ON S.skill_idx = PS.skill_idx
-      WHERE ps.id = r.id
-      ) AS skills,
-      I.pname
-      FROM COM_SCRAP_TB CS
-      JOIN resume_tb R ON CS.resume_idx = R.resume_idx
-      JOIN PERSON_INFO_TB I ON R.ID = I.ID
-      WHERE CS.cid = #{cid}
-   </select>
 	<select id="countScrap" resultType="int">
 		select count(*) from
 		COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
 		#{arg1}
 	</select>
+
+	<select id="getScrapList"
+		resultType="com.green.domain.ComscrapListVo">
+		SELECT distinct CS.resume_idx,
+		CS.cid,
+		R.title,
+		(SELECT
+		LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		FROM
+		skill_tb S
+		JOIN person_skill_tb PS ON S.skill_idx = PS.skill_idx
+		WHERE
+		ps.id = r.id
+		) AS skills,
+		I.pname
+		FROM COM_SCRAP_TB CS
+		JOIN resume_tb R ON
+		CS.resume_idx = R.resume_idx
+		JOIN PERSON_INFO_TB I ON R.ID = I.ID
+		WHERE
+		CS.cid = #{cid}
+	</select>
+
 </mapper>

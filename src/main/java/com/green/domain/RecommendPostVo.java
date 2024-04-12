@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecommendPostVo {
 	private int post_idx;
+	private String cname;
 	private String id;
 	private String post_name;
 	private String career;

@@ -550,7 +550,6 @@ public class CompanyController {
 		// session에서 id를 가져옴
 		String id = comVo.getId();
 		userVo.setId(id);
-		userVo.setId(id);
 
 		// 가져온 id를 사용해서 유저 정보를 가져옴
 		userVo = mainMapper.getUser(id);

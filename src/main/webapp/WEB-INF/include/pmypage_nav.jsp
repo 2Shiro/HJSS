@@ -33,7 +33,7 @@
 	
 	MyResumeEl.addEventListener('click', function(e) {
 		//alert('myresume');
-		location.href = '/Person/MyResume?id=' + sessionid;
+		location.href = '/Person/MyResume?id=' + sessionid + '&nowpage=1';
 	});
 	
 	MyProposalEl.addEventListener('click', function(e) {
@@ -43,6 +43,6 @@
 	
 	ScrapEl.addEventListener('click', function(e) {
 		//alert('pscrap');
-		location.href = '/Person/Scrap?id=' + sessionid;
+		location.href = '/Person/MyScrap?id=' + sessionid;
 	});
 </script>
