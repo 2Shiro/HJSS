@@ -61,4 +61,6 @@ public interface PersonMapper {
 
 	void insertProposal(String id, int post_idx, int resume_idx);
 
+	int countProposal(String id, int post_idx);
+
 }

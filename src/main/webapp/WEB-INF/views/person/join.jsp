@@ -41,7 +41,7 @@
                  <img alt="Logo" src="/images/logo.png" style="width:150px;">
              </a> </div>
    <h2>개인회원 가입</h2>
-   <form action="/Person/join" method="post">
+   <form action="/Person/Join" method="post">
     <div class="input-group-sm mb-3">
       <div class="input-group input-group-sm mb-3">
   <span class="input-group-text" id="inputGroup-sizing-sm">아이디</span>

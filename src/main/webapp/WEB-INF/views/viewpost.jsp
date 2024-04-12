@@ -16,7 +16,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
-
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 .resume {
 	width: 500px;
@@ -47,7 +48,7 @@
 				<!-- 공고 보는 부분 -->
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
-						<input type="text" class="border-0" id="title"
+						<input type="text" class="border-0 inputtitle" id="title"
 							value="${jobpostvo.post_name}">
 					</h2>
 					<hr>
@@ -193,19 +194,20 @@
 							<!-- 개인회원일때 -->
 							<c:if test="${sessionVo.type == 2}">
 								<form action="/Person/JoinPost" method="POST">
-									<input type="hidden" name="id" value="ps1" /> <input
-										type="hidden" name="post_idx" value="${jobpostvo.post_idx}" />
+									<input type="hidden" name="pid" value="${sessionVo.id}" />
+									<input type="hidden" name="post_idx" value="${jobpostvo.post_idx}" />
+									<input type="hidden" name="cid" value="${companyVo.id}">
 									<div class="input-group mb-3 resume">
 										<label class="input-group-text" for="inputGroupSelect01">이력서</label>
 										<select name="resume_idx" class="form-select"
 											id="presumeSelect">
-											<option selected>==선택==</option>
+											<option selected value=0>==선택==</option>
 											<c:forEach var="presumeVo" items="${presumeVo}">
 												<option value="${presumeVo.resume_idx}">${presumeVo.title}</option>
 											</c:forEach>
 										</select>
 									</div>
-									<button type="submit" class="btn btn-primary mx-3">지원하기</button>
+									<button type="submit" class="btn btn-primary mx-3" id="join">지원하기</button>
 								</form>
 							</c:if>
 							<!-- 기업회원일때 -->
@@ -230,8 +232,17 @@
 					</div>
 				</div>
 			</section>
-		</div>
+		</div> 
 	</main>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
+<script>
+// 		JoinEl = document.getElementById("join");
+
+//     JoinEl.addEventListener('submit', () => {
+// 			alert('${msg}');
+// 			location.href = "/ViewPost?id=${cid}&post_idx=${post_idx}";
+// 			//window.location.reload();
+//     }
+</script>
 </html>

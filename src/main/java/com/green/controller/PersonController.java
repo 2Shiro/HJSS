@@ -15,13 +15,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.green.domain.CompanyVo;
 import com.green.domain.CproposalVo;
@@ -102,199 +102,231 @@ public class PersonController {
 	//특정 구직자의 특정 공고에 지원하기
 	@RequestMapping("/JoinPost")
 	public ModelAndView joinPost( @RequestParam HashMap<String, Object> map) {
-		//System.out.println("resume_idx" + map);
-		String id = (String) map.get("id");
+		//System.out.println("map" + map);
+		String pid = String.valueOf(map.get("pid"));
+		String cid = String.valueOf(map.get("cid"));
+		int resume_idx = Integer.parseInt((String.valueOf(map.get("resume_idx"))));
+		
 		//System.out.println("id" + id);
 		int post_idx = Integer.parseInt((String.valueOf(map.get("post_idx"))));
 		//System.out.println("post_idx" + post_idx);
-		int resume_idx = Integer.parseInt((String.valueOf(map.get("resume_idx"))));
 		//System.out.println("resume_idx" + resume_idx);
 		
-		//insert MY_PROPOSAL_TB
-		personMapper.insertProposal(id, post_idx, resume_idx);
+		ModelAndView mv = new ModelAndView();
 		
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/Person/MyProposal");
-		return mv;
-	}
-
-	@RequestMapping("/MyResume")
-	public ModelAndView resume(UserVo userVo, PresumeVo presume, @SessionAttribute("login") PersonVo personVo) {
-		ModelAndView mv = new ModelAndView();
-		String id = personVo.getId();
-		userVo.setId(id);
-		userVo = mainMapper.getUser(id);
-		presume.setId(id);
-		List<PresumeVo> list = personMapper.getResumeList(id);
-		PersonInfoVo info = personMapper.getInfo(id);
-		List<SkillVo> skill = mainMapper.getSkillList();
-		mv.addObject("info", info);
-		mv.addObject("user", userVo);
-		mv.addObject("id", id);
-		mv.addObject("list", list);
-		mv.addObject("skill", skill);
-		mv.setViewName("/person/myresume");
-		return mv;
-	}
-
-	@RequestMapping("/MyResumeWrite")
-	public ModelAndView WriteResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
-			@RequestParam("file") MultipartFile file, @Value("${file.upload-dir}") String uploadDir) {
-		ModelAndView mv = new ModelAndView();
-
-		String id = userVo.getId();
-		vo.setId(id);
-		if (file != null && !file.isEmpty()) {
-		    try {
-		        // 파일 저장 경로 구성
-		        String baseDir = System.getProperty("user.dir");
-		        String imagesDirPath = baseDir + uploadDir; // application.properties에서 설정된 값을 사용
-
-		        File directory = new File(imagesDirPath);
-		        if (!directory.exists()) {
-		            directory.mkdirs();
-		        }
-
-		        String fileName = file.getOriginalFilename();
-		        String filePath = Paths.get(imagesDirPath, fileName).toString();
-
-		        // 파일 저장
-		        Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-		        // 데이터베이스에 저장할 파일 경로 설정
-		        String relativePath = "/images/" + fileName;
-		        vo.setProfile(relativePath);
-
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		        // 에러 처리 로직
-		    }
+		//이미 지원했는지 검사
+		int count = 0;
+		count = personMapper.countProposal(cid, post_idx);
+		//redirectAttributes.addFlashAttribute("post_idx", post_idx);
+		//redirectAttributes.addFlashAttribute("cid", cid);
+		//System.out.println(!resume.equals("==선택=="));
+		
+		if (count == 0 && resume_idx != 0) {
+			
+			//insert MY_PROPOSAL_TB
+			personMapper.insertProposal(pid, post_idx, resume_idx);
+			//mv.addObject("msg", "입사 지원되었습니다.");
+			//mv.addObject("<script>alert('입사 지원되었습니다.');</script>");
+			mv.setViewName("redirect:/Person/MyProposal");
 		} else {
-		    // 파일이 선택되지 않았거나 비어 있는 경우, 기본 이미지 경로를 사용
-		    String relativePath = "/images/default.png";
-		    vo.setProfile(relativePath);
+			//mv.addObject("msg", "실패하였습니다. 이력서를 선택해 주십시오.");
+			//mv.addObject("<script>alert('실패하였습니다. 이력서를 선택해 주십시오.');</script>");
+			mv.setViewName("redirect:/Person/Pmain");
 		}
-
-		personMapper.insertResume(vo); // 이력서 정보 삽입
-
-		// 기술 스킬 정보 삽입
-		personMapper.deletepersonskills(userVo);
-		for (Integer skillIdx : skillIdxList) {
-			PersonskillVo skillVo = new PersonskillVo();
-			skillVo.setId(id); // 사용자 ID 설정
-			skillVo.setSkill_idx(skillIdx); // 스킬 인덱스 설정
-			personMapper.insertskills(skillVo); // 스킬 정보 삽입
-		}
-
-		mv.addObject("userVo", userVo); // ModelAndView 객체에 UserVo 객체 추가
-		mv.setViewName("redirect:/Person/MyResume"); // 리다이렉트 설정
-		return mv; // ModelAndView 반환
-	}
-
-	@RequestMapping("/MyResumeDetail")
-	public ModelAndView detailResume(PresumeVo presume) {
-		ModelAndView mv = new ModelAndView();
-		int resume_idx = presume.getResume_idx();
-		PresumeVo vo = personMapper.getResume(resume_idx);
-		String id = vo.getId();
-		PersonInfoVo info = personMapper.getInfo(id);
-		List<SkillVo> skill = personMapper.loadskills(id);
-		UserVo userVo = mainMapper.getUser(id);
-		mv.addObject("info", info);
-		mv.addObject("skill", skill);
-		mv.addObject("vo", vo);
-		mv.addObject("userVo", userVo);
-		mv.setViewName("/person/myresumedetail");
 		return mv;
 	}
 
-	@RequestMapping("/MyResumeEdit")
-	public ModelAndView editResume(PresumeVo presume) {
-		ModelAndView mv = new ModelAndView();
-		int resume_idx = presume.getResume_idx();
-		PresumeVo vo = personMapper.getResume(resume_idx);
-		String id = vo.getId();
-		PersonInfoVo info = personMapper.getInfo(id);
-		List<SkillVo> userSkills = personMapper.loadskills(id); // 유저의 기술스택 리스트
-		List<SkillVo> allSkills = mainMapper.getSkillList(); // 스킬 테이블에 있는 모든 기술 목록들
-		UserVo userVo = mainMapper.getUser(id);
-		mv.addObject("vo", vo);
-		mv.addObject("info", info);
-		mv.addObject("allSkills", allSkills);
-		mv.addObject("userSkills", userSkills);
-		mv.addObject("userVo", userVo);
-		mv.setViewName("/person/myresumeedit");
-		return mv;
-	}
+	  @RequestMapping("/MyResume")
+	   public ModelAndView resume(UserVo userVo, PresumeVo presume, @SessionAttribute("login") PersonVo personVo) {
+	      ModelAndView mv = new ModelAndView();
+	      String id = personVo.getId();
+	      userVo.setId(id);
+	      userVo = mainMapper.getUser(id);
+	      presume.setId(id);
+	      List<PresumeVo> list = personMapper.getResumeList(id);
+	      PersonInfoVo info = personMapper.getInfo(id);
+	      List<SkillVo> skill = mainMapper.getSkillList();
+	      mv.addObject("info", info);
+	      mv.addObject("user", userVo);
+	      mv.addObject("id", id);
+	      mv.addObject("list", list);
+	      mv.addObject("skill", skill);
+	      mv.setViewName("/person/myresume");
+	      return mv;
+	   }
 
-	@RequestMapping("/MyResumeUpdate")
-	public ModelAndView updateResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
-			@RequestParam("file") MultipartFile file, @Value("${file.upload-dir}") String uploadDir) {
-		ModelAndView mv = new ModelAndView();
-		String id = userVo.getId();
-		vo.setId(id);
-		if (file != null && !file.isEmpty()) {
-		    try {
-		        // 파일 저장 경로 구성
-		        String baseDir = System.getProperty("user.dir");
-		        String imagesDirPath = baseDir + uploadDir; // application.properties에서 설정된 값을 사용
+	   @RequestMapping("/MyResumeWrite")
+	   public ModelAndView WriteResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
+	         @RequestParam("file") MultipartFile file, @Value("${file.upload-dir}") String uploadDir) {
+	      ModelAndView mv = new ModelAndView();
 
-		        File directory = new File(imagesDirPath);
-		        if (!directory.exists()) {
-		            directory.mkdirs();
-		        }
-		        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
-		        ZonedDateTime current = ZonedDateTime.now();
-		        String namePattern = current.format(format);
-		        //System.out.println(namePattern);
-		        String fileName = file.getOriginalFilename();
-		        String filePath = Paths.get(imagesDirPath, fileName).toString();
-		        
-		        // 파일 저장
-		        Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+	      String id = userVo.getId();
+	      vo.setId(id);
+	      if (file != null && !file.isEmpty()) {
+	          try {
+	              // 파일 저장 경로 구성
+	              String baseDir = System.getProperty("user.dir");
+	              String imagesDirPath = baseDir + uploadDir; // application.properties에서 설정된 값을 사용
 
-		        // 데이터베이스에 저장할 파일 경로 설정
-		        String relativePath = "/images/" + namePattern + fileName;
-		        vo.setProfile(relativePath);
+	              File directory = new File(imagesDirPath);
+	              if (!directory.exists()) {
+	                  directory.mkdirs();
+	              }
+	              DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+	              ZonedDateTime current = ZonedDateTime.now();
+	              String namePattern = current.format(format);
+	              //System.out.println(namePattern);
+	              String fileName = file.getOriginalFilename();
+	              String filePath = Paths.get(imagesDirPath, fileName).toString();
+	              
+	              // 파일 저장
+	              Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		        // 에러 처리 로직
-		    }
-		} else {
-		    // 파일이 선택되지 않았거나 비어 있는 경우, 기존 이미지 경로를 사용
-		    String relativePath = vo.getProfile();
-		    vo.setProfile(relativePath);
-		}
+	              // 데이터베이스에 저장할 파일 경로 설정
+	              String relativePath = "/images/" + namePattern + fileName;
+	              vo.setProfile(relativePath);
 
-		personMapper.updateResume(vo); // 이력서 정보 삽입
-		// 기술 스킬 정보 삽입
-		personMapper.deletepersonskills(userVo);
-		for (Integer skillIdx : skillIdxList) {
-			PersonskillVo skillVo = new PersonskillVo();
-			skillVo.setId(id); // 사용자 ID 설정
-			skillVo.setSkill_idx(skillIdx); // 스킬 인덱스 설정
-			personMapper.insertskills(skillVo); // 스킬 정보 삽입
-		}
-		mv.addObject("userVo", userVo); // ModelAndView 객체에 UserVo 객체 추가
-		mv.setViewName("redirect:/Person/MyResume"); // 리다이렉트 설정
-		return mv; // ModelAndView 반환
-	}
+	          } catch (IOException e) {
+	              e.printStackTrace();
+	              // 에러 처리 로직
+	          }
+	      } else {
+	          // 파일이 선택되지 않았거나 비어 있는 경우, 기본 이미지 경로를 사용
+	          String relativePath = "/images/default.png";
+	          vo.setProfile(relativePath);
+	      }
 
-	@RequestMapping("/MyResumeDelete")
-	public ModelAndView resumeDelete(PresumeVo presume) {
-		ModelAndView mv = new ModelAndView();
-		personMapper.resumeDelete(presume);
-		mv.setViewName("redirect:/Person/MyResume");
-		return mv;
-	}
+	      personMapper.insertResume(vo); // 이력서 정보 삽입
+
+	      // 기술 스킬 정보 삽입
+	      personMapper.deletepersonskills(userVo);
+	      for (Integer skillIdx : skillIdxList) {
+	         PersonskillVo skillVo = new PersonskillVo();
+	         skillVo.setId(id); // 사용자 ID 설정
+	         skillVo.setSkill_idx(skillIdx); // 스킬 인덱스 설정
+	         personMapper.insertskills(skillVo); // 스킬 정보 삽입
+	      }
+
+	      mv.addObject("userVo", userVo); // ModelAndView 객체에 UserVo 객체 추가
+	      mv.setViewName("redirect:/Person/MyResume"); // 리다이렉트 설정
+	      return mv; // ModelAndView 반환
+	   }
+
+	   @RequestMapping("/MyResumeDetail")
+	   public ModelAndView detailResume(PresumeVo presume) {
+	      ModelAndView mv = new ModelAndView();
+	      int resume_idx = presume.getResume_idx();
+	      PresumeVo vo = personMapper.getResume(resume_idx);
+	      String id = vo.getId();
+	      PersonInfoVo info = personMapper.getInfo(id);
+	      List<SkillVo> skill = personMapper.loadskills(id);
+	      UserVo userVo = mainMapper.getUser(id);
+	      mv.addObject("info", info);
+	      mv.addObject("skill", skill);
+	      mv.addObject("vo", vo);
+	      mv.addObject("userVo", userVo);
+	      mv.setViewName("/person/myresumedetail");
+	      return mv;
+	   }
+
+	   @RequestMapping("/MyResumeEdit")
+	   public ModelAndView editResume(PresumeVo presume,  @SessionAttribute("login") PersonVo personVo) {
+	      ModelAndView mv = new ModelAndView();
+	      int resume_idx = presume.getResume_idx();
+	      PresumeVo vo = personMapper.getResume(resume_idx);
+	      String id = vo.getId();
+	      PersonInfoVo info = personMapper.getInfo(id);
+	      
+	      
+	      List<SkillVo> userSkills = personMapper.loadskills(id); // 유저의 기술스택 리스트
+	      
+	      
+	      List<SkillVo> allSkills = mainMapper.getSkillList(); // 스킬 테이블에 있는 모든 기술 목록들
+	      UserVo userVo = mainMapper.getUser(id);
+	      mv.addObject("vo", vo);
+	      mv.addObject("info", info);
+	      mv.addObject("allSkills", allSkills);
+	      mv.addObject("userSkills", userSkills);
+	      mv.addObject("userVo", userVo);
+	      mv.setViewName("/person/myresumeedit");
+	      return mv;
+	   }
+
+	   @RequestMapping("/MyResumeUpdate")
+	   public ModelAndView updateResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
+	         @RequestParam("file") MultipartFile file, @Value("${file.upload-dir}") String uploadDir, @SessionAttribute("login") PersonVo personVo) {
+	      ModelAndView mv = new ModelAndView();
+	      String id = personVo.getId();
+	      vo.setId(id);
+	      userVo.setId(id);
+	      if (file != null && !file.isEmpty()) {
+	          try {
+	              // 파일 저장 경로 구성
+	              String baseDir = System.getProperty("user.dir");
+	              String imagesDirPath = baseDir + uploadDir; // application.properties에서 설정된 값을 사용
+
+	              File directory = new File(imagesDirPath);
+	              if (!directory.exists()) {
+	                  directory.mkdirs();
+	              }
+	              DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+	              ZonedDateTime current = ZonedDateTime.now();
+	              String namePattern = current.format(format);
+	              //System.out.println(namePattern);
+	              String fileName = file.getOriginalFilename();
+	              String filePath = Paths.get(imagesDirPath, fileName).toString();
+	              
+	              // 파일 저장
+	              Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+
+	              // 데이터베이스에 저장할 파일 경로 설정
+	              String relativePath = "/images/" + namePattern + fileName;
+	              vo.setProfile(relativePath);
+
+	          } catch (IOException e) {
+	              e.printStackTrace();
+	              // 에러 처리 로직
+	          }
+	      } else {
+	          // 파일이 선택되지 않았거나 비어 있는 경우, 기본 이미지 경로를 사용
+	          String relativePath = "/images/default.png";
+	          vo.setProfile(relativePath);
+	      }
+
+	      personMapper.updateResume(vo); // 이력서 정보 삽입
+	      // 기술 스킬 정보 삽입
+	      personMapper.deletepersonskills(userVo);
+	      
+	      for (Integer skillIdx : skillIdxList) {
+	         PersonskillVo skillVo = new PersonskillVo();
+	         skillVo.setId(id); // 사용자 ID 설정
+	         skillVo.setSkill_idx(skillIdx); // 스킬 인덱스 설정
+	         personMapper.insertskills(skillVo); // 스킬 정보 삽입
+	      }
+	      mv.addObject("userVo", userVo); // ModelAndView 객체에 UserVo 객체 추가
+	      mv.setViewName("redirect:/Person/MyResume"); // 리다이렉트 설정
+	      return mv; // ModelAndView 반환
+	   }
+
+	   @RequestMapping("/MyResumeDelete")
+	   public ModelAndView resumeDelete(PresumeVo presume) {
+	      ModelAndView mv = new ModelAndView();
+	      personMapper.resumeDelete(presume);
+	      mv.setViewName("redirect:/Person/MyResume");
+	      return mv;
+	   }
+
 
 	//특정 구직자가 지원한 공고
 	@RequestMapping("/MyProposal")
-	public ModelAndView getProposal() {
+	public ModelAndView getProposal(@SessionAttribute("login") PersonVo personVo) {
 		//아이디에 따라 하는 것 추가하기
+		String pid = personVo.getId();
+		//나의 지원 가져오기
+		List<CproposalVo> proposalList = companyMapper.getmyProposal(pid);
+		
 		//지원 전부 가져오기
-		List<CproposalVo> proposalList = companyMapper.getProposal();
+		//List<CproposalVo> proposalList = companyMapper.getProposalq();
 		
 		//공고 정보 가져오기
 		List<JobpostVo> jobpostList = new ArrayList<>();
@@ -342,7 +374,8 @@ public class PersonController {
 											  jobpostList.get(i).getDeadline(), 
 											  proposalList.get(i).getResume_idx(),
 											  presumeVo.get(i).getTitle(),
-											  status, comment));
+											  status, comment,
+											  proposalList.get(i).getId()));
 		}
 		
 		ModelAndView mv = new ModelAndView();
@@ -466,7 +499,7 @@ public class PersonController {
 		return mv;
 	}
 
-	@RequestMapping("/join")
+	@RequestMapping("/Join")
 	public ModelAndView join(PersonVo personVo) {
 		//System.out.println("개인회원" + personVo);
 
