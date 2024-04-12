@@ -17,7 +17,7 @@ import com.green.domain.UserVo;
 @Mapper
 public interface CompanyMapper {
 
-	List<CproposalVo> getProposal();
+	List<CproposalVo> getProposal(int i);
 
 	CompanyVo getCompanyById(String id);
 
@@ -77,4 +77,8 @@ public interface CompanyMapper {
 	List<PostskillVo> getPostSkill(int post_idx);
 
 	String getSkillName(int skill_idx);
+
+	List<JobpostVo> getMyPost(String id);
+
+	List<CproposalVo> getmyProposal(String pid);
 }

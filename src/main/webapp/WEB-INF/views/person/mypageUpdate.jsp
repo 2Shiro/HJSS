@@ -29,11 +29,11 @@
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
-						<input type="text" class="border-0" id="title"
+						<input type="text" class="border-0 inputtitle" id="title"
 							value="${ vo.pname }님의 마이페이지 수정" readonly>
 					</h2>
 					<hr>
-					<form action="/Person/Update?id=${ vo.id }" method="POST">
+					<form action="/Person/Update" method="POST">
 						<div class="my-1 mx-auto row">
 							<div class="row mt-2  d-flex justify-content-center">
 								<div class="col-6 row ms-4" >
@@ -47,7 +47,7 @@
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text" >비밀번호</span>
-										<input type="password" class="form-control" id="password" name="password" value="${ vo.password }" style="height: 70px; text-align: center;">
+										<input type="text" class="form-control" id="password" name="password" value="${ vo.password }" style="height: 70px; text-align: center;">
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text" >전화번호</span>
