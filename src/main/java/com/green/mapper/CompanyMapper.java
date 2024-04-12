@@ -37,7 +37,6 @@ public interface CompanyMapper {
 
 	void postDelete(JobpostVo postVo);
 
-
 	void insertskills(PostskillVo postSkill);
 
 	int selectpostidxmax();
