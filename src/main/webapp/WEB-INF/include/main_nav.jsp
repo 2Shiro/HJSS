@@ -11,7 +11,7 @@
 	const MainEl = document.getElementById("main");
 	
 	MainEl.addEventListener('click', function(e) {
-		alert('main');
+		//alert('main');
 		location.href = '/';
 	});
 </script>

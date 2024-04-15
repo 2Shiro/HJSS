@@ -1,7 +1,5 @@
 package com.green.domain;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,24 +8,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyVo {
-	@NotBlank(message = "공백없이 입력해주세요")
-	private String id;
 	
-	@NotBlank(message = "공백없이 입력해주세요")
-	@Size(min=8,max=20,message="비밀번호는 8자 이상 20자 이하로 입력해주세요.")
-	private String password;
-	private int    type;
-	private String user_email;
-	private String created_date;
-	private int    cnumber;
-
-
+	private String id;
+	private String password;	
+	private int cnumber;
 	private String cname;
 	private String com_logo;
 	private String crepresentive;
 	private String address;
 	private String manager_name;
 	private String company_managerphone;
+	private int    type;
+	private String user_email;
+	private String created_date;
 	private int csize;
 	private String cyear;
 	

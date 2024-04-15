@@ -14,4 +14,6 @@ public class UserVo {
 	private int type;
 	private String user_email;
 	private String created_date;
+	
+	
 }

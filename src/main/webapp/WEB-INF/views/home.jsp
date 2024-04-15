@@ -18,8 +18,7 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
-
-	<%@include file="/WEB-INF/include/header_notlogin.jsp"%>
+	<%@include file="/WEB-INF/include/header.jsp"%>
 	<main class="container-fluid">
 		<div class="row">
 			<nav class="col-2 bg-white sidebar vh-100 border-end">

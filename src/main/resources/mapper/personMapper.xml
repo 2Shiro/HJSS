@@ -87,6 +87,11 @@
  	WHERE  id=#{arg0} AND password=#{arg1} AND type=2
 	</select>
 
+	
+	<select id="countProposal">
+		SELECT COUNT(*) FROM PERSON_PROPOSAL_TB WHERE ID = #{arg0} AND POST_IDX = #{arg1}
+	</select>
+	
 	<!-- 구직자가 지원하기 -->
 	<insert id="insertProposal">
 		INSERT INTO PERSON_PROPOSAL_TB ( PRO_IDX, ID, POST_IDX, RESUME_IDX )

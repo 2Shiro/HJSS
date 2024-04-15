@@ -51,7 +51,7 @@
 				</c:when>
 				<c:otherwise>
 					<li class="nav-item"><a
-						class="mx-3 text-decoration-none text-black" href="/logout">로그아웃</a></li>
+						class="mx-3 text-decoration-none text-black" href="/Person/LoginForm">로그인</a></li>
 				</c:otherwise>
 			</c:choose>
 

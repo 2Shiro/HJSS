@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CompanyVo;
@@ -78,58 +82,67 @@ public class MainController {
 	// 메인에서 선택한 공고 보러 들어가기
 	@RequestMapping("/ViewPost")
 	public ModelAndView viewPost(@RequestParam("post_idx") int post_idx, @RequestParam("id") String id, PersonVo personVo, HttpServletRequest request) {
-		
 
-		
-		// job_post_tb에서 해당 공고 찾기
-		JobpostVo jobpostvo = companyMapper.getViewPost(post_idx);
-		log.info("[==jobpostvo==] : {}", jobpostvo);
 
-		// 공고에 필요한 스킬 post_skill_tb에서 찾기
-		List<PostskillVo> postskillList = companyMapper.getPostSkill(post_idx);
-		log.info("[==postskillList==] : {}", postskillList);
+	      
+	      // job_post_tb에서 해당 공고 찾기
+	      JobpostVo jobpostvo = companyMapper.getViewPost(post_idx);
+	      log.info("[==jobpostvo==] : {}", jobpostvo);
 
-		// 스킬 이름 가져오기
-		List<SkillVo> jobnameList = new ArrayList<>();
-		for (int i = 0; i < postskillList.size(); i++) {
-			int skill_idx = postskillList.get(i).getSkill_idx();
-			String skill_name = companyMapper.getSkillName(skill_idx);
-			jobnameList.add(new SkillVo(skill_idx, skill_name));
-		}
-		log.info("[==jobnameList==] : {}", jobnameList);
-		// System.out.println("스킬들" + jobnameList);
+	      // 공고에 필요한 스킬 post_skill_tb에서 찾기
+	      List<PostskillVo> postskillList = companyMapper.getPostSkill(post_idx);
+	      log.info("[==postskillList==] : {}", postskillList);
 
-		// 기업 정보
-		CompanyVo companyVo = companyMapper.getCompanyById(id);
+	      // 스킬 이름 가져오기
+	      List<SkillVo> jobnameList = new ArrayList<>();
+	      for (int i = 0; i < postskillList.size(); i++) {
+	         int skill_idx = postskillList.get(i).getSkill_idx();
+	         String skill_name = companyMapper.getSkillName(skill_idx);
+	         jobnameList.add(new SkillVo(skill_idx, skill_name));
+	      }
+	      log.info("[==jobnameList==] : {}", jobnameList);
+	      // System.out.println("스킬들" + jobnameList);
 
-		// 구직자면 지원하기 보이게 할때 가져올 것
-		// 세션아이디 확인
-		String puserId = personVo.getId();
-		List<PresumeVo> presumeVo = personMapper.getResumeList(puserId);
-		log.info("==presumeVo== {}", presumeVo);
+	      // 기업 정보
+	      CompanyVo companyVo = companyMapper.getCompanyById(id);
 
-		ModelAndView mv = new ModelAndView();
-		
-		//기업 회원 로그인 시 지원하기 목록을 제거하기 위한 코드
-		//세션에서 PersonVo를 받아와서 jstl문법을 이용하여 지원하기 부분을 가리려고 함
-		HttpSession session = request.getSession();
-		Object loginYn = session.getAttribute("login");
+	      // 구직자면 지원하기 보이게 할때 가져올 것
+	      // 세션아이디 확인
 
-		if (loginYn instanceof PersonVo) {
-		    PersonVo sessionVo = (PersonVo) loginYn;
-		    mv.addObject("sessionVo",sessionVo);
-		} else if (loginYn instanceof CompanyVo) {
-			CompanyVo sessionVo = (CompanyVo) loginYn;
-			mv.addObject("sessionVo", sessionVo);
-		} 
-		
-		mv.addObject("jobpostvo", jobpostvo);
-		mv.addObject("jobnameList", jobnameList);
-		mv.addObject("companyVo", companyVo);
-		mv.addObject("presumeVo", presumeVo);
-		mv.setViewName("/viewpost");
-		return mv;
-	}
+	   
+
+	      ModelAndView mv = new ModelAndView();
+	      
+	      //기업 회원 로그인 시 지원하기 목록을 제거하기 위한 코드
+	      //세션에서 PersonVo를 받아와서 jstl문법을 이용하여 지원하기 부분을 가리려고 함
+	      HttpSession session = request.getSession();
+	      Object loginYn = session.getAttribute("login");
+
+	      if (loginYn instanceof PersonVo) {
+	          PersonVo sessionVo = (PersonVo) loginYn;
+	         String puserId = sessionVo.getId();
+	         List<PresumeVo> presumeVo = personMapper.getResumeList(puserId);
+	         log.info("==presumeVo== {}", presumeVo);
+	          mv.addObject("sessionVo",sessionVo);
+	          mv.addObject("presumeVo", presumeVo);
+	      } else if (loginYn instanceof CompanyVo) {
+	    	  CompanyVo sessionVo = (CompanyVo) loginYn;
+	         String puserId = sessionVo.getId();
+	         List<PresumeVo> presumeVo = personMapper.getResumeList(puserId);
+	         log.info("==presumeVo== {}", presumeVo);
+	          mv.addObject("sessionVo",sessionVo);
+	          mv.addObject("presumeVo", presumeVo);
+	      } 
+	      
+
+	   
+	      mv.addObject("jobpostvo", jobpostvo);
+	      mv.addObject("jobnameList", jobnameList);
+	      mv.addObject("companyVo", companyVo);
+	      
+	      mv.setViewName("/viewpost");
+	      return mv;
+	   }
 
 
 
@@ -158,4 +171,13 @@ public class MainController {
 		return mv;
 
 	}
+	
+	//아이디 중복체크(기업+개인)
+	@RequestMapping("/CheckId")
+	public @ResponseBody int checkId(@RequestParam(value="id") String id) {
+		int result = mainMapper.checkId(id);
+		return result;
+	}
+
+	
 }

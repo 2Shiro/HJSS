@@ -19,5 +19,7 @@ public interface MainMapper {
 
 	List<FaqVo> getList2();
 
+	int checkId(String id);
+
 
 }
