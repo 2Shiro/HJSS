@@ -35,9 +35,9 @@
 						<input type="hidden" value="${vo.post_idx }" name="post_idx">
 						<div class="form-floating my-3">
 							<div class="mb-3">
-								<label for="title" class="form-label">공고명</label>
-								<input type="text" class="form-control" id="title" name="post_name" value="${vo.post_name }" required>
-									
+								<label for="title" class="form-label">공고명</label> <input
+									type="text" class="form-control" id="title" name="post_name"
+									value="${vo.post_name }" required>
 							</div>
 						</div>
 						<div class="container-fluid border">
@@ -55,8 +55,8 @@
 									<label for="pay" class="col-form-label">연봉</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control" id="pay" name="pay" required
-										value="${vo.pay }">
+									<input type="text" class="form-control" id="pay" name="pay"
+										required value="${vo.pay }">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -66,8 +66,8 @@
 									<label for="type" class="col-form-label">근무조건</label>
 								</div>
 								<div class="col-3 my-3">
-									<select class="form-select" aria-label="job_type" id="job_type" required
-										name="job_type">
+									<select class="form-select" aria-label="job_type" id="job_type"
+										required name="job_type">
 										<option>선택</option>
 										<option value="정규직"
 											<c:if test="${vo.job_type == '정규직'}">selected</c:if>>정규직</option>
@@ -81,9 +81,9 @@
 								</div>
 								<div class="col-3 my-3 d-flex">
 									<input class="form-control" type="time" name="go_work"
-										id="go_work" value="${vo.go_work }" required> <input
+										id="go_work" value="${goWorkTime }" required> <input
 										class="form-control ms-3" type="time" name="go_home"
-										id="go_home" value="${vo.go_home }" required>
+										id="go_home" value="${goHomeTime }" required>
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -136,13 +136,7 @@
 								class="btn btn-secondary mx-3">수정</button>
 						</div>
 					</form>
-
-
 				</div>
-
-
-
-
 			</section>
 		</div>
 	</main>

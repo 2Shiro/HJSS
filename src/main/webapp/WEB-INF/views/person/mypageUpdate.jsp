@@ -16,6 +16,15 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/common.css" />
+<style>
+.modal-footer{
+      text-align : center;     
+      margin-bottom : 5%;
+      input{
+          width : 110px;
+          margin : 12px;
+}
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>

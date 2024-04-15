@@ -11,10 +11,17 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/**").addPathPatterns("/**/*").excludePathPatterns("/loginForm")
-				.excludePathPatterns("/Company/loginForm").excludePathPatterns("/logout").excludePathPatterns("/").excludePathPatterns("/login").excludePathPatterns("/ViewPost").excludePathPatterns("/Company/login")
-				.excludePathPatterns("/Company/JoinForm").excludePathPatterns("/Company/Join").excludePathPatterns("/Person/JoinForm").excludePathPatterns("/Person/Join").excludePathPatterns("/log*","/css/**", "/images/**", "/js/**");;
-
+		registry.addInterceptor(new LoginCheckInterceptor())
+		        .addPathPatterns("/**","/**/*")
+		        .excludePathPatterns("/Person/LoginForm","/Person/Login",
+		        		             "/Person/JoinForm","/Person/Join",
+		        		             "/Company/LoginForm","/Company/Login",
+		        		             "/Company/JoinForm","/Company/Join",
+		        		             "/logout","/ViewPost","/",
+		        		             "/CheckId","/FAQ",
+		        		             "/log*","/css/**", "/images/**", "/js/**",
+		        		             "/Search", "/Person/Search", "Company/Search");
+			
 	}	
 	
 }

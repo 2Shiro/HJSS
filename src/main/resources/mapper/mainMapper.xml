@@ -7,6 +7,27 @@
 	</select>
 	<select id="getSkillList">
 		SELECT SKILL_IDX, SKILL_NAME
-		FROM SKILL_TB
+		FROM  SKILL_TB
+	</select>
+	
+	<!-- 개인회원FAQ -->
+	<select id="getList">
+		SELECT Q_IDX,TYPE,QUESTION,ANSWER
+		 FROM   USER_FAQ_TB
+		 WHERE  TYPE=2
+	</select>
+	
+	<!-- 기업회원FAQ -->
+	<select id="getList2">
+		SELECT Q_IDX,TYPE,QUESTION,ANSWER
+		 FROM   USER_FAQ_TB
+		 WHERE  TYPE=1
+	</select>
+	
+	<!-- 아이디 중복체크 -->
+	<select id="checkId" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM   USER_TB
+		WHERE  ID = #{arg0}
 	</select>
 </mapper>

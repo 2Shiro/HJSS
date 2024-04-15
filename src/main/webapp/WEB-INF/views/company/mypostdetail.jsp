@@ -86,26 +86,28 @@
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="c_intro" class="form-label">기업 소개</label> <input
-									type="text" class="form-control" id="c_intro" value="${ vo.c_intro }"
-									readonly="readonly">
+									type="text" class="form-control" id="c_intro"
+									value="${ vo.c_intro }" readonly="readonly">
 							</div>
 						</div>
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="job-intro" class="form-label">업무 소개</label> <input
-									type="text" class="form-control" id="job-intro" value="${ vo.job_intro }"
-									readonly="readonly">
+									type="text" class="form-control" id="job-intro"
+									value="${ vo.job_intro }" readonly="readonly">
 							</div>
 						</div>
 						<p class="mb-0">기술/자격 조건</p>
 						<div class="my-2 row" id="skills">
-						<c:forEach var="skill" items="${ skill }">
-							<div class="col-auto">
-								<input type="checkbox" class="btn-check" id="skill_${skill.skill_idx }" value="${skill.skill_idx}" name="skillIdx"
-									autocomplete="off" readonly="readonly"> <label
-									class="btn btn-outline-primary" for="skill_${skill.skill_idx }">${skill.skill_name }</label>
-							</div>
-						</c:forEach>
+							<c:forEach var="skill" items="${ skill }">
+								<div class="col-auto">
+									<input type="checkbox" class="btn-check"
+										id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
+										name="skillIdx" autocomplete="off" readonly="readonly">
+									<label class="btn btn-outline-primary"
+										for="skill_${skill.skill_idx }">${skill.skill_name }</label>
+								</div>
+							</c:forEach>
 
 						</div>
 						<p class="mb-0">기업 정보</p>
@@ -124,8 +126,9 @@
 									<label for="crep" class="col-form-label">대표자</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control border-0" id="crepresentive"
-										value="${ com.crepresentive }" readonly="readonly">
+									<input type="text" class="form-control border-0"
+										id="crepresentive" value="${ com.crepresentive }"
+										readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -143,7 +146,8 @@
 									<label for="phone" class="col-form-label">전화번호</label>
 								</div>
 								<div class="col-3 my-3">
-									<input type="text" class="form-control border-0" id="COMPANY_MANAGERPHONE"
+									<input type="text" class="form-control border-0"
+										id="COMPANY_MANAGERPHONE"
 										value="${ com.company_managerphone }" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
@@ -168,8 +172,8 @@
 								<div class="col-2 my-3"></div>
 							</div>
 						</div>
-						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/MyPost" id="btn-list"
+					<div class="my-3 d-flex justify-content-center">
+							<a href="/Company/MyPost?id=${id}&nowpage=1" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
 								href="/Company/MyPostEdit?post_idx=${vo.post_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
