@@ -16,6 +16,18 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/common.css" />
+<style>
+<style>
+.modal-footer{
+      text-align : center;     
+      margin-bottom : 5%;
+      input{
+          width : 110px;
+          margin : 12px;
+      }
+}
+</style>
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -29,7 +41,7 @@
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
-						<input type="text" class="border-0" id="title"
+						<input type="text" class="border-0" id="title" style="width : 500px;"
 							value="${ vo.cname }님의 마이페이지 수정" readonly>
 					</h2>
 					<hr>

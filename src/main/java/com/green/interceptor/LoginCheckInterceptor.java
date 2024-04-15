@@ -17,7 +17,7 @@ public class LoginCheckInterceptor implements  HandlerInterceptor {
 
 		if (session.getAttribute("login") == null) {
 			System.out.println("비 로그인 상태 : ");
-			response.sendRedirect("/loginForm");
+			response.sendRedirect("/Person/LoginForm");
 			return false;
 		} else {
 			System.out.println("로그인 상태 : ");

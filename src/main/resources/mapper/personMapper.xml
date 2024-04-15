@@ -89,12 +89,15 @@
 		RESUME_TB WHERE ID = #{id}
 	</select>
 
+	
+	<!-- 개인회원 로그인 -->
 	<select id="login">
 		SELECT id,password,type
 		FROM user_tb
 		WHERE id=#{arg0}
 		AND password=#{arg1} AND type=2
 	</select>
+
 
 	<select id="countProposal">
 		SELECT COUNT(*) FROM PERSON_PROPOSAL_TB WHERE ID = #{arg0} AND POST_IDX = #{arg1}
@@ -110,19 +113,19 @@
 		#{arg1}, #{arg2})
 	</insert>
 
+
 	<update id="updateResumePass">
 		UPDATE PERSON_PROPOSAL_TB SET STATUS = #{arg1} WHERE
 		RESUME_IDX = #{arg0}
 	</update>
-
+	
+    <!-- 개인회원 회원가입 -->
 	<insert id="insert">
 		INSERT ALL
-		INTO person_info_tb ( id, pname, phone,
-		address, birth )
+		INTO person_info_tb ( id, pname, phone, address, birth )
 		VALUES (#{id},#{pname},#{phone},#{address},#{birth})
 		INTO user_tb (id,password,type,user_email,created_date)
-		VALUES
-		(#{id},#{password},2,#{user_email},#{created_date})
+		VALUES (#{id},#{password},2,#{user_email},#{created_date})
 		SELECT * FROM DUAL
 	</insert>
 

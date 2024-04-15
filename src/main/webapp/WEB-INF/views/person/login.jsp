@@ -67,32 +67,35 @@ footer{
                  <img alt="Logo" src="/images/logo.png" style="width:150px;">
              </a><br><br><br>
 
-				</hr>
-				<table id="logch">
-					<tr>
-						<td><a href="/loginForm" id="perlog">개인회원</a></td>
-						<td><a href="Company/loginForm" id="comlog">기업회원</a></td>
-					</tr>
-				</table>
-				<form action="/login" method="post" id="login">
-					<div class="log">
-						<table>
-							<tr>
-								<td colspan="2"><input type="text" id="id" name="id"
-									style="width: 250px;" placeholder="아이디"></td>
-							<tr>
-								<td colspan="2"><input type="password" id="password"
-									name="password" style="width: 250px;" placeholder="비밀번호"></td>
-							</tr>
-							<tr id="btn">
-								<td><input type="submit" value="로그인"></td>
-								<td><input type="button" value="회원가입"
-									onClick="location.href='/Person/JoinForm'"></td>
-							</tr>
-						</table>
-					</div>
-				</form>
-			</main>
+
+</hr>
+<table id="logch">
+  <tr>
+    <td ><a href="/Person/LoginForm" id="perlog">개인회원</a></td>
+    <td ><a href="/Company/LoginForm" id="comlog">기업회원</a></td>
+  </tr>
+</table>
+   <form  action="/Person/Login" method="post" id="login">
+   <div class="log">
+     <table>
+       <tr>
+         <td colspan="2"><input type="text" id="id" name="id" 
+                    style="width: 250px;" placeholder="아이디"></td>
+       <tr>
+         <td colspan="2"><input type="password" id="password" name="password" 
+                    style="width: 250px;" placeholder="비밀번호"></td>
+       </tr>
+       <tr id="btn">
+         <td><br><button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">로그인</button>
+         <td><br><button type="button" class="btn btn-primary"  onClick="location.href='/Person/JoinForm'" style="background-color:#5215a6; color : white; border:white; width: 120px;">
+              회원가입</button></td>
+        </tr>     
+     </table> 
+     </div>  
+   </form>
+ </main>
+
+
 
 			<%@include file="/WEB-INF/include/footer.jsp" %>
 

@@ -166,12 +166,12 @@
 		WHERE ID = #{id}
 	</select>
 	<!-- logo default값 넣을 예정 -->
+
 	<insert id="insert">
 		INSERT ALL
 		INTO user_tb (id, password,
 		type,user_email, created_date)
 		VALUES(#{id},#{password},1,#{user_email},#{created_date})
-
 		INTO
 		company_info_tb (id,cnumber, cname, com_logo,crepresentive,
 		address,
@@ -325,33 +325,28 @@
 		delete from COM_SCRAP_TB where resume_idx =
 		#{resume_idx}
 	</delete>
+	
+   <select id="getScrapList"
+      resultType="com.green.domain.ComscrapListVo">
+      SELECT distinct CS.resume_idx,
+      CS.cid,
+      R.title,
+      (SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+      FROM skill_tb S
+      JOIN person_skill_tb PS ON S.skill_idx = PS.skill_idx
+      WHERE ps.id = r.id
+      ) AS skills,
+      I.pname
+      FROM COM_SCRAP_TB CS
+      JOIN resume_tb R ON CS.resume_idx = R.resume_idx
+      JOIN PERSON_INFO_TB I ON R.ID = I.ID
+      WHERE CS.cid = #{cid}
+   </select>
 
 	<select id="countScrap" resultType="int">
 		select count(*) from
 		COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
 		#{arg1}
-	</select>
-
-	<select id="getScrapList"
-		resultType="com.green.domain.ComscrapListVo">
-		SELECT distinct CS.resume_idx,
-		CS.cid,
-		R.title,
-		(SELECT
-		LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
-		FROM
-		skill_tb S
-		JOIN person_skill_tb PS ON S.skill_idx = PS.skill_idx
-		WHERE
-		ps.id = r.id
-		) AS skills,
-		I.pname
-		FROM COM_SCRAP_TB CS
-		JOIN resume_tb R ON
-		CS.resume_idx = R.resume_idx
-		JOIN PERSON_INFO_TB I ON R.ID = I.ID
-		WHERE
-		CS.cid = #{cid}
 	</select>
 
 	<select id="countPost"
