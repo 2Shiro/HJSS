@@ -51,18 +51,10 @@ border: 1px solid #5215a6;
             var post_idx = $(this).closest('.linkDiv').data('post-idx');
             var candidateList = $('#candidateList');
 
-            // 현재 클릭한 linkDiv의 하위 목록을 토글
-            candidateList.toggle();
-
             // 다른 linkDiv의 하위 목록은 숨김
             $('.linkDiv').not(this).each(function() {
                 $(this).find('.candidateList').hide();
             });
-
-            // 목록을 보여줬으면 함수를 종료
-            if (candidateList.is(':visible')) {
-                return;
-            }
 
             // 이전에 보여준 인재 목록을 비움
             candidateList.empty();
@@ -100,7 +92,7 @@ border: 1px solid #5215a6;
                             '</tbody>' +
                             '</table>';
                     });
-                    $('#candidateList').html(html);
+                    candidateList.html(html);
 
                     // forEach 루프를 추가합니다.
                     candidates.forEach(function(candidate) {
@@ -165,9 +157,33 @@ border: 1px solid #5215a6;
         }
 
         // linkDiv를 클릭할 때 loadRecommendationList 함수를 호출하여 목록을 표시/숨김함
-        $('.linkDiv').click(loadRecommendationList);
+        $('.linkDiv').click(function() {
+            var post_idx = $(this).closest('.linkDiv').data('post-idx');
+            var candidateList = $('#candidateList');
+
+
+
+            // 클릭한 linkDiv의 post-idx를 가져옴
+            var currentPostIdx = $(this).closest('.linkDiv').data('post-idx');
+
+            // 이전에 클릭한 linkDiv와 post-idx가 같은 경우에는 토글만 함
+            if (candidateList.data('currentPostIdx') === currentPostIdx) {
+            	
+                // 현재 클릭한 linkDiv의 하위 목록을 토글
+                candidateList.toggle();
+            	
+            	return;
+            }
+
+            // 현재 클릭한 linkDiv의 post-idx를 저장하여 다음에 클릭할 때 비교할 수 있도록 함
+            candidateList.data('currentPostIdx', currentPostIdx);
+
+            // 인재 추천 목록 로드 함수 호출
+            loadRecommendationList.call(this);
+        });
     });
 </script>
+
 
 
 
