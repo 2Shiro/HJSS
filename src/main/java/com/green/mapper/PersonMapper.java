@@ -46,15 +46,17 @@ public interface PersonMapper {
 	PersonVo getPerson(PersonVo personVo);
 
 	void updatePerson(PersonVo personVo);
+
 	void updateUser(PersonVo personVo);
 
 	void deletePerson(PersonVo personVo);
+
 	void deleteUser(PersonVo personVo);
 
 	void insert(PersonVo personVo);
 
 	PersonVo login(String id, String password);
-	
+
 	PersonVo getPname(String id);
 
 	void updateResume(PresumeVo vo);
@@ -75,12 +77,16 @@ public interface PersonMapper {
 
 	List<PersonscrapListVo> getScrapList(PersonscrapListVo scrapVo);
 
-	List<PresumeVo> getResumePaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
+	List<PresumeVo> getResumePaing(@Param("id") String id, @Param("offset") int offset,
+			@Param("pageSize") int pageSize);
 
 	int countResume(PresumeVo presume);
 
 	int countRecommendPost(JobpostVo jobpostVo);
 
-	List<RecommendPostVo> getRecommendPaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
+	List<RecommendPostVo> getRecommendPaing(@Param("id") String id, @Param("offset") int offset,
+			@Param("pageSize") int pageSize);
+
+	int countProposal(String id, int post_idx);
 
 }

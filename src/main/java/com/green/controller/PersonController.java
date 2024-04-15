@@ -190,15 +190,24 @@ public class PersonController {
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
 				ZonedDateTime current = ZonedDateTime.now();
 				String namePattern = current.format(format);
+
+				// 파일의 원래 이름을 가져옵니다.
+				String originalFileName = file.getOriginalFilename();
+				// 파일 확장자를 추출합니다.
+				String extension = "";
+				if (originalFileName != null && originalFileName.contains(".")) {
+					extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+				}
+
 				// System.out.println(namePattern);
-				String fileName = file.getOriginalFilename();
+				String fileName = namePattern + "_" + originalFileName;
 				String filePath = Paths.get(imagesDirPath, fileName).toString();
 
 				// 파일 저장
 				Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
 				// 데이터베이스에 저장할 파일 경로 설정
-				String relativePath = "/images/" + namePattern + fileName;
+				String relativePath = "/images/" + fileName;
 				vo.setProfile(relativePath);
 
 			} catch (IOException e) {
@@ -263,13 +272,15 @@ public class PersonController {
 		ModelAndView mv = new ModelAndView();
 		int resume_idx = presume.getResume_idx();
 		PresumeVo vo = personMapper.getResume(resume_idx);
-		String id = vo.getId();
+
+		String id = personVo.getId();
 		PersonInfoVo info = personMapper.getInfo(id);
 
 		List<SkillVo> userSkills = personMapper.loadskills(id); // 유저의 기술스택 리스트
 
 		List<SkillVo> allSkills = mainMapper.getSkillList(); // 스킬 테이블에 있는 모든 기술 목록들
 		UserVo userVo = mainMapper.getUser(id);
+		mv.addObject("id", id);
 		mv.addObject("vo", vo);
 		mv.addObject("info", info);
 		mv.addObject("allSkills", allSkills);
@@ -300,15 +311,24 @@ public class PersonController {
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
 				ZonedDateTime current = ZonedDateTime.now();
 				String namePattern = current.format(format);
+
+				// 파일의 원래 이름을 가져옵니다.
+				String originalFileName = file.getOriginalFilename();
+				// 파일 확장자를 추출합니다.
+				String extension = "";
+				if (originalFileName != null && originalFileName.contains(".")) {
+					extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+				}
+
 				// System.out.println(namePattern);
-				String fileName = file.getOriginalFilename();
+				String fileName = namePattern + "_" + originalFileName;
 				String filePath = Paths.get(imagesDirPath, fileName).toString();
 
 				// 파일 저장
 				Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
 				// 데이터베이스에 저장할 파일 경로 설정
-				String relativePath = "/images/" + namePattern + fileName;
+				String relativePath = "/images/" + fileName;
 				vo.setProfile(relativePath);
 
 			} catch (IOException e) {
@@ -390,7 +410,7 @@ public class PersonController {
 			}
 			pproposalList.add(new PproposalVo(proposalList.get(i).getPost_idx(), jobpostList.get(i).getPost_name(),
 					jobpostList.get(i).getDeadline(), proposalList.get(i).getResume_idx(), presumeVo.get(i).getTitle(),
-					status, comment));
+					status, comment, proposalList.get(i).getId()));
 		}
 
 		ModelAndView mv = new ModelAndView();

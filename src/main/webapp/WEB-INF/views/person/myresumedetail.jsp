@@ -118,7 +118,7 @@
 							</c:when>
 							<c:when test="${sessionVo.type == 2}">
 								<div class="my-3 d-flex justify-content-center">
-									<a href="/Person/MyResume" id="btn-list"
+									<a href="/Person/MyResume?id=${id}&nowpage=1" id="btn-list"
 										class="btn btn-outline-secondary mx-3">목록</a> <a
 										href="/Person/MyResumeEdit?resume_idx=${vo.resume_idx}"
 										id="btn-update" class="btn btn-outline-primary mx-3">수정</a>

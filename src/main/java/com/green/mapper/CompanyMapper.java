@@ -27,7 +27,7 @@ public interface CompanyMapper {
 	void insert(CompanyVo comVo);
 
 	CompanyVo login(String id, String password);
- 
+
 	List<JobpostVo> getpostList(JobpostVo vo);
 
 	void insertpost(JobpostVo postVo);
@@ -37,7 +37,6 @@ public interface CompanyMapper {
 	void updatePost(JobpostVo postVo);
 
 	void postDelete(JobpostVo postVo);
-
 
 	void insertskills(PostskillVo postSkill);
 
@@ -62,13 +61,15 @@ public interface CompanyMapper {
 	List<ComscrapListVo> getScrapList(ComscrapListVo scrapVo);
 
 	void updateCompany(CompanyVo companyVo);
+
 	void updateUser(CompanyVo companyVo);
 
 	void deleteCompany(CompanyVo companyVo);
+
 	void deleteUser(CompanyVo companyVo);
 
 	CompanyVo getCompany(CompanyVo companyVo);
-	
+
 	UserVo getUser(String id);
 
 	List<JobpostVo> getpostList(String id);
@@ -86,4 +87,5 @@ public interface CompanyMapper {
 	int countPost(JobpostVo vo);
 
 	List<JobpostVo> getPostPaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
+
 }
