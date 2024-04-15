@@ -1,6 +1,33 @@
 # HJSS
 ![HJSS](https://github.com/2Shiro/HJSS/assets/81484241/a60c8000-5b1b-4194-884b-6db73bed8aba)
 
+
+## 결과
+###비회원
+![로그인 전-후 메인페이지(개인,기업)](https://github.com/2Shiro/HJSS/assets/164135425/cfeabfc4-0170-42c9-b15b-97a394133c4e)
+![로그인](https://github.com/2Shiro/HJSS/assets/164135425/9d706b22-b8e3-4f8d-b402-ed8a550f5f52)
+![회원가입](https://github.com/2Shiro/HJSS/assets/164135425/71363e2f-0963-440d-9485-4bd1ec951b48)
+![고객센터](https://github.com/2Shiro/HJSS/assets/164135425/9b8b0115-8e40-49cc-8497-2cc8f6f75c53)
+
+###기업
+![공고 등록하기](https://github.com/2Shiro/HJSS/assets/164135425/448e792d-0753-4c32-8789-88e315d61f6b)
+![등록 공고 수정](https://github.com/2Shiro/HJSS/assets/164135425/8cdad0c9-3f89-4ed8-a7a8-8bd4678c0b50)
+![등록 공고 삭제](https://github.com/2Shiro/HJSS/assets/164135425/e24a59f2-1c37-4b70-b9b8-bf98e61b07c6)
+![지원현황 - 지원된 이력서 확인](https://github.com/2Shiro/HJSS/assets/164135425/78acaa6c-a8fb-4ae2-a731-556fb36a5b4f)
+![인재추천](https://github.com/2Shiro/HJSS/assets/164135425/70e9684d-91f7-4fcc-990b-9de51683526f)
+![스크랩한 이력서 목록](https://github.com/2Shiro/HJSS/assets/164135425/12471149-3a9b-4c00-9093-88fc9ff01b06)
+
+###개인
+![채용공고 보기,지원하기](https://github.com/2Shiro/HJSS/assets/164135425/eec0a4d3-e0cc-41ae-a6cd-5fad8c1d1c85)
+![이력서 등록](https://github.com/2Shiro/HJSS/assets/164135425/aaa4ed73-7050-47e5-a11f-6abf72cca8b9)
+![이력서 보기](https://github.com/2Shiro/HJSS/assets/164135425/be061c7b-8976-40ca-8344-76a2b4c14f4e)
+![지원한 공고](https://github.com/2Shiro/HJSS/assets/164135425/db1d657c-4b9b-401f-83b8-ef0b849b4628)
+![맞춤 공고](https://github.com/2Shiro/HJSS/assets/164135425/38efe0cd-091a-42e2-92dc-c30141bdf564)
+![공고 스크랩](https://github.com/2Shiro/HJSS/assets/164135425/1ac23ed8-f621-4f04-8012-db9c5e43c9cb)
+![마이페이지](https://github.com/2Shiro/HJSS/assets/164135425/b3553bab-7bc5-43ec-b7c1-a47a77a1b1d9)
+![마이페이지-수정,탈퇴](https://github.com/2Shiro/HJSS/assets/164135425/401596f0-f0cb-467b-aabc-77ec0955db8f)
+
+
 ## 기술스택
  - JDK 17
  - Springboot
