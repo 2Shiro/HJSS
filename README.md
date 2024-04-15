@@ -4,28 +4,33 @@
 
 ## 결과
 ### 비회원
-![로그인 전-후 메인페이지(개인,기업)](https://github.com/2Shiro/HJSS/assets/164135425/cfeabfc4-0170-42c9-b15b-97a394133c4e)
-![로그인](https://github.com/2Shiro/HJSS/assets/164135425/9d706b22-b8e3-4f8d-b402-ed8a550f5f52)
-![회원가입](https://github.com/2Shiro/HJSS/assets/164135425/71363e2f-0963-440d-9485-4bd1ec951b48)
-![고객센터](https://github.com/2Shiro/HJSS/assets/164135425/9b8b0115-8e40-49cc-8497-2cc8f6f75c53)
+![1 메인페이지](https://github.com/2Shiro/HJSS/assets/164135425/e482967a-68c8-42a9-abd2-3d789b5b627c)
+![로그인](https://github.com/2Shiro/HJSS/assets/164135425/d6cea941-4d17-4eac-ae26-e554c81b0f72)
+![회원가입](https://github.com/2Shiro/HJSS/assets/164135425/7d9a37e8-7792-4d10-9de1-d736c2b59cdf)
+![4 고객센터](https://github.com/2Shiro/HJSS/assets/164135425/295a545a-9246-43fb-a8a0-d6c4439e7cb1)
 
 ### 기업
-![공고 등록하기](https://github.com/2Shiro/HJSS/assets/164135425/448e792d-0753-4c32-8789-88e315d61f6b)
-![등록 공고 수정](https://github.com/2Shiro/HJSS/assets/164135425/8cdad0c9-3f89-4ed8-a7a8-8bd4678c0b50)
-![등록 공고 삭제](https://github.com/2Shiro/HJSS/assets/164135425/e24a59f2-1c37-4b70-b9b8-bf98e61b07c6)
-![지원현황 - 지원된 이력서 확인](https://github.com/2Shiro/HJSS/assets/164135425/78acaa6c-a8fb-4ae2-a731-556fb36a5b4f)
-![인재추천](https://github.com/2Shiro/HJSS/assets/164135425/70e9684d-91f7-4fcc-990b-9de51683526f)
-![스크랩한 이력서 목록](https://github.com/2Shiro/HJSS/assets/164135425/12471149-3a9b-4c00-9093-88fc9ff01b06)
+![메인](https://github.com/2Shiro/HJSS/assets/164135425/a2505ccd-ae12-4005-a1ac-1c0d7cd39168)
+![공고등록](https://github.com/2Shiro/HJSS/assets/164135425/d6137c32-193c-40f5-9760-0ea0776b407d)
+![공고수정](https://github.com/2Shiro/HJSS/assets/164135425/7423ec27-948f-49c2-a2fe-26be4a89b310)
+![공고삭제](https://github.com/2Shiro/HJSS/assets/164135425/e771d647-af9a-4487-b77a-87841ca195ac)
+![지원현황](https://github.com/2Shiro/HJSS/assets/164135425/6c94337a-c98a-4804-92f2-f16c69781047)
+![인재](https://github.com/2Shiro/HJSS/assets/164135425/c7f15dec-6b8b-4e9d-a246-94f19ee2a54c)
+![스크랩 이력서](https://github.com/2Shiro/HJSS/assets/164135425/c364c8e8-b28c-4a1e-bc0c-7cbcd61fafed)
+![마이페이지](https://github.com/2Shiro/HJSS/assets/164135425/770f853c-5bd9-42de-b271-d130dbd2f465)
+![수정탈퇴](https://github.com/2Shiro/HJSS/assets/164135425/e154f13b-ebbb-4de5-9b36-541d8bd9ec90)
+
 
 ### 개인
-![채용공고 보기,지원하기](https://github.com/2Shiro/HJSS/assets/164135425/eec0a4d3-e0cc-41ae-a6cd-5fad8c1d1c85)
-![이력서 등록](https://github.com/2Shiro/HJSS/assets/164135425/aaa4ed73-7050-47e5-a11f-6abf72cca8b9)
-![이력서 보기](https://github.com/2Shiro/HJSS/assets/164135425/be061c7b-8976-40ca-8344-76a2b4c14f4e)
-![지원한 공고](https://github.com/2Shiro/HJSS/assets/164135425/db1d657c-4b9b-401f-83b8-ef0b849b4628)
-![맞춤 공고](https://github.com/2Shiro/HJSS/assets/164135425/38efe0cd-091a-42e2-92dc-c30141bdf564)
-![공고 스크랩](https://github.com/2Shiro/HJSS/assets/164135425/1ac23ed8-f621-4f04-8012-db9c5e43c9cb)
-![마이페이지](https://github.com/2Shiro/HJSS/assets/164135425/b3553bab-7bc5-43ec-b7c1-a47a77a1b1d9)
-![마이페이지-수정,탈퇴](https://github.com/2Shiro/HJSS/assets/164135425/401596f0-f0cb-467b-aabc-77ec0955db8f)
+![5  개인 - 메인페이지](https://github.com/2Shiro/HJSS/assets/164135425/82d86028-aeac-4c88-b869-55a1581a93ba)
+![개인 - 채용 공고 보기](https://github.com/2Shiro/HJSS/assets/164135425/0bc26860-afe8-4afc-a85f-abb7a968db1d)
+![6 개인 - 이력서 등록](https://github.com/2Shiro/HJSS/assets/164135425/2cd6d1fd-c8bf-4df9-8d70-51f3ef301dc0)
+![이력서 보기 수정](https://github.com/2Shiro/HJSS/assets/164135425/457ebe7f-cd8e-4509-bcf7-677c54b23c3d)
+![개인 - 지원한 공고](https://github.com/2Shiro/HJSS/assets/164135425/dbcd4f7d-4d12-48d8-b9e3-4ba1006f2d3d)
+![개인 - 맞춤 공고](https://github.com/2Shiro/HJSS/assets/164135425/719d03f3-4fa1-45a8-bcf8-928dfdf7a037)
+![개인 - 공고 스크랩하기](https://github.com/2Shiro/HJSS/assets/164135425/d39e9023-02c2-4391-8c1d-e64203d09c5c)
+![개인 - 마이페이지](https://github.com/2Shiro/HJSS/assets/164135425/d27130fb-3065-4522-9bd1-11a7ebe439c4)
+![개- 마이페이지 수정 삭제](https://github.com/2Shiro/HJSS/assets/164135425/2e3a5c6e-9085-4ccf-9d13-73a465557c9d)
 
 
 ## 기술스택
