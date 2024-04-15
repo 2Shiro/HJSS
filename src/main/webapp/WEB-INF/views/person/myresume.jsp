@@ -20,7 +20,7 @@
 <style>
 .sticky-footer {
 	position: fixed;
-	bottom: 0;
+	bottom: 0; 
 	width: 100%;
 }
 
@@ -37,12 +37,17 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
+
 .linkDiv input {
 	cursor: pointer;
 }
+
 .linkDiv:hover {
 	cursor: pointer;
 }
+
+
+
 </style>
 
 <script type="text/javascript">
@@ -181,7 +186,7 @@ document.getElementById('resumeFormsub').addEventListener('submit', function(e) 
 						<!-- 공고 등록 모달 include -->
 						<%@include file="/WEB-INF/views/person/myresumewrite.jsp"%>
 					</div>
-					<c:forEach var="list" items="${list}">
+					<c:forEach var="list" items="${response.list}">
 						<div class="linkDiv container border mb-3"
 							id="resumeDetailDiv${list.resume_idx}">
 							<!-- 공고 리스트 시작 -->
@@ -210,6 +215,9 @@ document.getElementById('resumeFormsub').addEventListener('submit', function(e) 
 							<!-- 공고 리스트 끝 -->
 						</div>
 					</c:forEach>
+					<div class="d-flex justify-content-center">
+						<%@include file="/WEB-INF/include/resume_paging.jsp"%>
+					</div>
 				</div>
 			</section>
 		</div>

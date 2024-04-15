@@ -37,9 +37,11 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
+
 .linkDiv input {
 	cursor: pointer;
 }
+
 .linkDiv:hover {
 	cursor: pointer;
 }
@@ -126,17 +128,20 @@
 						<!-- 공고 등록 모달 include -->
 						<%@include file="/WEB-INF/views/company/mypostwrite.jsp"%>
 					</div>
-					
-					<c:forEach var="list" items="${ list }">
-						<div class="linkDiv container border mb-3" id="jobDetailDiv${ list.post_idx }">
+
+					<c:forEach var="list" items="${ response.list }">
+						<div class="linkDiv container border mb-3"
+							id="jobDetailDiv${ list.post_idx }">
 							<!-- 공고 리스트 시작 -->
 							<div class="d-flex justify-content-between">
 								<div class="row">
 									<input type="text"
 										class="form-control border-0 shadow-none mb-2 ms-3"
-										value="${ list.post_name }" id="title${ list.post_idx }" readonly="readonly"> <input
-										type="text" class="form-control border-0 shadow-none ms-3"
-										value="마감기한 : ${ list.deadline }" id="deadline${ list.post_idx }" readonly="readonly">
+										value="${ list.post_name }" id="title${ list.post_idx }"
+										readonly="readonly"> <input type="text"
+										class="form-control border-0 shadow-none ms-3"
+										value="마감기한 : ${ list.deadline }"
+										id="deadline${ list.post_idx }" readonly="readonly">
 								</div>
 								<button id="btn-delete${ list.post_idx }"
 									class="btn btn-dark align-self-center float-end mx-3">삭제</button>
@@ -144,7 +149,11 @@
 							<!-- 공고 리스트 끝 -->
 						</div>
 					</c:forEach>
+					<div class="d-flex justify-content-center paging-bottom-container">
+						<%@include file="/WEB-INF/include/post_paging.jsp"%>
+					</div>
 				</div>
+
 			</section>
 		</div>
 	</main>

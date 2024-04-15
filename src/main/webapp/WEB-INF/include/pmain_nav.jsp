@@ -34,7 +34,7 @@
     
     MyResumeEl.addEventListener('click', function(e) {
         //alert('myresume');
-        location.href = '/Person/MyResume?id=' + sessionid;
+    	location.href = '/Person/MyResume?id=' + sessionid + '&nowpage=1';
     });
     
     MyProposalEl.addEventListener('click', function(e) {
@@ -44,6 +44,6 @@
     
     RecommendEl.addEventListener('click', function(e) {
         //alert('recommend');
-        location.href = '/Person/Recommend?id=' + sessionid;
+        location.href = '/Person/Recommend?id=' + sessionid + '&nowpage=1';
     });
 </script>

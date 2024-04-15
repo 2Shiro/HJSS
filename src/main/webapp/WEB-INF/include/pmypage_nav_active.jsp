@@ -37,7 +37,7 @@
 		MyProposalEl.classList.add('btn-secondary');
 	}
 	
-	if (url.includes('/Person/Scrap')) {
+	if (url.includes('/Person/MyScrap')) {
 		for (var i = 0; i < NavEl.length; i++) {
 			if(NavEl[i].classList.contains('btn-secondary')) {
 				NavEl[i].classList.remove('btn-secondary');
