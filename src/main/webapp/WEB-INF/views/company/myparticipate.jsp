@@ -81,3 +81,5 @@ h3 {
 
 </script>
 </html>
+
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

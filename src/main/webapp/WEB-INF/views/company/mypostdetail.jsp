@@ -169,7 +169,7 @@
 							</div>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/Jobs" id="btn-list"
+							<a href="/Company/MyPost" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
 								href="/Company/MyPostEdit?post_idx=${vo.post_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>
@@ -182,3 +182,4 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+<%@include file="/WEB-INF/include/cmypage_nav_active.jsp"%>

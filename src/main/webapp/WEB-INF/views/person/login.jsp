@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>HJSS</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -60,40 +60,41 @@ footer{
 </style>
 </head>
 <body>
+			<main>
 <div class="main">
          <div>
             <a href="/">
                  <img alt="Logo" src="/images/logo.png" style="width:150px;">
              </a><br><br><br>
-<main>
 
-</hr>
-<table id="logch">
-  <tr>
-    <td ><a href="/loginForm" id="perlog">개인회원</a></td>
-    <td ><a href="Company/loginForm" id="comlog">기업회원</a></td>
-  </tr>
-</table>
-   <form  action="/login" method="post" id="login">
-   <div class="log">
-     <table>
-       <tr>
-         <td colspan="2"><input type="text" id="id" name="id" 
-                    style="width: 250px;" placeholder="아이디"></td>
-       <tr>
-         <td colspan="2"><input type="password" id="password" name="password" 
-                    style="width: 250px;" placeholder="비밀번호"></td>
-       </tr>
-       <tr id="btn">
-         <td ><input type="submit" value="로그인" ></td>
-         <td><input type="button" value="회원가입" onClick="location.href='Person/joinForm'"></td>
-        </tr>     
-     </table> 
-     </div>  
-   </form>
- </main>
+				</hr>
+				<table id="logch">
+					<tr>
+						<td><a href="/loginForm" id="perlog">개인회원</a></td>
+						<td><a href="/Company/loginForm" id="comlog">기업회원</a></td>
+					</tr>
+				</table>
+				<form action="/login" method="post" id="login">
+					<div class="log">
+						<table>
+							<tr>
+								<td colspan="2"><input type="text" id="id" name="id"
+									style="width: 250px;" placeholder="아이디"></td>
+							<tr>
+								<td colspan="2"><input type="password" id="password"
+									name="password" style="width: 250px;" placeholder="비밀번호"></td>
+							</tr>
+							<tr id="btn">
+								<td><input type="submit" value="로그인"></td>
+								<td><input type="button" value="회원가입"
+									onClick="location.href='/Person/JoinForm'"></td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</main>
 
- <%@include file="/WEB-INF/include/footer.jsp" %>
+			<%@include file="/WEB-INF/include/footer.jsp" %>
 
 </body>
 </html>

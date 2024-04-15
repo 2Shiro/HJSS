@@ -57,5 +57,8 @@ public interface PersonMapper {
 
 	void updateResumePass(int resume_idx, int status);
 
+	List<PresumeVo> getResumeList(String puserId);
+
+	void insertProposal(String id, int post_idx, int resume_idx);
 
 }

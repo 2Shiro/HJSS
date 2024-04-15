@@ -57,7 +57,7 @@
 		<div class="row">
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
@@ -70,13 +70,13 @@
 							<div class="mb-3 row">
 								<div class="col">
 									<label for="resume_name" class="form-label">이력서 제목</label> <input
-										type="text" class="form-control" id="post_name" name="title"
+										type="text" class="form-control" id="post_name" name="title" required
 										value="${ vo.title}" placeholder="제목을 입력해주세요.">
 
 								</div>
 								<div class="col-2">
 									<label for="resume_publish" class="form-label">공개여부</label> <select
-										class="form-select" aria-label="이력서 공개여부" id="resume_publish" name="publish">
+										class="form-select" aria-label="이력서 공개여부" id="resume_publish" name="publish" required>
 										<option selected value="1">공개</option>
 										<option value="2">비공개</option>
 									</select>
@@ -95,27 +95,27 @@
 								<div class="col-6 row ms-4">
 									<div class="input-group mb-3 ">
 										<span class="input-group-text text-center" id="pname">이름</span>
-										<input type="text" class="form-control" id="pname"
+										<input type="text" class="form-control" id="pname" required
 											name="pname" readonly="readonly" value="${ info.pname }">
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="birth">생년월일</span> <input
-											type="text" class="form-control" id="birth" name="birth"
+											type="text" class="form-control" id="birth" name="birth" required
 											readonly="readonly" value="${ info.birth }">
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="phone">연락처</span> <input
-											type="text" class="form-control" id="phone" name="phone"
+											type="text" class="form-control" id="phone" name="phone" required
 											readonly="readonly" value="${ info.phone }">
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="address">주소</span> <input
-											type="text" class="form-control" id="address" name="address"
+											type="text" class="form-control" id="address" name="address" required
 											readonly="readonly" value="${ info.address }">
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="user_email">이메일</span> <input
-											type="email" class="form-control" id="user_email"
+											type="email" class="form-control" id="user_email" required
 											readonly="readonly" value="${ userVo.user_email }"
 											name="user_email">
 									</div>
@@ -131,7 +131,7 @@
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="portfolio" class="form-label">포트폴리오 주소</label> <input
-									type="text" class="form-control" id="portfolio"
+									type="text" class="form-control" id="portfolio" required
 									name="portfolio" value="${ vo.portfolio}"
 									placeholder="포트폴리오 주소를 입력해주세요.">
 							</div>
@@ -142,14 +142,13 @@
 								<div class="mx-auto row" id="skills">
 									<c:forEach var="skill" items="${allSkills}">
 										<div class="col-auto">
-											<input type="checkbox" class="btn-check"
-												id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
-												name="skillIdx" autocomplete="off"
+											<input type="checkbox" class="btn-check" name="skillIdx"
+												id="skill_${skill.skill_idx }" value="${skill.skill_idx}"  
 												<c:forEach var="userSkill" items="${userSkills}">
-                <c:if test="${skill.skill_idx == userSkill.skill_idx}">
-                    checked="checked"
-                </c:if>
-            </c:forEach>>
+									                <c:if test="${skill.skill_idx == userSkill.skill_idx}">
+									                    checked="checked"
+									                </c:if>
+									            </c:forEach>>
 											<label class="btn btn-outline-primary"
 												for="skill_${skill.skill_idx }">${skill.skill_name}</label>
 										</div>
@@ -160,7 +159,7 @@
 						<div class="form-floating my-3">
 							<div class="mb-3">
 								<label for="self-intro" class="form-label">자기 소개</label>
-								<textarea rows="10" class="form-control" id="self_intro"
+								<textarea rows="10" class="form-control" id="self_intro" required
 									name="self_intro">${ vo.self_intro }</textarea>
 							</div>
 						</div>

@@ -4,19 +4,20 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.green.domain.CompanyInfoVo;
 import com.green.domain.CompanyVo;
+import com.green.domain.ComscrapListVo;
 import com.green.domain.ComscrapVo;
 import com.green.domain.CproposalVo;
 import com.green.domain.JobpostVo;
 import com.green.domain.MatchingResultVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.SkillVo;
+import com.green.domain.UserVo;
 
 @Mapper
 public interface CompanyMapper {
 
-	List<CproposalVo> getProposal();
+	List<CproposalVo> getProposal(int i);
 
 	CompanyVo getCompanyById(String id);
 
@@ -36,7 +37,6 @@ public interface CompanyMapper {
 
 	void postDelete(JobpostVo postVo);
 
-	CompanyInfoVo getInfo(String id);
 
 	void insertskills(PostskillVo postSkill);
 
@@ -56,7 +56,9 @@ public interface CompanyMapper {
 
 	void deleteScrap(int resume_idx);
 
-	boolean checkScrap(int resume_idx, String cid);
+	int countScrap(String arg0, int arg1);
+
+	List<ComscrapListVo> getScrapList(ComscrapListVo scrapVo);
 
 	void updateCompany(CompanyVo companyVo);
 	void updateUser(CompanyVo companyVo);
@@ -66,4 +68,22 @@ public interface CompanyMapper {
 
 	CompanyVo getCompany(CompanyVo companyVo);
 
+	
+	UserVo getUser(String id);
+
+	List<JobpostVo> getpostList(String id);
+
+	JobpostVo getViewPost(int post_idx);
+
+	List<PostskillVo> getPostSkill(int post_idx);
+
+	String getSkillName(int skill_idx);
+
+	List<JobpostVo> getMyPost(String id);
+
+	List<CproposalVo> getmyProposal(String pid);
+
+	List<JobpostVo> searchMainPostList(String keyword);
+
+	List<JobpostVo> getsearchpostList(String keyword);
 }

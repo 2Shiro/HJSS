@@ -15,9 +15,9 @@ public class MatchingResultVo {
 	private String job_intro;
 	private int post_idx;
 	// RESUME_TB에서 선택된 컬럼
-	private String resumeId; // 실제 필드에 맞게 추가
-	private String title; // 예시 필드, 실제 필드에 맞게 추가
-	private String self_intro; // 예시 필드, 실제 필드에 맞게 추가
+	private String resumeId;
+	private String title;
+	private String self_intro;
 	private String profile;
 	private int resume_idx;
 	

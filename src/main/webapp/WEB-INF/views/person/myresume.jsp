@@ -37,99 +37,123 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
-
+.linkDiv input {
+	cursor: pointer;
+}
 .linkDiv:hover {
 	cursor: pointer;
 }
 </style>
 
 <script type="text/javascript">
-	document
-			.addEventListener(
-					'DOMContentLoaded',
-					function() {
-						document
-								.getElementById('resumeFormsub')
-								.addEventListener(
-										'submit',
-										function(event) {
-											event.preventDefault();
-											alert('등록 되었습니다');
-											var myModal = bootstrap.Modal
-													.getInstance(document
-															.getElementById('resumeForm'));
-											myModal.hide();
-											var postForm = document
-													.getElementById('resumeFormsub');
-											postForm.submit();
-										});
-						document
-								.querySelectorAll('.linkDiv')
-								.forEach(
-										function(linkDiv) {
-											linkDiv
-													.addEventListener(
-															'click',
-															function(event) {
-																if (event.target
-																		&& event.target.id
-																				.startsWith('btn-delete')) {
-																	event
-																			.preventDefault();
-																	alert('삭제 처리됨');
-																	const resumeIdx = event.target.id
-																			.replace(
-																					'btn-delete',
-																					''); // 동적으로 생성된 ID에서 resume_idx를 추출합니다.
-																	window.location.href = `/Person/MyResumeDelete?resume_idx=`
-																			+ resumeIdx;
-																} else if (event.target) {
-																	// 클릭된 요소에서 가장 가까운 .linkDiv의 ID를 찾아 마감기한 페이지로 이동합니다.
-																	const resumeIdx = event.target
-																			.closest('[id^="resumeDetailDiv"]').id
-																			.replace(
-																					'resumeDetailDiv',
-																					'');
-																	window.location.href = `/Person/MyResumeDetail?resume_idx=`
-																			+ resumeIdx;
-																}
-															});
-										});
+document.addEventListener('DOMContentLoaded', function() {
+    // 이력서 제출 폼 이벤트 리스너
+document.getElementById('resumeFormsub').addEventListener('submit', function(event) {
+    // 필수 필드가 모두 채워졌는지 확인
+    const requiredFields = document.querySelectorAll('#resumeFormsub [required]');
+    let allFieldsFilled = true;
+    requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+            allFieldsFilled = false; // 필수 필드 중 하나라도 비어있으면 false
+            field.classList.add('is-invalid'); // 유효하지 않은 필드에 클래스 추가
+        } else {
+            field.classList.remove('is-invalid'); // 유효한 필드에는 클래스 제거
+        }
+    });
 
-						// 파일 인풋 필드를 선택
-						var fileInput = document.getElementById('file');
-						// 이미지를 미리보여줄 위치를 선택
-						var previewArea = document
-								.querySelector('.col-md-auto img');
+    // 필수 필드가 모두 채워지지 않았다면 경고 메시지를 띄우고 기본 이벤트 중지
+    if (!allFieldsFilled) {
+        alert('모든 필수 항목을 입력해주세요.');
+        event.preventDefault(); // 기본 폼 제출 이벤트 중지
+        return; 
+    }
 
-						// 기본 이미지 URL 설정
-						var defaultImage = '/images/logo.png';
+    // 체크박스가 선택되었는지 확인
+    var hiddenField = document.querySelector('input[type="hidden"][name="skillIdx"]');
+    var checkboxes = document.querySelectorAll('input[type="checkbox"][name="skillIdx"]');
+    var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+    if (!isChecked) {
+        // 체크박스가 하나도 선택되지 않았다면 hidden 필드를 텍스트로 변경하고 기본값 설정
+        document.getElementById('defaultSkillIdx').type = 'text';
+        hiddenField.value = '0';
+        hiddenField.disabled = false;
+    } else {
+        // 체크박스가 선택되었다면 hidden 필드 비활성화
+        hiddenField.disabled = true;
+    }
 
-						// 파일 인풋 필드에 변화가 생기면 실행할 함수
-						fileInput.addEventListener('change', function(e) {
-							// 파일이 선택되지 않았다면, 미리보기를 기본 이미지로 설정
-							if (fileInput.files.length === 0) {
-								previewArea.src = defaultImage;
-								return; // 함수 실행을 여기서 중단
-							}
+    // 모든 검사가 통과되면 등록되었다는 알림을 띄우고, 모달 창을 닫음
+    alert('등록 되었습니다');
+    var myModal = bootstrap.Modal.getInstance(document.getElementById('resumeForm'));
+    myModal.hide();
+});
 
-							// 선택된 파일을 가져옴
-							var file = e.target.files[0];
-							// FileReader 객체 생성
-							var reader = new FileReader();
+    
+    
+    
+    
+    
+    
+    // 삭제 링크 이벤트 리스너
+    document.querySelectorAll('.linkDiv').forEach(function(linkDiv) {
+        linkDiv.addEventListener('click', function(event) {
+            if (event.target && event.target.id.startsWith('btn-delete')) {
+                event.preventDefault();
+                alert('삭제 처리됨');
+                const resumeIdx = event.target.id.replace('btn-delete', '');
+                window.location.href = `/Person/MyResumeDelete?resume_idx=` + resumeIdx;
+            } else if (event.target) {
+                const resumeIdx = event.target.closest('[id^="resumeDetailDiv"]').id.replace('resumeDetailDiv', '');
+                window.location.href = `/Person/MyResumeDetail?resume_idx=` + resumeIdx;
+            }
+        });
+    });
 
-							// 파일이 읽히면 실행될 함수 정의
-							reader.onload = function(e) {
-								// 미리보기 이미지의 src 속성을 읽은 파일의 내용으로 설정
-								previewArea.src = e.target.result;
-							}
+    // 파일 입력과 이미지 미리보기 기능
+    var fileInput = document.getElementById('file');
+    var previewArea = document.querySelector('.col-md-auto img');
+    var defaultImage = '/images/logo.png';
 
-							// FileReader로 파일 읽기를 시작함
-							reader.readAsDataURL(file);
-						});
-					});
+    fileInput.addEventListener('change', function(e) {
+        if (fileInput.files.length === 0) {
+            previewArea.src = defaultImage;
+            return;
+        }
+
+        var file = e.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            previewArea.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+      
+    
+});
+
 </script>
+<script type="text/javascript">
+document.getElementById('resumeFormsub').addEventListener('submit', function(e) {
+    var hiddenField = document.querySelector('input[type="hidden"]');
+    // 체크박스를 모두 선택합니다. 체크박스의 정확한 선택자를 지정해야 합니다.
+    var checkboxes = document.querySelectorAll('input[type="checkbox"][name="skillIdx"]'); // 'name="skillIdx"'는 예시이며, 실제 체크박스의 name 속성에 맞게 변경해야 합니다.
 
+    // skillIdx가 선택되었는지 확인합니다.
+    var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+    // skillIdx가 하나도 체크되지 않았다면, 숨겨진 필드를 활성화하여 기본값 0을 전송합니다.
+    if (!isChecked) {
+        document.getElementById('defaultSkillIdx').type = 'text';
+        hiddenField.value = '0'; // 기본값을 0으로 설정합니다.
+        hiddenField.disabled = false; // 숨겨진 필드를 활성화합니다.
+    } else {
+        // 여기서 선택된 체크박스에 따라 필요한 조치를 취할 수 있습니다.
+        hiddenField.disabled = true; // 기본값을 전송하지 않도록 숨겨진 필드를 비활성화합니다.
+    }
+});
+</script>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -138,7 +162,7 @@
 			<!-- 사이드바 -->
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+					<%@include file="/WEB-INF/include/pmypage_nav.jsp"%>
 				</div>
 			</nav>
 
@@ -194,3 +218,5 @@
 </body>
 
 </html>
+
+<%@include file="/WEB-INF/include/pmypage_nav_active.jsp"%>

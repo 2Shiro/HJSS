@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +27,16 @@
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
+				<form action="/Person/Search" method="GET">
+					<div class="row my-3">
+	        			<div class="col-3">
+	            			<div class="input-group">
+	                			<input type="text" name="keyword" class="form-control" id="search_kw">
+		                		<button type="submit" class="btn btn-outline-secondary" id="btn_search">찾기</button>
+				            </div>
+				        </div>
+				    </div>
+			    </form>
 				<%@include file="/WEB-INF/include/main_section.jsp"%>
 			</section>
 		</div>
@@ -34,3 +44,5 @@
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/pmain_nav_active.jsp"%>

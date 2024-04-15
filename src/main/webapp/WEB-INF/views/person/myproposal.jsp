@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>나의 지원 현황</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -41,33 +41,39 @@
 						<th>번호</th>
 						<th>공고이름</th>
 						<th>마감일자</th>
+						<th>이력서</th>
 						<th>상태</th>
 					</tr>
-					<c:forEach var="i" begin="1" end="8">   
-						<tr>       
-<%--              <c:choose> --%>
-<%--                 <c:when test=""> --%>
-<!--                     <tr> -->
-<%--                 </c:when> --%>
-<%--                 <c:when test=""> --%>
-<!--                     <tr class="table-info"> -->
-<%--                 </c:when> --%>
-<%--                 <c:otherwise> --%>
-<!--                     <tr class="table-secondary"> -->
-<%--                 </c:otherwise> --%>
-<%--              </c:choose> --%>
-         
-             <td> &nbsp &nbsp 번호</td>
-             <td>공고이름</td>
-             <td>마감일자</td>
-             <td><a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#myStatusModal">상태</a></td>
+					<c:forEach var="pproposalList" items="${pproposalList}">   
+						<tr>               
+             <td> &nbsp &nbsp ${pproposalList.post_idx}</td>
+             <td>${pproposalList.post_name}</td>
+             <td>${pproposalList.deadline}</td>
+             <td><a href="/Person/MyResume" value="${pproposalList.resume_idx}">${pproposalList.resume_name}</a></td>
+             <td>
+             	<c:choose>
+             		<c:when test="${pproposalList.status eq '합격'}">
+             			<a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#myStatusPassModal" value="${pproposalList.status}">${pproposalList.status}</a>
+             		</c:when>
+             		<c:when test="${pproposalList.status eq '불합격'}">
+             			<a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#myStatusFailModal" value="${pproposalList.status}">${pproposalList.status}</a>
+             		</c:when>
+             		<c:otherwise>
+             			<a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#myStatusOtherModal" value="${pproposalList.status}">${pproposalList.status}</a>
+             		</c:otherwise>
+             	</c:choose>
+             </td>
          	</tr>
          </c:forEach>
 				</table>
 			</section>
 		</div>
 	</main>
-	<%@include file="/WEB-INF/include/getstatus.jsp" %>
+	<c:forEach var="pproposalList" items="${pproposalList}"> 
+	 		 <%@include file="/WEB-INF/include/getstatus.jsp" %>
+	 </c:forEach>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>
+
+<%@include file="/WEB-INF/include/pmypage_nav_active.jsp"%>

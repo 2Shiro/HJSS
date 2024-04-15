@@ -32,22 +32,49 @@ INSERT INTO person_info_tb ( id, pname, phone, address, birth )
 
 -- 3) 기업 회원 테이블
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
-<<<<<<< HEAD
   VALUES ( 'cp1', 1, 'NAVER', '/images/naver.png', '최수현', '경기도 성남시', '김범준', '051-111-1111', '10', '99/06/02' );
-=======
-  VALUES ( 'cp1', 1, 'NAVER', 'naver', '최수현', '경기도 성남시', '김범준', '051-111-1111', '10', '99/06/02' );
->>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
 
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
-<<<<<<< HEAD
   VALUES ( 'cp2', 2, 'kakao', '/images/kakao.png', '권기수', '제주특별자치도 제주시', '장윤중', '051-222-2222', '9', '10/07/20' );
 
 INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
-  VALUES ( 'cp3', 1, '포스코DX', '/images/poscoDX.png', '정덕균', '경상북도 포항시', '김관리자', '054-280-1114', '2183', '89/11/18' );
+  VALUES ( 'cp3', 3, '포스코DX', '/images/poscoDX.png', '정덕균', '경상북도 포항시', '김관리자', '054-280-1114', '2183', '89/11/18' );
 
-=======
-  VALUES ( 'cp2', 2, 'kakao', 'kakao', '권기수', '제주특별자치도 제주시', '장윤중', '051-222-2222', '9', '10/07/20' );
->>>>>>> branch 'develop' of https://github.com/2Shiro/HJSS.git
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp4', 4, '카카오페이', '/images/kakao.png', '신원근', '경기도 성남시', '이관리자', '1644-7405', '715', '17/04/03' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp5', 5, '카카오뱅크', '/images/kakao.png', '윤호영', '경기도 성남시', '박관리자', '   02-6288-6000', '300', '16/01/22' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp6', 6, '카카오게임즈', '/images/카카오게임즈.png', '한상우', '   경기도 성남시', '조관리자', '1566-8834', '405', '10/07/20' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp7', 7, 'SK스퀘어', '/images/SK스퀘어.png', '박성하', '서울특별시 중구', '최관리자', '02-6100-3114', '5376', '21/11/02' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp8', 8, 'HD현대중공업', '/images/HD현대중공업.png', '이상균', '울산광역시 동구', '정관리자', '052-202-2114', '12639', '19/06/03' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp9', 9, '일진하이솔루스', '/images/일진하이솔루스.png', '양성모', '전라북도 완주군', '강관리자', '063-730-4602', '186', '12/11/02' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp10', 10, 'PI첨단소재', '/images/PI첨단소재.png', '송금수', '충청북도 진천군', '윤관리자', '02-2181-8600', '290', '08/06/02' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp11', 11, '에스디바이오센서', '/images/에스디바이오센서.png', '이효근', '경기도 수원시', '장관리자', '031-300-0400', '287', '10/12/27' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp12', 12, 'SK바이오사이언스', '/images/SK바이오사이언스.png', '안재용', '경기도 성남시', '임관리자', '02-2008-2136', '726', '18/07/01' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp13', 13, 'DL이앤씨', '/images/DL이앤씨.png', '마창민', '서울특별시 종로구', '황관리자', '02-2011-7114', '6157', '21/01/04' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp14', 14, '명신산업', '/images/명신산업.png', '최우철', '경상북도 경주시', '한관리자', '054-746-2665', '166', '82/04/17' );
+
+INSERT INTO company_info_tb ( id, cnumber, cname, com_logo, crepresentive, address, manager_name, company_managerPhone, csize, cyear )
+  VALUES ( 'cp15', 15, '하이브', '/images/하이브.png', '박지원', '서울특별시 용산구', '오관리자', '02-3334-0105', '762', '05/02/01' );
 
 
 -- 4) 스킬 테이블

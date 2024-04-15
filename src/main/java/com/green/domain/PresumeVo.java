@@ -1,10 +1,12 @@
 package com.green.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PresumeVo {
 	private int resume_idx;
 	private int publish;
