@@ -44,6 +44,6 @@
     
     RecommendEl.addEventListener('click', function(e) {
         //alert('recommend');
-        location.href = '/Person/Recommend?id=' + sessionid;
+        location.href = '/Person/Recommend?id=' + sessionid + '&nowpage=1';
     });
 </script>

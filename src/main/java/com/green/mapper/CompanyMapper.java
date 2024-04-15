@@ -3,6 +3,7 @@ package com.green.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.green.domain.CompanyVo;
 import com.green.domain.ComscrapListVo;
@@ -67,7 +68,6 @@ public interface CompanyMapper {
 	void deleteUser(CompanyVo companyVo);
 
 	CompanyVo getCompany(CompanyVo companyVo);
-
 	
 	UserVo getUser(String id);
 
@@ -82,4 +82,8 @@ public interface CompanyMapper {
 	List<JobpostVo> getMyPost(String id);
 
 	List<CproposalVo> getmyProposal(String pid);
+
+	int countPost(JobpostVo vo);
+
+	List<JobpostVo> getPostPaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
 }

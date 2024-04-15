@@ -263,8 +263,8 @@
 		ps.pid = #{pid}
 	</select>
 
-	<select id="count" parameterType="com.green.domain.PresumeVo"
-		resultType="int">
+	<select id="countResume"
+		parameterType="com.green.domain.PresumeVo" resultType="int">
 		SELECT COUNT(*) AS CNT
 		FROM RESUME_TB
 		<where>
@@ -273,6 +273,38 @@
 			</if>
 		</where>
 	</select>
+<select id="countRecommendPost"
+        parameterType="com.green.domain.RecommendPostVo" resultType="int">
+    SELECT COUNT(*) AS total_posts
+    FROM (
+        SELECT j.post_idx, j.post_name, j.pay, j.job_type, j.job_intro, j.go_work,
+        j.go_home, j.deadline, j.career, j.id, ci.cname,
+        (
+            SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+            FROM post_skill_tb PS2
+            JOIN SKILL_TB S ON PS2.skill_idx = S.skill_idx
+            WHERE PS2.post_idx = j.post_idx
+        ) AS skills
+        FROM job_post_tb j
+        JOIN COMPANY_INFO_TB CI ON j.id = CI.id
+        JOIN post_skill_tb PS ON j.post_idx = PS.post_idx
+        JOIN SKILL_TB SK ON SK.skill_idx = PS.skill_idx
+        WHERE EXISTS (
+            SELECT 1
+            FROM (
+                SELECT PS.id, COUNT(DISTINCT PS.skill_idx) AS matching_skills
+                FROM PERSON_SKILL_TB PS
+                JOIN post_skill_tb PS2 ON PS.skill_idx = PS2.skill_idx AND PS2.post_idx = j.post_idx
+                WHERE PS.id = #{id}
+                GROUP BY PS.id
+                HAVING COUNT(DISTINCT PS.skill_idx) >= 2
+            )
+        )
+        GROUP BY j.post_idx, j.post_name, j.pay, j.job_type, j.job_intro,
+        j.go_work, j.go_home, j.deadline, j.career, j.id, ci.cname
+    )
+</select>
+
 
 	<select id="getResumePaing"
 		resultType="com.green.domain.PresumeVo">
@@ -287,7 +319,58 @@
 			</if>
 		</where>
 		ORDER BY RESUME_IDX DESC
-		OFFSET #{ offset } ROWS FETCH NEXT #{ pageSize } ROWS ONLY
+		OFFSET #{ offset } ROWS FETCH NEXT #{ pageSize
+		} ROWS ONLY
+
+	</select>
+	<select id="getRecommendPaing"
+		resultType="com.green.domain.RecommendPostVo">
+		SELECT j.post_idx, j.post_name, j.pay, j.job_type,
+		j.job_intro, j.go_work,
+		j.go_home, j.deadline, j.career, j.id,
+		ci.cname,
+		(SELECT
+		LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY
+		S.SKILL_NAME)
+		FROM
+		post_skill_tb PS2
+		JOIN SKILL_TB S ON PS2.skill_idx =
+		S.skill_idx
+		WHERE
+		PS2.post_idx = j.post_idx) AS skills
+		FROM job_post_tb j
+		JOIN COMPANY_INFO_TB CI ON j.id = CI.id
+		JOIN
+		post_skill_tb PS ON
+		j.post_idx = PS.post_idx
+		JOIN SKILL_TB SK ON
+		SK.skill_idx = PS.skill_idx
+		WHERE EXISTS (
+		SELECT 1
+		FROM (
+		SELECT PS.id,
+		COUNT(DISTINCT PS.skill_idx)
+		AS matching_skills
+		FROM PERSON_SKILL_TB PS
+		JOIN post_skill_tb PS2 ON
+		PS.skill_idx = PS2.skill_idx AND
+		PS2.post_idx =
+		j.post_idx
+		WHERE PS.id =
+		#{id}
+		GROUP BY PS.id
+		HAVING
+		COUNT(DISTINCT PS.skill_idx) >= 2
+		)
+		)
+		GROUP BY
+		j.post_idx, j.post_name,
+		j.pay, j.job_type, j.job_intro,
+		j.go_work,
+		j.go_home, j.deadline,
+		j.career, j.id, ci.cname
+		OFFSET #{ offset } ROWS
+		FETCH NEXT #{ pageSize } ROWS ONLY
 
 	</select>
 

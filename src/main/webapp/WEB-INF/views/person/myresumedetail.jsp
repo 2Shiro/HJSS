@@ -86,7 +86,7 @@
 
 						<div class="my-1 mx-auto row">
 							<label for="portfolio" class="form-label">포트폴리오 주소</label> <a
-								class="form-control text-decoration-none text-dark" 
+								class="form-control text-decoration-none text-dark"
 								id="portfolio" href="${vo.portfolio}">${vo.portfolio}</a>
 						</div>
 						<div class="my-1 mx-auto row">
@@ -105,15 +105,30 @@
 						</div>
 						<div class="my-1 mx-auto row">
 							<label for="self-intro" class="form-label">업무 소개</label>
-							<textarea rows="10" class="form-control" id="job-intro" readonly="readonly"
-								name="self-intro">${ vo.self_intro }</textarea>
+							<textarea rows="10" class="form-control" id="job-intro"
+								readonly="readonly" name="self-intro">${ vo.self_intro }</textarea>
 						</div>
-						<div class="my-3 d-flex justify-content-center">
-							<a href="/Person/MyResume" id="btn-list"
-								class="btn btn-outline-secondary mx-3">목록</a> <a
-								href="/Person/MyResumeEdit?resume_idx=${vo.resume_idx}" id="btn-update"
-								class="btn btn-outline-primary mx-3">수정</a>
-						</div>
+
+						<c:choose>
+							<c:when test="${sessionVo.type == 1}">
+								<div class="my-3 d-flex justify-content-center">
+									<a href="/Company/Recommend?id=cp1" id="btn-list"
+										class="btn btn-outline-secondary mx-3">목록</a>
+								</div>
+							</c:when>
+							<c:when test="${sessionVo.type == 2}">
+								<div class="my-3 d-flex justify-content-center">
+									<a href="/Person/MyResume" id="btn-list"
+										class="btn btn-outline-secondary mx-3">목록</a> <a
+										href="/Person/MyResumeEdit?resume_idx=${vo.resume_idx}"
+										id="btn-update" class="btn btn-outline-primary mx-3">수정</a>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<a href="/" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
+							</c:otherwise>
+						</c:choose>
+
 					</div>
 				</div>
 

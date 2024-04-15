@@ -37,12 +37,17 @@
 	border-radius: 5px;
 	transition: background-color .3s;
 }
+
 .linkDiv input {
 	cursor: pointer;
 }
+
 .linkDiv:hover {
 	cursor: pointer;
 }
+
+
+
 </style>
 
 <script type="text/javascript">
@@ -210,8 +215,10 @@ document.getElementById('resumeFormsub').addEventListener('submit', function(e) 
 							<!-- 공고 리스트 끝 -->
 						</div>
 					</c:forEach>
+					<div class="d-flex justify-content-center">
+						<%@include file="/WEB-INF/include/resume_paging.jsp"%>
+					</div>
 				</div>
-				<%@include file="/WEB-INF/include/resume_paging.jsp" %>
 			</section>
 		</div>
 	</main>

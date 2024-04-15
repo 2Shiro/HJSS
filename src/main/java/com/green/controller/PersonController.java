@@ -51,6 +51,8 @@ import com.green.mapper.CompanyMapper;
 import com.green.mapper.MainMapper;
 import com.green.mapper.PersonMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -123,7 +125,7 @@ public class PersonController {
 
 	@RequestMapping("/MyResume")
 	public ModelAndView resume(UserVo userVo, PresumeVo presume, @SessionAttribute("login") PersonVo personVo,
-			@RequestParam(value="nowpage") int nowpage) {
+			@RequestParam(value = "nowpage") int nowpage) {
 		ModelAndView mv = new ModelAndView();
 		String id = personVo.getId();
 		userVo.setId(id);
@@ -131,39 +133,39 @@ public class PersonController {
 		presume.setId(id);
 		List<PresumeVo> list = personMapper.getResumeList(id);
 
-		int count = personMapper.count(presume);
+		int count = personMapper.countResume(presume);
 		PagingResponse<PresumeVo> response = null;
 		if (count < 1) {
 			response = new PagingResponse<>(Collections.emptyList(), null);
 		}
 		// 페이징을 위한 초기 설정값
-		PagingVo searchVo = new PagingVo();
-		searchVo.setPage(nowpage);
-		searchVo.setPageSize(5);
-		searchVo.setRecordSize(5);// 
+		PagingVo pagingVo = new PagingVo();
+		pagingVo.setPage(nowpage);
+		pagingVo.setPageSize(5);
+		pagingVo.setRecordSize(5);//
 
 		// Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDto 타입의 객체인 params에 계산된 페이지 정보 저장
-		Pagination pagination = new Pagination(count, searchVo);
-		searchVo.setPagination(pagination);
+		Pagination pagination = new Pagination(count, pagingVo);
+		pagingVo.setPagination(pagination);
 
-		int offset = searchVo.getOffset();
-		int pageSize = searchVo.getPageSize();
+		int offset = pagingVo.getOffset();
+		int pageSize = pagingVo.getPageSize();
 
 		List<PresumeVo> pagingList = personMapper.getResumePaing(id, offset, pageSize);
 		response = new PagingResponse<>(pagingList, pagination);
 		System.out.println(response);
-		System.out.println(searchVo.getRecordSize());
+		System.out.println(pagingVo.getRecordSize());
 		PersonInfoVo info = personMapper.getInfo(id);
 		List<SkillVo> skill = mainMapper.getSkillList();
 		log.info("nowpage = {}", nowpage);
-		mv.addObject("response",   response );
 		mv.addObject("info", info);
 		mv.addObject("user", userVo);
-		mv.addObject("searchVo",   searchVo );
+		mv.addObject("response", response);
+		mv.addObject("pagingVo", pagingVo);
+		mv.addObject("nowpage", nowpage);
 		mv.addObject("id", id);
 		mv.addObject("list", list);
 		mv.addObject("skill", skill);
-		mv.addObject("nowpage", nowpage);
 		mv.setViewName("/person/myresume");
 		return mv;
 	}
@@ -221,12 +223,12 @@ public class PersonController {
 		}
 
 		mv.addObject("userVo", userVo); // ModelAndView 객체에 UserVo 객체 추가
-		mv.setViewName("redirect:/Person/MyResume?id="+id+"&nowpage=1"); // 리다이렉트 설정
+		mv.setViewName("redirect:/Person/MyResume?id=" + id + "&nowpage=1"); // 리다이렉트 설정
 		return mv; // ModelAndView 반환
 	}
 
 	@RequestMapping("/MyResumeDetail")
-	public ModelAndView detailResume(PresumeVo presume) {
+	public ModelAndView detailResume(PresumeVo presume, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		int resume_idx = presume.getResume_idx();
 		PresumeVo vo = personMapper.getResume(resume_idx);
@@ -234,6 +236,20 @@ public class PersonController {
 		PersonInfoVo info = personMapper.getInfo(id);
 		List<SkillVo> skill = personMapper.loadskills(id);
 		UserVo userVo = mainMapper.getUser(id);
+
+		HttpSession session = request.getSession();
+		Object loginYn = session.getAttribute("login");
+
+		if (loginYn instanceof PersonVo) {
+			PersonVo sessionVo = (PersonVo) loginYn;
+			mv.addObject("sessionVo", sessionVo);
+		} else if (loginYn instanceof CompanyVo) {
+			CompanyVo sessionVo = (CompanyVo) loginYn;
+			log.info("==sessionVo== {}", sessionVo);
+			mv.addObject("sessionVo", sessionVo);
+		}
+
+		log.info("id = {}", id);
 		mv.addObject("info", info);
 		mv.addObject("skill", skill);
 		mv.addObject("vo", vo);
@@ -316,15 +332,16 @@ public class PersonController {
 			personMapper.insertskills(skillVo); // 스킬 정보 삽입
 		}
 		mv.addObject("userVo", userVo); // ModelAndView 객체에 UserVo 객체 추가
-		mv.setViewName("redirect:/Person/MyResume"); // 리다이렉트 설정
+		mv.setViewName("redirect:/Person/MyResume?id=" + id + "&nowpage=1"); // 리다이렉트 설정
 		return mv; // ModelAndView 반환
 	}
 
 	@RequestMapping("/MyResumeDelete")
-	public ModelAndView resumeDelete(PresumeVo presume) {
+	public ModelAndView resumeDelete(PresumeVo presume, @SessionAttribute("login") PersonVo personVo) {
 		ModelAndView mv = new ModelAndView();
+		String id = personVo.getId();
 		personMapper.resumeDelete(presume);
-		mv.setViewName("redirect:/Person/MyResume");
+		mv.setViewName("redirect:/Person/MyResume?id=" + id + "&nowpage=1");
 		return mv;
 	}
 
@@ -511,7 +528,8 @@ public class PersonController {
 
 	@ResponseBody
 	@RequestMapping("/Recommend")
-	public ModelAndView recommend(@SessionAttribute("login") PersonVo personVo, UserVo userVo, JobpostVo jobpostVo) {
+	public ModelAndView recommend(@SessionAttribute("login") PersonVo personVo, UserVo userVo, JobpostVo jobpostVo,
+			@RequestParam(value = "nowpage") int nowpage) {
 
 		ModelAndView mv = new ModelAndView();
 
@@ -528,6 +546,7 @@ public class PersonController {
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat targetFormat = new SimpleDateFormat("MM/dd(E)", new Locale("ko", "KR"));
 
+		// 마감기한 문자열 바꾸기
 		for (RecommendPostVo post : jobPosts) {
 			String deadlineStr = post.getDeadline(); // 기존 문자열 형태의 deadline
 			try {
@@ -539,7 +558,32 @@ public class PersonController {
 			}
 		}
 
-		log.info("joPosts = {}", jobPosts);
+		// 페이징 설정
+		int count = personMapper.countRecommendPost(jobpostVo);
+		PagingResponse<RecommendPostVo> response = null;
+		if (count < 1) {
+			response = new PagingResponse<>(Collections.emptyList(), null);
+		}
+		// 페이징을 위한 초기 설정값
+		PagingVo pagingVo = new PagingVo();
+		pagingVo.setPage(nowpage);
+		pagingVo.setPageSize(5);
+		pagingVo.setRecordSize(5);//
+
+		// Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDto 타입의 객체인 params에 계산된 페이지 정보 저장
+		Pagination pagination = new Pagination(count, pagingVo);
+		pagingVo.setPagination(pagination);
+
+		int offset = pagingVo.getOffset();
+		int pageSize = pagingVo.getPageSize();
+
+		List<RecommendPostVo> pagingList = personMapper.getRecommendPaing(id, offset, pageSize);
+		response = new PagingResponse<>(pagingList, pagination);
+
+		log.info("pagingVo = {}", pagingVo);
+		mv.addObject("response", response);
+		mv.addObject("pagingVo", pagingVo);
+		mv.addObject("nowpage", nowpage);
 		mv.addObject("pid", id);
 		mv.addObject("jobPosts", jobPosts);
 		mv.setViewName("/person/recommend");

@@ -169,7 +169,7 @@
 							</div>
 						</div>
 						<div class="my-3 d-flex justify-content-center">
-							<a href="/Company/MyPost" id="btn-list"
+							<a href="/Company/MyPost?id=${id}&nowpage=1" id="btn-list"
 								class="btn btn-outline-secondary mx-3">목록</a> <a
 								href="/Company/MyPostEdit?post_idx=${vo.post_idx}" id="btn-update"
 								class="btn btn-outline-primary mx-3">수정</a>

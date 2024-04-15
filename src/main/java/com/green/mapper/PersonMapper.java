@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.green.domain.JobpostVo;
 import com.green.domain.PersonInfoVo;
 import com.green.domain.PersonScrapVo;
 import com.green.domain.PersonVo;
@@ -74,8 +75,12 @@ public interface PersonMapper {
 
 	List<PersonscrapListVo> getScrapList(PersonscrapListVo scrapVo);
 
-	int count(PresumeVo presume);
-
 	List<PresumeVo> getResumePaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
+
+	int countResume(PresumeVo presume);
+
+	int countRecommendPost(JobpostVo jobpostVo);
+
+	List<RecommendPostVo> getRecommendPaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
 
 }

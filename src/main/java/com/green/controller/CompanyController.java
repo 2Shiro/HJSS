@@ -5,12 +5,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,9 @@ import com.green.domain.JobpostVo;
 import com.green.domain.MainPageVo;
 import com.green.domain.MatchingResultVo;
 import com.green.domain.MyProposalVo;
+import com.green.domain.Pagination;
+import com.green.domain.PagingResponse;
+import com.green.domain.PagingVo;
 import com.green.domain.PersonVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.PresumeVo;
@@ -38,7 +43,6 @@ import com.green.mapper.MainMapper;
 import com.green.mapper.PersonMapper;
 import com.green.util.AgeUtil;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -226,7 +230,8 @@ public class CompanyController {
 
 	// 특정 기업회원의 등록 공고 관리
 	@RequestMapping("/MyPost")
-	public ModelAndView myPost(UserVo userVo, JobpostVo vo, @SessionAttribute("login") CompanyVo comVo) {
+	public ModelAndView myPost(UserVo userVo, JobpostVo vo, @SessionAttribute("login") CompanyVo comVo,
+			@RequestParam(value = "nowpage") int nowpage) {
 		ModelAndView mv = new ModelAndView();
 
 		// session에서 id를 가져옴
@@ -245,6 +250,31 @@ public class CompanyController {
 		// 회사 정보 불러오기
 		userVo = mainMapper.getUser(id);
 
+		// 페이징
+		int count = companyMapper.countPost(vo);
+		PagingResponse<JobpostVo> response = null;
+		if (count < 1) {
+			response = new PagingResponse<>(Collections.emptyList(), null);
+		}
+		// 페이징을 위한 초기 설정값
+		PagingVo pagingVo = new PagingVo();
+		pagingVo.setPage(nowpage);
+		pagingVo.setPageSize(5);
+		pagingVo.setRecordSize(5);//
+
+		// Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDto 타입의 객체인 params에 계산된 페이지 정보 저장
+		Pagination pagination = new Pagination(count, pagingVo);
+		pagingVo.setPagination(pagination);
+
+		int offset = pagingVo.getOffset();
+		int pageSize = pagingVo.getPageSize();
+
+		List<JobpostVo> pagingList = companyMapper.getPostPaing(id, offset, pageSize);
+		response = new PagingResponse<>(pagingList, pagination);
+
+		mv.addObject("response", response);
+		mv.addObject("pagingVo", pagingVo);
+		mv.addObject("nowpage", nowpage);
 		mv.addObject("user", userVo);
 		mv.addObject("id", id);
 		mv.addObject("list", list);
@@ -255,9 +285,10 @@ public class CompanyController {
 
 	// 특정 기업회원의 공고 등록
 	@RequestMapping("/MyPostWrite")
-	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
+	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo,
+			@SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
-
+		String id = comVo.getId();
 		// 기술자격 데이터를 넣기 위해 미리 post_idx를 확정함
 		int post_idx = companyMapper.selectpostidxmax();
 		postVo.setPost_idx(post_idx);
@@ -272,7 +303,7 @@ public class CompanyController {
 			skillVo.setSkill_idx(skillIdx);
 			companyMapper.insertskills(skillVo);
 		}
-		mv.setViewName("redirect:/Company/MyPost");
+		mv.setViewName("redirect:/Company/MyPost?id=" + id + "&nowpage=1");
 		return mv;
 	}
 
@@ -306,25 +337,24 @@ public class CompanyController {
 		return mv;
 	}
 
-	//시간을 오전 오후 **시로 바꿔주기 위한 메소드
+	// 시간을 오전 오후 **시로 바꿔주기 위한 메소드
 	private String convertTimeFormat(String time) {
-	    try {
-	        String[] parts = time.split(" ");
-	        int hour = Integer.parseInt(parts[1].replaceAll("[^0-9]", ""));
+		try {
+			String[] parts = time.split(" ");
+			int hour = Integer.parseInt(parts[1].replaceAll("[^0-9]", ""));
 
-	        if ("오후".equals(parts[0]) && hour != 12) {
-	            hour += 12;
-	        } else if ("오전".equals(parts[0]) && hour == 12) {
-	            hour = 0;
-	        }
+			if ("오후".equals(parts[0]) && hour != 12) {
+				hour += 12;
+			} else if ("오전".equals(parts[0]) && hour == 12) {
+				hour = 0;
+			}
 
-	        return String.format("%02d:00", hour); // 분은 00으로 설정
-	    } catch (Exception e) {
-	        return "00:00"; // 예외 처리, 기본값 반환
-	    }
+			return String.format("%02d:00", hour); // 분은 00으로 설정
+		} catch (Exception e) {
+			return "00:00"; // 예외 처리, 기본값 반환
+		}
 	}
 
-    
 	@RequestMapping("/MyPostEdit")
 	public ModelAndView editMyPost(JobpostVo postVo) {
 		ModelAndView mv = new ModelAndView();
@@ -342,12 +372,12 @@ public class CompanyController {
 
 		String goWorkTime = convertTimeFormat(goWork);
 		String goHomeTime = convertTimeFormat(goHome);
-		log.info("goWorkTime = {}",goWorkTime);
-		log.info("goHomeTime = {}" , goHomeTime);
+		log.info("goWorkTime = {}", goWorkTime);
+		log.info("goHomeTime = {}", goHomeTime);
 
 		mv.addObject("goHomeTime", goHomeTime);
 		mv.addObject("goWorkTime", goWorkTime);
-		
+
 		mv.addObject("vo", vo);
 		mv.addObject("allSkills", allSkills);
 		mv.addObject("postSkills", postSkills);
@@ -356,9 +386,10 @@ public class CompanyController {
 	}
 
 	@RequestMapping("/MyPostUpdate")
-	public ModelAndView updateMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
+	public ModelAndView updateMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo,
+			@SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
-
+		String id = comVo.getId();
 		// 해당 공고의 post_idx를 확정
 		int post_idx = postVo.getPost_idx();
 		postVo.setPost_idx(post_idx);
@@ -376,19 +407,20 @@ public class CompanyController {
 			skillVo.setSkill_idx(skillIdx);
 			companyMapper.insertskills(skillVo);
 		}
-		mv.setViewName("redirect:/Company/MyPost");
+		mv.setViewName("redirect:/Company/MyPost?id=" + id + "&nowpage=1");
 		return mv;
 	}
 
 	@RequestMapping("/MyPostDelete")
-	public ModelAndView postDelete(JobpostVo postVo) {
+	public ModelAndView postDelete(JobpostVo postVo, @SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
+		String id = comVo.getId();
 		// 해당 공고의 모든 기술자격 데이터 삭제
 		companyMapper.deletepostskills(postVo);
 
 		// 해당 공고 삭제
 		companyMapper.postDelete(postVo);
-		mv.setViewName("redirect:/Company/MyPost");
+		mv.setViewName("redirect:/Company/MyPost?id=" + id + "&nowpage=1");
 		return mv;
 	}
 
@@ -542,6 +574,14 @@ public class CompanyController {
 		}
 	}
 
+	@RequestMapping("/LoadRecommend")
+	public ResponseEntity<List<MatchingResultVo>> recommendLoad(@RequestParam("post_idx") int post_idx) {
+		List<MatchingResultVo> candidates = companyMapper.recommended(post_idx);
+		return new ResponseEntity<>(candidates, HttpStatus.OK);
+	}
+
+	
+	
 	@RequestMapping("/MyScrap")
 	public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo, @SessionAttribute("login") CompanyVo comVo) {
 		ModelAndView mv = new ModelAndView();
@@ -564,5 +604,6 @@ public class CompanyController {
 		mv.setViewName("company/myscrap");
 		return mv;
 	}
+	
 
 }

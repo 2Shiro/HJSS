@@ -12,26 +12,26 @@
 	<ul class="pagination">
 		<c:if test="${nowpage > 1}">
 			<li class="page-item"><a class="page-link"
-				href="/Person/MyResume?id=${ id }&nowpage=1" aria-label="Previous">
+				href="/Company/MyPost?id=${ id }&nowpage=1" aria-label="Previous">
 					<span aria-hidden="true">&laquo;</span>
 			</a></li>
 			<li class="page-item"><a class="page-link"
-				href="/Person/MyResume?id=${ id }&nowpage=${ nowpage - 1 }" aria-label="Previous">
+				href="/Company/MyPost?id=${ id }&nowpage=${ nowpage - 1 }" aria-label="Previous">
 					<span aria-hidden="true">&lt;</span>
 			</a></li>
 		</c:if>
 		<c:forEach var="pagenum" begin="${startnum}" end="${endnum}" step="1">
 			<li class="page-item"><a class="page-link"
-				href="/Person/MyResume?id=${ id }&nowpage=${ pagenum }"> ${ pagenum }
+				href="/Company/MyPost?id=${ id }&nowpage=${ pagenum }"> ${ pagenum }
 			</a></li>
 		</c:forEach>
 		<c:if test="${pagingVo.pagination.existNextPage}">
 			<li class="page-item"><a class="page-link"
-				href="/Person/MyResume?id=${ id }&nowpage=${ nowpage + 1 }"
+				href="/Company/MyPost?id=${ id }&nowpage=${ nowpage + 1 }"
 					aria-label="Next"> <span aria-hidden="true">&gt;</span>
 			</a></li>
 			<li class="page-item"><a class="page-link"
-				href="/Person/MyResume?id=${ id }&nowpage=${ totalpagecount }"
+				href="/Company/MyPost?id=${ id }&nowpage=${ totalpagecount }"
 				aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 			</a></li>
 		</c:if>

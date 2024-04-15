@@ -33,7 +33,7 @@
 	
 	MyPostEl.addEventListener('click', () => {
 		//alert('mypost');
-		location.href = '/Company/MyPost?id=' + sessionid;
+		location.href = '/Company/MyPost?id=' + sessionid + '&nowpage=1';
 	});
 	
 	MyParticipateEl.addEventListener('click', () => {

@@ -131,7 +131,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="list" items="${ jobPosts }">
+							<c:forEach var="list" items="${ response.list }">
 								<tr style="height: 200px;">
 									<td class="name-column text-center align-middle">
 										<p>${ list.cname }</p>
@@ -164,6 +164,9 @@
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="d-flex justify-content-center">
+					<%@include file="/WEB-INF/include/precommend_paging.jsp"%>
 				</div>
 			</section>
 		</div>
