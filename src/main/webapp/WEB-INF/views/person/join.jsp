@@ -96,7 +96,8 @@
 
 $('#id').keyup(function(){
 	let id = $('#id').val();
-
+	
+	
 	$.ajax({
 		url : "/CheckId",
 		type : "post",
@@ -128,12 +129,6 @@ $('#id').keyup(function(){
 			$('#pwck').html('비밀번호 불일치').css('color','red')
 		}
 	})
-	
-	function checkForm(){
-		$('#id').blur(function (){
-			if
-		})
-}
 </script>
 
 </body>

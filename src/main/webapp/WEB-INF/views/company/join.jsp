@@ -141,6 +141,8 @@
 					$("#idck").html('이미 사용중인 아이디입니다.').css('color','red');
 				}else if(result == 0){
 					$("#idck").html('사용가능한 아이디입니다.').css('color','blue');					
+				}else if(result == null){
+					$("#idck").html('아이디를 입력해주세요').css('color','red');
 				}
 			}
 		})
@@ -157,8 +159,6 @@
 			$('#pwck').html('비밀번호 불일치').css('color','red')
 		}
 	})
-	
-
 </script>
 
 </body>

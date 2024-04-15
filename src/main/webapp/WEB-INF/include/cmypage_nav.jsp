@@ -5,16 +5,16 @@
 		<button type="button" class="btn btn-outline-secondary navc" id="user">회원정보</button>
 	</li>
 	<li class="nav-item mx-auto mt-2">
-		<button type="button" class="btn btn-outline-secondary navc" id="mypost">등록
-			공고 관리</button>
+		<button type="button" class="btn btn-outline-secondary navc"
+			id="mypost">등록 공고 관리</button>
 	</li>
 	<li class="nav-item mx-auto mt-2">
-		<button type="button" class="btn btn-outline-secondary navc" 
+		<button type="button" class="btn btn-outline-secondary navc"
 			id="myparticipate">지원 받은 이력서</button>
 	</li>
 	<li class="nav-item mx-auto mt-2">
-		<button type="button" class="btn btn-outline-secondary navc" id="scrap">스크랩한
-			구직자</button>
+		<button type="button" class="btn btn-outline-secondary navc"
+			id="scrap">스크랩한 구직자</button>
 	</li>
 	<li class="nav-item mx-auto"><input type="hidden"
 		value="${ sessionScope.login.id }" id="sessionid"></li>
@@ -35,7 +35,7 @@
 
 	MyPostEl.addEventListener('click', function(e) { // 수정된 부분
 		//alert('mypost');
-		location.href = '/Company/MyPost?id=' + sessionid; // 경로도 확인 필요
+		location.href = '/Company/MyPost?id=' + sessionid + '&nowpage=1';
 	});
 
 	MyParticipateEl.addEventListener('click', function(e) {
@@ -45,6 +45,6 @@
 
 	ScrapEl.addEventListener('click', function(e) {
 		//alert('cscrap');
-		location.href = '/Company/MyScrap?id=' + sessionid;
+		location.href = '/Company/MyScrap?id=' + sessionid + '&nowpage=1';
 	});
 </script>
