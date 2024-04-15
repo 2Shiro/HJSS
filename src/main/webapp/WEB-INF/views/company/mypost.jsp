@@ -41,7 +41,6 @@
 .linkDiv input {
 	cursor: pointer;
 }
-
 .linkDiv:hover {
 	cursor: pointer;
 }

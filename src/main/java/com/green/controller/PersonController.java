@@ -2,6 +2,7 @@ package com.green.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -22,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+//github.com/2Shiro/HJSS.git
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +39,7 @@ import com.green.domain.JobpostVo;
 import com.green.domain.MainPageVo;
 import com.green.domain.Pagination;
 import com.green.domain.PagingResponse;
+import com.green.domain.PagingVo;
 import com.green.domain.PersonInfoVo;
 import com.green.domain.PersonScrapVo;
 import com.green.domain.PersonVo;
@@ -44,7 +48,6 @@ import com.green.domain.PersonskillVo;
 import com.green.domain.PproposalVo;
 import com.green.domain.PresumeVo;
 import com.green.domain.RecommendPostVo;
-import com.green.domain.PagingVo;
 import com.green.domain.SkillVo;
 import com.green.domain.UserVo;
 import com.green.mapper.CompanyMapper;
@@ -52,6 +55,8 @@ import com.green.mapper.MainMapper;
 import com.green.mapper.PersonMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+//github.com/2Shiro/HJSS.git
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,59 +70,112 @@ public class PersonController {
 
 	@Autowired
 	private PersonMapper personMapper;
-
+	
 	@Autowired
 	private CompanyMapper companyMapper;
-
-	// 구직자의 메인페이지
-
+	
+	// 개인의 메인페이지
 	@RequestMapping("/Pmain")
 	public ModelAndView pmain() {
-		// JOB_POST_TB 리스트
+		//JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
-
-		// 기업 이미지 객체리스트 -> companyVo
+		
+		//기업 이미지 객체리스트 -> companyVo
 		List<CompanyVo> companyVo = new ArrayList<>();
 		for (int i = 0; i < jobList.size(); i++) {
 			String id = jobList.get(i).getId();
-			// System.out.println(id);
+			//System.out.println(id);
 			CompanyVo vo = companyMapper.getCompanyById(id);
-			companyVo.add(new CompanyVo(vo.getId(), vo.getCnumber(), vo.getCname(), vo.getCom_logo(),
-					vo.getCrepresentive(), vo.getAddress(), vo.getManager_name(), vo.getCompany_managerphone(),
-					vo.getCsize(), vo.getCyear()));
+			companyVo.add(new CompanyVo(vo.getId(), 
+										vo.getCnumber(), 
+										vo.getCname(), 
+										vo.getCom_logo(), 
+										vo.getCrepresentive(), 
+										vo.getAddress(), 
+										vo.getManager_name(), 
+										vo.getCompany_managerphone(), 
+										vo.getCsize(), 
+										vo.getCyear()));
 		}
-
-		// 담기
+		
+		//담기
 		for (int i = 0; i < jobList.size(); i++) {
-			mainPageList.add(
-					new MainPageVo(jobList.get(i).getPost_idx(), jobList.get(i).getId(), jobList.get(i).getPost_name(),
-							jobList.get(i).getCareer(), jobList.get(i).getJob_type(), companyVo.get(i).getCom_logo()));
-			// System.out.println(companyVo.get(i).getCom_logo());
+			mainPageList.add(new MainPageVo(jobList.get(i).getPost_idx(), 
+											jobList.get(i).getId(), 
+											jobList.get(i).getPost_name(), 
+											jobList.get(i).getCareer(), 
+											jobList.get(i).getJob_type(), 
+											companyVo.get(i).getCom_logo()));
+			//System.out.println(companyVo.get(i).getCom_logo());
 		}
-
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("jobList", jobList);
 		mv.addObject("mainPageList", mainPageList);
-		// 세션별로 바꿔야할듯
+		//세션별로 바꿔야할듯
+		mv.setViewName("/person/pmain");
+		return mv;
+	}
+	
+	// 개인의 메인페이지
+	@RequestMapping("/Search")
+	public ModelAndView search( @RequestParam(value="keyword") String keyword ) {
+		//JOB_POST_TB 리스트
+		List<MainPageVo> mainPageList = new ArrayList<>();
+		List<JobpostVo> jobList = companyMapper.getsearchpostList( keyword );
+		
+		//기업 이미지 객체리스트 -> companyVo
+		List<CompanyVo> companyVo = new ArrayList<>();
+		for (int i = 0; i < jobList.size(); i++) {
+			String id = jobList.get(i).getId();
+			//System.out.println(id);
+			CompanyVo vo = companyMapper.getCompanyById(id);
+			companyVo.add(new CompanyVo(vo.getId(), 
+										vo.getCnumber(), 
+										vo.getCname(), 
+										vo.getCom_logo(), 
+										vo.getCrepresentive(), 
+										vo.getAddress(), 
+										vo.getManager_name(), 
+										vo.getCompany_managerphone(), 
+										vo.getCsize(), 
+										vo.getCyear()));
+		}
+		
+		//담기
+		for (int i = 0; i < jobList.size(); i++) {
+			mainPageList.add(new MainPageVo(jobList.get(i).getPost_idx(), 
+											jobList.get(i).getId(), 
+											jobList.get(i).getPost_name(), 
+											jobList.get(i).getCareer(), 
+											jobList.get(i).getJob_type(), 
+											companyVo.get(i).getCom_logo()));
+			//System.out.println(companyVo.get(i).getCom_logo());
+		}
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("jobList", jobList);
+		mv.addObject("mainPageList", mainPageList);
+		//세션별로 바꿔야할듯
 		mv.setViewName("/person/pmain");
 		return mv;
 	}
 
-	// 특정 구직자의 특정 공고에 지원하기
+	//특정 구직자의 특정 공고에 지원하기
 	@RequestMapping("/JoinPost")
-	public ModelAndView joinPost(@RequestParam HashMap<String, Object> map) {
-		// System.out.println("resume_idx" + map);
+	public ModelAndView joinPost( @RequestParam HashMap<String, Object> map) {
+		//System.out.println("resume_idx" + map);
 		String id = (String) map.get("id");
-		// System.out.println("id" + id);
+		//System.out.println("id" + id);
 		int post_idx = Integer.parseInt((String.valueOf(map.get("post_idx"))));
-		// System.out.println("post_idx" + post_idx);
+		//System.out.println("post_idx" + post_idx);
 		int resume_idx = Integer.parseInt((String.valueOf(map.get("resume_idx"))));
-		// System.out.println("resume_idx" + resume_idx);
-
-		// insert MY_PROPOSAL_TB
+		//System.out.println("resume_idx" + resume_idx);
+		
+		//insert MY_PROPOSAL_TB
 		personMapper.insertProposal(id, post_idx, resume_idx);
-
+		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/Person/MyProposal");
 		return mv;
@@ -266,7 +324,6 @@ public class PersonController {
 		mv.setViewName("/person/myresumedetail");
 		return mv;
 	}
-
 	@RequestMapping("/MyResumeEdit")
 	public ModelAndView editResume(PresumeVo presume, @SessionAttribute("login") PersonVo personVo) {
 		ModelAndView mv = new ModelAndView();
@@ -289,6 +346,7 @@ public class PersonController {
 		mv.setViewName("/person/myresumeedit");
 		return mv;
 	}
+
 
 	@RequestMapping("/MyResumeUpdate")
 	public ModelAndView updateResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
@@ -365,90 +423,102 @@ public class PersonController {
 		return mv;
 	}
 
-	// 특정 구직자가 지원한 공고
-	@RequestMapping("/MyProposal")
-	public ModelAndView getProposal(@SessionAttribute("login") PersonVo personVo) {
-		// 아이디에 따라 하는 것 추가하기
-		String pid = personVo.getId();
-		// 나의 지원 가져오기
-		List<CproposalVo> proposalList = companyMapper.getmyProposal(pid);
+	 //특정 구직자가 지원한 공고
+	   @RequestMapping("/MyProposal")
+	   public ModelAndView getProposal(@SessionAttribute("login") PersonVo personVo) {
+	      //아이디에 따라 하는 것 추가하기
+	      String pid = personVo.getId();
+	      //나의 지원 가져오기
+	      List<CproposalVo> proposalList = companyMapper.getmyProposal(pid);
+	      
+	      //지원 전부 가져오기
+	      //List<CproposalVo> proposalList = companyMapper.getProposalq();
+	      
+	      //공고 정보 가져오기
+	      List<JobpostVo> jobpostList = new ArrayList<>();
+	      for(int i = 0; i < proposalList.size(); i++) {
+	         JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
+	         jobpostList.add(new JobpostVo(vo.getPost_idx(),
+	                                vo.getId(),
+	                                vo.getPost_name(),
+	                                vo.getCareer(),
+	                                vo.getJob_type(),
+	                                vo.getPay(),
+	                                vo.getGo_work(),
+	                                vo.getGo_home(),
+	                                vo.getDeadline(),
+	                                vo.getJob_intro(),
+	                                vo.getC_intro(),
+	                                vo.getCreated_date()));
+	      }
+	      
+	      //이력서 가져오기
+	      List<PresumeVo> presumeVo = new ArrayList<>();
+	      for (int i = 0; i < proposalList.size(); i++) {
+	         int resume_idx = proposalList.get(i).getResume_idx();
+	         PresumeVo vo = personMapper.getResume(resume_idx);
+	         presumeVo.add(vo);
+	      }
+	      
+	      //필요한 정보를 담은 리스트
+	      List<PproposalVo> pproposalList = new ArrayList<>();
+	      for (int i = 0; i < proposalList.size(); i++) {
+	         //comment를 굳이 테이블에서 가져와?
+	         String status, comment;
+	         if (proposalList.get(i).getStatus() == 1) {
+	            status = "합격";
+	            comment = "합격했습니다. ";
+	         } else if (proposalList.get(i).getStatus() == 2) {
+	            status = "불합격";
+	            comment = "불합격했습니다. ";
+	         } else {
+	            status = "미처리";
+	            comment = "아직 처리되지않았습니다. ";
+	         }
+	         pproposalList.add(new PproposalVo(proposalList.get(i).getPost_idx(), 
+	                                   jobpostList.get(i).getPost_name(), 
+	                                   jobpostList.get(i).getDeadline(), 
+	                                   proposalList.get(i).getResume_idx(),
+	                                   presumeVo.get(i).getTitle(),
+	                                   status, comment,
+	                                   proposalList.get(i).getId()));
+	      }
+	      
+	      ModelAndView mv = new ModelAndView();
+	      mv.addObject("proposalList", proposalList);
+	      mv.addObject("jobpostList", jobpostList);
+	      mv.addObject("presumeVo", presumeVo);
+	      mv.addObject("pproposalList", pproposalList);
+	      mv.setViewName("/person/myproposal");
+	      return mv;
+	   }
 
-		// 지원 전부 가져오기
-		// List<CproposalVo> proposalList = companyMapper.getProposalq();
-
-		// 공고 정보 가져오기
-		List<JobpostVo> jobpostList = new ArrayList<>();
-		for (int i = 0; i < proposalList.size(); i++) {
-			JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
-			jobpostList.add(new JobpostVo(vo.getPost_idx(), vo.getId(), vo.getPost_name(), vo.getCareer(),
-					vo.getJob_type(), vo.getPay(), vo.getGo_work(), vo.getGo_home(), vo.getDeadline(),
-					vo.getJob_intro(), vo.getC_intro(), vo.getCreated_date()));
-		}
-
-		// 이력서 가져오기
-		List<PresumeVo> presumeVo = new ArrayList<>();
-		for (int i = 0; i < proposalList.size(); i++) {
-			int resume_idx = proposalList.get(i).getResume_idx();
-			PresumeVo vo = personMapper.getResume(resume_idx);
-			presumeVo.add(vo);
-		}
-
-		// 필요한 정보를 담은 리스트
-		List<PproposalVo> pproposalList = new ArrayList<>();
-		for (int i = 0; i < proposalList.size(); i++) {
-			// comment를 굳이 테이블에서 가져와?
-			String status, comment;
-			if (proposalList.get(i).getStatus() == 1) {
-				status = "합격";
-				comment = "합격했습니다. ";
-			} else if (proposalList.get(i).getStatus() == 2) {
-				status = "불합격";
-				comment = "불합격했습니다. ";
-			} else {
-				status = "미처리";
-				comment = "아직 처리되지않았습니다. ";
-			}
-			pproposalList.add(new PproposalVo(proposalList.get(i).getPost_idx(), jobpostList.get(i).getPost_name(),
-					jobpostList.get(i).getDeadline(), proposalList.get(i).getResume_idx(), presumeVo.get(i).getTitle(),
-					status, comment, proposalList.get(i).getId()));
-		}
-
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("proposalList", proposalList);
-		mv.addObject("jobpostList", jobpostList);
-		mv.addObject("presumeVo", presumeVo);
-		mv.addObject("pproposalList", pproposalList);
-		mv.setViewName("/person/myproposal");
-		return mv;
-	}
-
-	// 이력서 가져오기
-
-	@RequestMapping("/GetResume")
-	public ModelAndView getResume(PresumeVo presume) {
-		int resume_idx = presume.getResume_idx();
-		// System.out.println(resume_idx);
-		PresumeVo presumeVo = personMapper.getResume(resume_idx);
-		// System.out.println("이력서" + presumeVo);
-		PersonVo psuerVo = personMapper.getPuser(presumeVo.getId());
-		UserVo userVo = personMapper.getUser(presumeVo.getId());
-		// System.out.println("유저: " + userVo);
-
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("presumeVo", presumeVo);
-		mv.addObject("psuerVo", psuerVo);
-		mv.addObject("userVo", userVo);
-		mv.setViewName("/person/popresume");
-		return mv;
-	}
-
+   //이력서 가져오기
+   @RequestMapping("/GetResume")
+   public ModelAndView getResume(PresumeVo presume) {
+      int resume_idx = presume.getResume_idx();
+      //System.out.println(resume_idx);
+      PresumeVo presumeVo = personMapper.getResume(resume_idx);
+      //System.out.println("이력서" + presumeVo);
+      PersonVo psuerVo = personMapper.getPuser(presumeVo.getId());
+      UserVo userVo = personMapper.getUser(presumeVo.getId());
+      //System.out.println("유저: " + userVo);
+      
+      ModelAndView mv = new ModelAndView();
+      mv.addObject("presumeVo", presumeVo);
+      mv.addObject("psuerVo", psuerVo);
+      mv.addObject("userVo", userVo);
+      mv.setViewName("/person/popresume");
+      return mv;
+   }
+   
 	@RequestMapping("/Pass")
-	public String pass(@RequestParam(value = "resume_idx") int resume_idx, @RequestParam(value = "status") int status) {
-		// System.out.println("상태" + resume_idx);
+	public String pass(@RequestParam(value="resume_idx") int resume_idx, @RequestParam(value="status") int status) {
+		//System.out.println("상태" + resume_idx);
 		personMapper.updateResumePass(resume_idx, status);
-
-		// System.out.println(status);
-
+		
+		//System.out.println(status);
+		
 		return "/person/updateok";
 	}
 
@@ -467,55 +537,96 @@ public class PersonController {
 		return mv;
 
 	}
+   
+   // /Person/UpdateForm
+   @RequestMapping("/UpdateForm")
+   public ModelAndView updateForm( PersonVo personVo ) {
+      
+      PersonVo vo = personMapper.getPerson( personVo );
+      
+      ModelAndView mv = new ModelAndView();
+      mv.addObject("vo", vo);
+      mv.setViewName("person/mypageUpdate");
+      
+      return mv;
+   }
+   
+   // /Person/Update
+   @RequestMapping("/Update")
+   public ModelAndView update( PersonVo personVo ) {
+      
+      personMapper.updatePerson( personVo );
+      personMapper.updateUser( personVo );
+      
+      ModelAndView mv = new ModelAndView();
+      mv.setViewName("redirect:/Person/Mypage");
+      return mv;
+   }
+   
+   // /Person/DeleteForm
+   @RequestMapping("/DeleteForm")
+   public ModelAndView deleteForm( PersonVo personVo ) {
+      
+      PersonVo vo = personMapper.getPerson( personVo );
+      
+      ModelAndView mv = new ModelAndView();
+      mv.addObject("vo", vo);
+      mv.setViewName("/person/delete");
+      return mv;
+   }
+   
+   // /Person/Delete
+   @RequestMapping("/Delete")
+   public ModelAndView delete( PersonVo personVo ) {
+      
+      personMapper.deletePerson( personVo );
+      personMapper.deleteUser( personVo );
+         
+      ModelAndView mv = new ModelAndView();
+         
+      mv.setViewName("redirect:/");
+      
+      return mv;
+   }
 
-	// /Person/UpdateForm
-	@RequestMapping("/UpdateForm")
-	public ModelAndView updateForm(PersonVo personVo) {
 
-		PersonVo vo = personMapper.getPerson(personVo);
-
+	// 개인회원 로그인폼
+	@RequestMapping("/LoginForm")
+	public ModelAndView loginForm() {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("vo", vo);
-		mv.setViewName("person/mypageUpdate");
+
+		mv.setViewName("person/login");
 
 		return mv;
 	}
 
-	// /Person/Update
-	@RequestMapping("/Update")
-	public ModelAndView update(PersonVo personVo) {
-
-		personMapper.updatePerson(personVo);
-		personMapper.updateUser(personVo);
-
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/Person/Mypage");
-		return mv;
-	}
-
-	// /Person/DeleteForm
-	@RequestMapping("/DeleteForm")
-	public ModelAndView deleteForm(PersonVo personVo) {
-
-		PersonVo vo = personMapper.getPerson(personVo);
-
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("vo", vo);
-		mv.setViewName("/person/delete");
-		return mv;
-	}
-
-	// /Person/DeleteForm
-	@RequestMapping("/Delete")
-	public ModelAndView delete(PersonVo personVo) {
-
-		personMapper.deletePerson(personVo);
-		personMapper.deleteUser(personVo);
-
+	// 개인회원 로그인
+	@PostMapping("/Login")
+	public ModelAndView login(HttpServletRequest request, PersonVo personVo, HttpServletResponse response)
+			throws IOException {
 		ModelAndView mv = new ModelAndView();
 
-		mv.setViewName("redirect:/");
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
 
+		personVo = personMapper.login(id, password);
+
+		if (personVo != null) {// 아이디와 암호 일치시 수행
+			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(60 * 60); // 60분동안 로그인 유지
+			session.setAttribute("login", personVo);
+			session.setAttribute("isLoggedIn", true);
+			mv.setViewName("redirect:/Person/Pmain");
+
+		} else {// 로그인 실패시
+			PrintWriter out = response.getWriter();
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8;");
+			out.println("<script> alert('Please check your ID password');");
+			out.println("history.go(-1); </script>");
+			out.close();
+			mv.setViewName("redirect:/Person/Login");
+		}
 		return mv;
 	}
 
@@ -537,7 +648,6 @@ public class PersonController {
 	@RequestMapping("/Join")
 	public ModelAndView join(PersonVo personVo) {
 		// System.out.println("개인회원" + personVo);
-
 		personMapper.insert(personVo);
 
 		ModelAndView mv = new ModelAndView();

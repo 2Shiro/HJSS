@@ -47,7 +47,6 @@
 					<c:forEach var="pproposalList" items="${pproposalList}">   
 						<tr>               
              <td> &nbsp &nbsp ${pproposalList.post_idx}</td>
-             
          	   <td><a href="/ViewPost?id=${pproposalList.cid}&post_idx=${pproposalList.post_idx}">${pproposalList.post_name}</a></td>
              <td>${pproposalList.deadline}</td>
              <td><a href="/Person/MyResume" value="${pproposalList.resume_idx}">${pproposalList.resume_name}</a></td>

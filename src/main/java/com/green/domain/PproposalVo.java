@@ -15,5 +15,6 @@ public class PproposalVo {
 	private String resume_name;
 	private String status;
 	private String comment;
+	
 	private String cid;
 }

@@ -168,7 +168,6 @@ border: 1px solid #5215a6;
 
             // 이전에 클릭한 linkDiv와 post-idx가 같은 경우에는 토글만 함
             if (candidateList.data('currentPostIdx') === currentPostIdx) {
-            	
                 // 현재 클릭한 linkDiv의 하위 목록을 토글
                 candidateList.toggle();
             	

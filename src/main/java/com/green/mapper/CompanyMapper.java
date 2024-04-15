@@ -88,4 +88,6 @@ public interface CompanyMapper {
 
 	List<JobpostVo> getPostPaing(@Param("id") String id, @Param("offset") int offset, @Param("pageSize") int pageSize);
 
+	List<JobpostVo> getsearchpostList(String keyword);
+
 }
