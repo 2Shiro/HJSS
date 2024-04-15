@@ -19,7 +19,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		        		             "/Company/JoinForm","/Company/Join",
 		        		             "/logout","/ViewPost","/",
 		        		             "/CheckId",
-		        		             "/log*","/css/**", "/images/**", "/js/**");
+		        		             "/log*","/css/**", "/images/**", "/js/**",
+		        		             "/Search", "/Person/Search", "Company/Search");
 			
 	}	
 	

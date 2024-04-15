@@ -65,42 +65,36 @@ footer{
 	<main>
 		<div>
 			<a href="/"> <img alt="Logo" src="/images/logo.png"
-				style="width: 150px;">
-			</a><br> <br> <br>
-			<main>
-
-
-</hr>
-<table id="logch">
-  <tr>
-    <td ><a href="/Person/LoginForm" id="perlog">개인회원</a></td>
-    <td ><a href="/Company/LoginForm" id="comlog">기업회원</a></td>
-  </tr>
-</table>
-   <form  action="/Company/Login" method="post" id="login">
-   <div class="log">
-     <table>
-       <tr>
-         <td colspan="2"><input type="text" id="id" name="id" 
-                    style="width: 250px;" placeholder="아이디"></td>
-       <tr>
-         <td colspan="2"><input type="password" id="password" name="password" 
-                    style="width: 250px;" placeholder="비밀번호"><br></td>
-       </tr>
-       <tr id="btn">
-         <td ><br><button class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">로그인</button>
-         <td><br><button type="button" class="btn btn-primary"  onClick="location.href='/Company/JoinForm'" 
-                  style="background-color:#5215a6; color : white; border:white; width: 120px;">회원가입</button></td>
-        </tr>     
-     </table> 
-     </div>  
-   </form>
- </main>
-
- <%@include file="/WEB-INF/include/footer.jsp" %>
-
-
-
+			style="width: 150px;">
+			</a><br><br><br>
+		</div>
+		<table id="logch">
+			<tr>
+				<td ><a href="/Person/LoginForm" id="perlog">개인회원</a></td>
+				<td ><a href="/Company/LoginForm" id="comlog">기업회원</a></td>
+			</tr>
+		</table>
+		<form  action="/Company/Login" method="post" id="login">
+			<div class="log">
+				<table>
+					<tr>
+						<td colspan="2"><input type="text" id="id" name="id" 
+						style="width: 250px;" placeholder="아이디"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="password" id="password" name="password" 
+						style="width: 250px;" placeholder="비밀번호"><br></td>
+					</tr>
+					<tr id="btn">
+						<td ><br><button class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">로그인</button>
+						<td><br><button type="button" class="btn btn-primary"  onClick="location.href='/Company/JoinForm'" 
+						style="background-color:#5215a6; color : white; border:white; width: 120px;">회원가입</button></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</main>
+	<%@include file="/WEB-INF/include/footer.jsp" %>
 </body>
 </html>
 

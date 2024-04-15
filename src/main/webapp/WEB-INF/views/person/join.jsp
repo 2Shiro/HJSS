@@ -82,8 +82,6 @@
 </div>
 
   <input type="hidden" name="created_date" value=${ now } readonly>
-
-
       <button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white;">작성완료</button>
       <button type="button" class="btn btn-outline-secondary" onClick="location.href='/Person/LoginForm'">개인로그인</button>
       <button type="button" class="btn btn-outline-secondary" onClick="location.href='/'">HOME</button>

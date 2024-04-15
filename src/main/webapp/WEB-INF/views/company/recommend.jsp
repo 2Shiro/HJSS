@@ -5,7 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,10 +36,11 @@
 .action-column {
 	width: 10%;
 }
-.linkDiv {
 
-border: 1px solid #5215a6;
+.linkDiv {
+	border: 1px solid #5215a6;
 }
+
 </style>
 <script>
     $(document).ready(function() {
@@ -168,9 +168,6 @@ border: 1px solid #5215a6;
         $('.linkDiv').click(loadRecommendationList);
     });
 </script>
-
-
-
 </head>
 
 <body>
@@ -192,12 +189,10 @@ border: 1px solid #5215a6;
 					<input type="hidden" value="${cid }" id="cid">
 					<!-- 공고별 추천 인재 목록 출력 -->
 					<c:forEach var="post" items="${candidatesPerPost}">
-						<div
-							class="row py-3 d-flex align-items-center linkDiv my-3"
-							data-post-idx="${post.key}">
+						<div class="row border border-dark py-3 d-flex align-items-center">
 							<div class="col-3">
 								<div></div>
-								<p class="fs-4">공고명: ${postNames[post.key]}</p>
+								<p class="fs-3">공고명: ${postNames[post.key]}</p>
 								<span> 마감일: <fmt:formatDate
 										value="${deadlines[post.key]}" pattern="yyyy-MM-dd" />
 								</span>
@@ -209,17 +204,57 @@ border: 1px solid #5215a6;
 									href="/Company/MyPostDetail?post_idx=${post.key}">공고 확인</a>
 							</div>
 						</div>
-					</c:forEach>
-				</div>
-				<div class="mb-3" id="candidateList">
+						<div class="mb-3">
+							<c:forEach var="resume" items="${post.value}">
+								<table class="table fixed-width-table text-center mt-3">
+									<thead class="table-secondary text-white">
+										<tr>
+											<th scope="col" class="name-column">이름</th>
+											<th scope="col" class="info-column">이력서 정보</th>
+											<th scope="col" class="skill-column">기술스택</th>
+											<th scope="col" class="action-column">스크랩</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="name-column text-center pt-3 align-middle"><img
+												alt="profile" src="${resume.profile}" style="height: 150px;">
+												<p class="pt-3">${resume.pname}</p>
+												<p>만 ${candidateAges[resume.resume_idx]}세</p></td>
+											<td class="info-column align-middle"><a
+												class="text-decoration-none text-dark"
+												href="/Person/MyResumeDetail?resume_idx=${resume.resume_idx}">${resume.title}</a></td>
+											<td class="skill-column align-middle"><c:forEach
+													var="skill" items="${fn:split(resume.skills, ',')}"
+													varStatus="status">
+													<c:if test="${not skill.trim().equals('무자격 지원가능')}">
+														<button type="button" class="btn btn-primary btn-sm m-1">${skill}</button>
+													</c:if>
+												</c:forEach></td>
+											<td class="action-column align-middle"><input
+												class="btn btn-outline-secondary scrap-button" type="button"
+												data-resume-idx="${resume.resume_idx}" value="스크랩">
+											</td>
+										</tr>
+									</tbody>
 
+								</table>
+							</c:forEach>
+
+							<!-- 후보자 목록이 비어있을 경우 메시지 표시 -->
+							<c:if test="${fn:length(post.value) == 0}">
+								<div class="row">
+									<div class="col">추천할 인재가 없네요....</div>
+								</div>
+							</c:if>
+						</div>
+					</c:forEach>
 				</div>
 			</section>
 		</div>
 	</main>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
-
 </html>
 
 <%@include file="/WEB-INF/include/cmain_nav_active.jsp"%>

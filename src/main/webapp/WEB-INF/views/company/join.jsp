@@ -26,9 +26,6 @@
   .star{
        color : red;
   } 
-  
-
-
 </style>
 
 </head>
@@ -66,10 +63,8 @@
     
       
      <div class="input-group-sm mb-3">
-
            <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>이메일</span>
            <input type="text" class="form-control" name="user_email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required >
-
       </div>
       
      <div class="input-group-sm mb-3">

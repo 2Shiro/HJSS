@@ -74,13 +74,56 @@ public class PersonController {
 	@Autowired
 	private CompanyMapper companyMapper;
 	
-	//구직자의 메인페이지
-
+	// 개인의 메인페이지
 	@RequestMapping("/Pmain")
 	public ModelAndView pmain() {
 		//JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
+		
+		//기업 이미지 객체리스트 -> companyVo
+		List<CompanyVo> companyVo = new ArrayList<>();
+		for (int i = 0; i < jobList.size(); i++) {
+			String id = jobList.get(i).getId();
+			//System.out.println(id);
+			CompanyVo vo = companyMapper.getCompanyById(id);
+			companyVo.add(new CompanyVo(vo.getId(), 
+										vo.getCnumber(), 
+										vo.getCname(), 
+										vo.getCom_logo(), 
+										vo.getCrepresentive(), 
+										vo.getAddress(), 
+										vo.getManager_name(), 
+										vo.getCompany_managerphone(), 
+										vo.getCsize(), 
+										vo.getCyear()));
+		}
+		
+		//담기
+		for (int i = 0; i < jobList.size(); i++) {
+			mainPageList.add(new MainPageVo(jobList.get(i).getPost_idx(), 
+											jobList.get(i).getId(), 
+											jobList.get(i).getPost_name(), 
+											jobList.get(i).getCareer(), 
+											jobList.get(i).getJob_type(), 
+											companyVo.get(i).getCom_logo()));
+			//System.out.println(companyVo.get(i).getCom_logo());
+		}
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("jobList", jobList);
+		mv.addObject("mainPageList", mainPageList);
+		//세션별로 바꿔야할듯
+		mv.setViewName("/person/pmain");
+		return mv;
+	}
+	
+	// 개인의 메인페이지
+	@RequestMapping("/Search")
+	public ModelAndView search( @RequestParam(value="keyword") String keyword ) {
+		//JOB_POST_TB 리스트
+		List<MainPageVo> mainPageList = new ArrayList<>();
+		List<JobpostVo> jobList = companyMapper.getsearchpostList( keyword );
 		
 		//기업 이미지 객체리스트 -> companyVo
 		List<CompanyVo> companyVo = new ArrayList<>();
@@ -491,6 +534,7 @@ public class PersonController {
 	@RequestMapping("/LoginForm")
 	public ModelAndView loginForm() {
 		ModelAndView mv = new ModelAndView();
+
 		mv.setViewName("person/login");
 
 		return mv;
@@ -544,7 +588,6 @@ public class PersonController {
 	@RequestMapping("/Join")
 	public ModelAndView join(PersonVo personVo) {
 		// System.out.println("개인회원" + personVo);
-
 		personMapper.insert(personVo);
 
 		ModelAndView mv = new ModelAndView();

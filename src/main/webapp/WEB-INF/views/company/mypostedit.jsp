@@ -38,7 +38,6 @@
 								<label for="title" class="form-label">공고명</label> <input
 									type="text" class="form-control" id="title" name="post_name"
 									value="${vo.post_name }" required>
-
 							</div>
 						</div>
 						<div class="container-fluid border">
@@ -103,7 +102,7 @@
 								<div class="col-auto">
 									<input type="checkbox" class="btn-check"
 										id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
-										name="skillIdx" autocomplete="off"
+										name="skillIdx" autocomplete="off" 
 										<c:forEach var="postSkills" items="${postSkills}">
 							                <c:if test="${skill.skill_idx == postSkills.skill_idx}">
 							                    checked="checked"
@@ -137,13 +136,7 @@
 								class="btn btn-secondary mx-3">수정</button>
 						</div>
 					</form>
-
-
 				</div>
-
-
-
-
 			</section>
 		</div>
 	</main>

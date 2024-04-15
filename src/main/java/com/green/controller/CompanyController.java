@@ -101,17 +101,57 @@ public class CompanyController {
 		mv.setViewName("/company/cmain");
 		return mv;
 	}
+	
+	// 기업의 검색페이지
+	@RequestMapping("/Search")
+	public ModelAndView search( @RequestParam(value="keyword") String keyword ) {
+		// JOB_POST_TB 리스트
+		List<MainPageVo> mainPageList = new ArrayList<>();
+		List<JobpostVo> jobList = companyMapper.getsearchpostList( keyword );
+
+		// 기업 이미지 객체리스트 -> companyVo
+
+		// 기업 이미지 객체리스트 -> companyVo
+
+		List<CompanyVo> companyVo = new ArrayList<>();
+		for (int i = 0; i < jobList.size(); i++) {
+			String id = jobList.get(i).getId();
+			// System.out.println(id);
+			CompanyVo vo = companyMapper.getCompanyById(id);
+			companyVo.add(new CompanyVo(vo.getId(), vo.getCnumber(), vo.getCname(), vo.getCom_logo(),
+					vo.getCrepresentive(), vo.getAddress(), vo.getManager_name(), vo.getCompany_managerphone(),
+					vo.getCsize(), vo.getCyear()));
+		}
+
+
+		// 담기
+		for (int i = 0; i < jobList.size(); i++) {
+			mainPageList.add(
+					new MainPageVo(jobList.get(i).getPost_idx(), jobList.get(i).getId(), jobList.get(i).getPost_name(),
+							jobList.get(i).getCareer(), jobList.get(i).getJob_type(), companyVo.get(i).getCom_logo()));
+			// System.out.println(companyVo.get(i).getCom_logo());
+		}
+
+		log.info("jobList = {}", jobList);
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("jobList", jobList);
+		mv.addObject("mainPageList", mainPageList);
+		mv.setViewName("/company/cmain");
+		return mv;
+	}
 
 	// 특정 기업회원이 지원 받은 이력서
 	// 로그인한 회사에 구직자들이 제안한 현황
 	@RequestMapping("/MyParticipate") // /Company/MyParticipate
 	public ModelAndView getProposal(@SessionAttribute("login") CompanyVo companyVo) {
 		String cid = companyVo.getId();
+
 		// System.out.println(cid);
 		// 기업의 공고 번호
 		List<JobpostVo> mypost = companyMapper.getMyPost(cid);
 		log.info("==mypost==", mypost);
 		System.out.println(mypost.size());
+
 
 		// 공고에 제안한 것들 테이블
 		List<CproposalVo> proposalList = new ArrayList<>();
@@ -119,6 +159,7 @@ public class CompanyController {
 			List<CproposalVo> vo = companyMapper.getProposal(mypost.get(i).getPost_idx());
 			System.out.println("vo : " + vo.size());
 			for (int j = 0; j < vo.size(); j++) {
+
 				proposalList.add(new CproposalVo(vo.get(j).getPro_idx(), vo.get(j).getId(), vo.get(j).getPost_idx(),
 						vo.get(j).getResume_idx(), vo.get(j).getStatus(), vo.get(j).getCreated_at()));
 			}
@@ -221,6 +262,7 @@ public class CompanyController {
 		mv.setViewName("/company/delete");
 		return mv;
 	}
+
 
 	// /Company/Delete
 	@RequestMapping("/Delete")
@@ -544,6 +586,7 @@ public class CompanyController {
 	public ModelAndView ComJoin(CompanyVo companyVo) {
 
 		// System.out.println("comVo" + companyVo);
+
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);
 		
@@ -628,6 +671,7 @@ public class CompanyController {
 		}
 	}
 
+
 	@RequestMapping("/LoadRecommend")
 	public ResponseEntity<List<MatchingResultVo>> recommendLoad(@RequestParam("post_idx") int post_idx) {
 		List<MatchingResultVo> candidates = companyMapper.recommended(post_idx);
@@ -660,7 +704,5 @@ public class CompanyController {
 	      mv.setViewName("company/myscrap");
 	      return mv;
 	   }
-	
-
 
 }

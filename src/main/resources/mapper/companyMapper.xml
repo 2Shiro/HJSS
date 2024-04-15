@@ -68,8 +68,20 @@
 		TO_CHAR(SYSDATE, 'YY/MM/DD')
 		FROM JOB_POST_TB
 		WHERE TO_CHAR(DEADLINE, 'YYYYMMDD') >= TO_CHAR(SYSDATE, 'YYYYMMDD')
-		ORDER BY
-		deadline
+		ORDER BY deadline
+	</select>
+	
+	<!-- 전체 공고 가져오기 -->
+	<!-- 마감지난 건 안뜨고 마감기한 낮은 순으로 정렬됨 -->
+	<select id="getsearchpostList">
+		SELECT	POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,
+				PAY, GO_WORK, GO_HOME,
+				DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE,
+				TO_CHAR(SYSDATE, 'YY/MM/DD')
+		FROM	JOB_POST_TB
+		WHERE	TO_CHAR(DEADLINE, 'YYYYMMDD') >= TO_CHAR(SYSDATE, 'YYYYMMDD')
+			AND	POST_NAME LIKE '%' || #{ keyword } || '%'
+		ORDER BY deadline
 	</select>
 
 	<!-- 특정 공고 상세페이지 -->
@@ -165,8 +177,8 @@
 		COMPANY_INFO_TB
 		WHERE ID = #{id}
 	</select>
-	<!-- logo default값 넣을 예정 -->
 
+	<!-- logo default값 넣을 예정 -->
 	<insert id="insert">
 		INSERT ALL
 		INTO user_tb (id, password,
@@ -262,9 +274,6 @@
 		PI.BIRTH
 
 	</select>
-
-
-
 
 	<!-- 공고 이름 가져오기 -->
 	<select id="getpostName">
@@ -377,5 +386,5 @@
 			ROWS ONLY
 
 		</select>
-
+		
 </mapper>

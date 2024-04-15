@@ -195,7 +195,6 @@
 								<form action="/Person/JoinPost" method="POST">
 									<input type="hidden" name="id" value="ps1" /> <input
 										type="hidden" name="post_idx" value="${jobpostvo.post_idx}" />
-									
 									<div class="input-group mb-3 resume" >
 										<label class="input-group-text" for="inputGroupSelect01">이력서</label>
 										<select name="resume_idx" class="form-select"
