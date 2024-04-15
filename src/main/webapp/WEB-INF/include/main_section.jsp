@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<c:forEach var="i" begin="1" end="8">
-	<div class="col-4 my-3">
-		<div class="card" style="width: 18rem;">
-			<img src="..." class="card-img-top" alt="...">
-			<div class="card-body">
-				<h5 class="card-title">Card title</h5>
-				<p class="card-text">Some quick example text to build on the
-					card title and make up the bulk of the card's content.</p>
-				<a href="#" class="btn btn-primary">Go somewhere</a>
+
+		<c:forEach var="mainPageList" items="${mainPageList}">
+			<!-- 간격 정하는 방식을 바꾸는게 좋을 것 같음 -->
+			<div class="col-3 my-3 cardinterval">
+				<div class="card" style="width: 20rem; height: 300px;">
+					<img src="${mainPageList.com_logo}" class="card-img-top" alt="이상함" style="height:100px;">
+					<div class="card-body">
+						<h5 class="card-title">${mainPageList.post_name}</h5>
+						<p class="card-text">
+							경력: ${mainPageList.career}<br>
+							타입: ${mainPageList.job_type}
+						</p>
+						<a href="/ViewPost?post_idx=${mainPageList.post_idx}&id=${mainPageList.id}" class="btn btn-primary">보기</a>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-</c:forEach>
+		</c:forEach>
