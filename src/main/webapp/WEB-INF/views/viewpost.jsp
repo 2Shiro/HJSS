@@ -195,7 +195,7 @@
 								<form action="/Person/JoinPost" method="POST">
 									<input type="hidden" name="id" value="ps1" /> <input
 										type="hidden" name="post_idx" value="${jobpostvo.post_idx}" />
-									<div class="input-group mb-3 resume">
+									<div class="input-group mb-3 resume" >
 										<label class="input-group-text" for="inputGroupSelect01">이력서</label>
 										<select name="resume_idx" class="form-select"
 											id="presumeSelect">
@@ -205,6 +205,7 @@
 											</c:forEach>
 										</select>
 									</div>
+									
 									<button type="submit" class="btn btn-primary mx-3">지원하기</button>
 								</form>
 							</c:if>
@@ -215,6 +216,8 @@
 							</c:if>
 							<!-- history back 사용? -->
 							<!-- 세션별로 다르게 -->
+							
+							<div>
 							<c:choose>
 								<c:when test="${sessionVo.type == 1}">
 									<a href="/Company/Cmain" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
@@ -226,6 +229,7 @@
 									<a href="/" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
 								</c:otherwise>
 							</c:choose>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -16,6 +16,16 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/common.css" />
+<style>
+.udbtn{
+      text-align : center;     
+      margin-bottom : 5%;
+      button{
+          width : 110px;
+          margin : 12px;
+      }
+}
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -55,7 +65,7 @@
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">비밀번호</span>
-									<input type="text" class="form-control" id="password" name="password" value="${ vo.password }" readonly style="height: 70px;">
+									<input type="password" class="form-control" id="password" name="password" value="${ vo.password }" readonly style="height: 70px;">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">대표자</span>
@@ -94,9 +104,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<a class="btn btn-primary float-end me-2" href = "/Company/UpdateForm?id=${ vo.id }" />수정</a>
-						<a class="btn btn-danger float-end me-2" href = "/Company/DeleteForm?id=${ vo.id }" />탈퇴</a>
+					<div class="udbtn" >
+						<button type="button" class="btn btn-primary" onclick="location.href = '/Company/UpdateForm?id=${ vo.id }'">수정</button>
+						<button type="button" class="btn btn-danger" onclick="location.href = '/Company/DeleteForm?id=${ vo.id }'">탈퇴</button>
 					</div>
 				</div>
 			</section>

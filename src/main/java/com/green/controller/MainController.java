@@ -1,18 +1,17 @@
 package com.green.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.domain.CompanyVo;
+import com.green.domain.FaqVo;
 import com.green.domain.JobpostVo;
 import com.green.domain.MainPageVo;
 import com.green.domain.PersonVo;
@@ -20,25 +19,29 @@ import com.green.domain.PostskillVo;
 import com.green.domain.PresumeVo;
 import com.green.domain.SkillVo;
 import com.green.mapper.CompanyMapper;
+import com.green.mapper.MainMapper;
 import com.green.mapper.PersonMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class MainController {
+
 	@Autowired
 	private CompanyMapper companyMapper;
 
 	@Autowired
 	private PersonMapper personMapper;
+	
+	@Autowired
+	private MainMapper mainMapper;
 
 	// 메인페이지들
 	@RequestMapping("/")
-	public ModelAndView cmain() {
+	public ModelAndView main() {
 		// JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
 		List<JobpostVo> jobList = companyMapper.getmainpostList();
@@ -136,8 +139,6 @@ public class MainController {
 	      // 구직자면 지원하기 보이게 할때 가져올 것
 	      // 세션아이디 확인
 
-	   
-
 	      ModelAndView mv = new ModelAndView();
 	      
 	      //기업 회원 로그인 시 지원하기 목록을 제거하기 위한 코드
@@ -171,84 +172,37 @@ public class MainController {
 	      return mv;
 	   }
 
-	// 기업로그인폼
-	@RequestMapping("/Company/loginForm")
-	public String companyLoginForm() {
-		return "company/login";
-	}
-
-	// 기업로그인
-	@PostMapping("/Company/login")
-	public ModelAndView companyLogin(HttpServletRequest request, CompanyVo comVo, HttpServletResponse response)
-			throws IOException {
-		ModelAndView mv = new ModelAndView();
-
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-
-		comVo = companyMapper.login(id, password);
-
-		if (comVo != null) {// 아이디와 암호 일치시 수행
-			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(60 * 60); // 60분동안 로그인 유지
-			session.setAttribute("login", comVo);
-			session.setAttribute("isLoggedIn", true);
-			mv.setViewName("redirect:/Company/Cmain");
-
-		} else {// 로그인 실패시
-			PrintWriter out = response.getWriter();
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html; charset=UTF-8;");
-			out.println("<script> alert('Please check your ID password');");
-			out.println("history.go(-1); </script>");
-			out.close();
-			mv.setViewName("redirect:/Company/loginForm");
-		}
-		return mv;
-	}
-
-	// 개인회원 로그인폼
-	@RequestMapping("/loginForm")
-	public String loginForm() {
-		return "person/login";
-	}
-
-	@PostMapping("/login")
-	public ModelAndView login(HttpServletRequest request, PersonVo personVo, HttpServletResponse response)
-			throws IOException {
-		ModelAndView mv = new ModelAndView();
-
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-		personVo = personMapper.login(id, password);
-		log.info("personVo = {} ",personVo);
-		if (personVo != null) {// 아이디와 암호 일치시 수행
-			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(60 * 60); // 60분동안 로그인 유지
-			session.setAttribute("login", personVo);
-			session.setAttribute("isLoggedIn", true);
-			mv.setViewName("redirect:/Person/Pmain");
-
-		} else {// 로그인 실패시
-			PrintWriter out = response.getWriter();
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html; charset=UTF-8;");
-			out.println("<script> alert('Please check your ID password');");
-			out.println("history.go(-1); </script>");
-			out.close();
-			mv.setViewName("redirect:/loginForm");
-		}
-		return mv;
-	}
 
 	// logout
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 
 		session.invalidate();
-
+		
 		return "redirect:/";
 	}
 	
+	//FAQ
+	@RequestMapping("/FAQ")
+	public ModelAndView faq(FaqVo faqVo) {
+		ModelAndView mv = new ModelAndView();
+		
+		List <FaqVo> faqList1 = mainMapper.getList();
+		mv.addObject("faqList", faqList1);
+		
+		List <FaqVo> faqList2 = mainMapper.getList2();
+		mv.addObject("faqList2", faqList2);
+						
+		mv.setViewName("faq");
+		return mv;
+
+	}
+	
+	//아이디 중복체크(기업+개인)
+	@RequestMapping("/CheckId")
+	public @ResponseBody int checkId(@RequestParam(value="id") String id) {
+		int result = mainMapper.checkId(id);
+		return result;
+	}
 	
 }

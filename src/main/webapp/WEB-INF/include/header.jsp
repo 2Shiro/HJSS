@@ -50,8 +50,8 @@
 					</c:choose>
 				</c:when>
 				<c:otherwise>
-					<li class="nav-item"><a
-						class="mx-3 text-decoration-none text-black" href="/loginForm">로그인</a></li>
+					<li class="nav-item">
+					<a class="mx-3 text-decoration-none text-black" href="/Person/LoginForm">로그인</a></li>
 				</c:otherwise>
 			</c:choose>
 

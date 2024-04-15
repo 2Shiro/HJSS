@@ -9,18 +9,19 @@ import com.green.interceptor.LoginCheckInterceptor;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-	   @Override
-	   public void addInterceptors(InterceptorRegistry registry) {
-	      registry.addInterceptor(new LoginCheckInterceptor())
-	              .addPathPatterns("/**","/**/*")
-	              .excludePathPatterns("/loginForm","/login",
-	                                 "/Person/JoinForm","/Person/Join",
-	                                 "/Company/loginForm","/Company/login",
-	                                 "/Company/JoinForm","/Company/Join",
-	                                 "/logout","/ViewPost","/",
-	                                 "/CheckId?id=","/CheckId",
-	                                 "/log*","/css/**", "/images/**", "/js/**",
-	                                 "/Search", "/Person/Search", "Company/Search");
-	   }
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoginCheckInterceptor())
+		        .addPathPatterns("/**","/**/*")
+		        .excludePathPatterns("/Person/LoginForm","/Person/Login",
+		        		             "/Person/JoinForm","/Person/Join",
+		        		             "/Company/LoginForm","/Company/Login",
+		        		             "/Company/JoinForm","/Company/Join",
+		        		             "/logout","/ViewPost","/",
+		        		             "/CheckId",
+		        		             "/log*","/css/**", "/images/**", "/js/**",
+		        		             "/Search", "/Person/Search", "Company/Search");
+			
+	}	
 	
 }

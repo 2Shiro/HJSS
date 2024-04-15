@@ -12,7 +12,8 @@
 		DEADLINE,
 		JOB_INTRO,
 		C_INTRO,
-		TO_CHAR(created_date, 'YY-MM-DD') created_date FROM JOB_POST_TB
+		TO_CHAR(created_date,
+		'YY-MM-DD') created_date FROM JOB_POST_TB
 		WHERE ID = #{id}
 	</select>
 
@@ -24,7 +25,7 @@
 		WHERE post_idx = #{post_idx}
 
 	</select>
-	
+
 	<select id="getmyProposal">
 		SELECT pro_idx, id, post_idx, resume_idx, status,
 		TO_CHAR(created_at,
@@ -59,33 +60,28 @@
 	</select>
 
 	<!-- 전체 공고 가져오기 -->
+	<!-- 마감지난 건 안뜨고 마감기한 낮은 순으로 정렬됨 -->
 	<select id="getmainpostList">
 		SELECT POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,
 		PAY, GO_WORK, GO_HOME,
-		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
-		FROM
-		JOB_POST_TB
-		ORDER BY POST_IDX
+		DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE,
+		TO_CHAR(SYSDATE, 'YY/MM/DD')
+		FROM JOB_POST_TB
+		WHERE TO_CHAR(DEADLINE, 'YYYYMMDD') >= TO_CHAR(SYSDATE, 'YYYYMMDD')
+		ORDER BY deadline
 	</select>
 	
-		<!-- 검색된 공고 가져오기 -->
+	<!-- 전체 공고 가져오기 -->
+	<!-- 마감지난 건 안뜨고 마감기한 낮은 순으로 정렬됨 -->
 	<select id="getsearchpostList">
 		SELECT	POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE,
 				PAY, GO_WORK, GO_HOME,
-				DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE
+				DEADLINE, JOB_INTRO, C_INTRO, CREATED_DATE,
+				TO_CHAR(SYSDATE, 'YY/MM/DD')
 		FROM	JOB_POST_TB
-		WHERE	POST_NAME LIKE '%'||#{arg0}||'%'
-		ORDER BY POST_IDX
-	</select>
-	
-	<!-- 기업 회원 중 특정 아이디의 컴퍼니 info를 가져옴 -->
-	<select id="getCompanyById">
-		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE,
-		ADDRESS,
-		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
-		FROM
-		COMPANY_INFO_TB
-		WHERE ID = #{id}
+		WHERE	TO_CHAR(DEADLINE, 'YYYYMMDD') >= TO_CHAR(SYSDATE, 'YYYYMMDD')
+			AND	POST_NAME LIKE '%' || #{ keyword } || '%'
+		ORDER BY deadline
 	</select>
 
 	<!-- 특정 공고 상세페이지 -->
@@ -98,7 +94,8 @@
 	<select id="getUser">
 		SELECT ID, PASSWORD, TYPE, USER_EMAIL,
 		TO_CHAR(CREATED_DATE,
-		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID = #{id}
+		'YYYY-MM-DD') CREATED_DATE FROM USER_TB WHERE ID
+		= #{id}
 	</select>
 
 	<select id="getpostList" parameterType="String"
@@ -171,13 +168,22 @@
 		post_idx }
 	</delete>
 
+	<!-- 기업 회원 중 특정 아이디의 컴퍼니 info를 가져옴 -->
+	<select id="getCompanyById">
+		SELECT ID, CNUMBER, CNAME, COM_LOGO, CREPRESENTIVE,
+		ADDRESS,
+		MANAGER_NAME, COMPANY_MANAGERPHONE, CSIZE, CYEAR
+		FROM
+		COMPANY_INFO_TB
+		WHERE ID = #{id}
+	</select>
+
 	<!-- logo default값 넣을 예정 -->
 	<insert id="insert">
 		INSERT ALL
 		INTO user_tb (id, password,
 		type,user_email, created_date)
 		VALUES(#{id},#{password},1,#{user_email},#{created_date})
-
 		INTO
 		company_info_tb (id,cnumber, cname, com_logo,crepresentive,
 		address,
@@ -216,29 +222,39 @@
 		resultType="com.green.domain.MatchingResultVo">
 		SELECT J.post_name, J.deadline, J.POST_IDX, J.JOB_INTRO,
 		R.id AS resumeId, R.RESUME_IDX, R.title, R.PROFILE,
-		PI.ID AS personId, PI.PNAME, PI.PHONE, PI.ADDRESS, PI.BIRTH,
-		(SELECT LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
+		PI.ID AS personId,
+		PI.PNAME, PI.PHONE, PI.ADDRESS, PI.BIRTH,
+		(SELECT LISTAGG(S.SKILL_NAME,
+		', ') WITHIN GROUP (ORDER BY S.SKILL_NAME)
 		FROM PERSON_SKILL_TB PS
-		JOIN SKILL_TB S ON PS.skill_idx = S.skill_idx OR S.skill_idx = 0
+		JOIN
+		SKILL_TB S ON PS.skill_idx = S.skill_idx
 		WHERE PS.id = PI.ID) AS skills
 		FROM RESUME_TB R
 		JOIN PERSON_INFO_TB PI ON R.id = PI.ID
-		JOIN JOB_POST_TB J ON J.post_idx = #{post_idx}
+		JOIN JOB_POST_TB
+		J ON J.post_idx = #{post_idx}
 		JOIN (
-		SELECT id, MAX(created_at) AS latest
+		SELECT id,
+		MAX(created_at) AS latest
 		FROM RESUME_TB
+		WHERE PUBLISH = 1
 		GROUP BY id
-		) LR ON R.id = LR.id AND R.created_at = LR.latest
-		WHERE R.id IN (
+		) LR ON R.id = LR.id AND
+		R.created_at = LR.latest
+		WHERE R.PUBLISH = 1 AND R.id IN (
 		SELECT PS.id
 		FROM PERSON_SKILL_TB PS
 		WHERE PS.id IN (
 		SELECT PS2.id
-		FROM PERSON_SKILL_TB PS2
-		JOIN POST_SKILL_TB PS3 ON PS2.skill_idx = PS3.skill_idx
+		FROM
+		PERSON_SKILL_TB PS2
+		JOIN POST_SKILL_TB PS3 ON PS2.skill_idx =
+		PS3.skill_idx
 		WHERE PS3.POST_IDX = #{post_idx}
 		GROUP BY PS2.id
-		HAVING COUNT(DISTINCT PS2.skill_idx) >= (
+		HAVING
+		COUNT(DISTINCT PS2.skill_idx) >= (
 		SELECT COUNT(DISTINCT PS3.skill_idx)
 		FROM POST_SKILL_TB PS3
 		WHERE PS3.POST_IDX = #{post_idx}
@@ -247,22 +263,17 @@
 		OR EXISTS (
 		SELECT 1
 		FROM POST_SKILL_TB PS3
-		WHERE PS3.POST_IDX = #{post_idx} AND PS3.skill_idx = 0
+		WHERE PS3.POST_IDX = #{post_idx} AND
+		PS3.skill_idx = 0
 		)
 		)
-		GROUP BY J.POST_IDX, J.post_name, J.deadline, J.JOB_INTRO, R.id,
+		GROUP BY J.POST_IDX, J.post_name, J.deadline,
+		J.JOB_INTRO, R.id,
 		RESUME_IDX, R.title, PI.ID, PI.PNAME, R.PROFILE,
-		PI.PHONE, PI.ADDRESS, PI.BIRTH
+		PI.PHONE, PI.ADDRESS,
+		PI.BIRTH
+
 	</select>
-
-
-	<insert id="insertScrap">
-		insert into COM_SCRAP_TB (cscrap_idx, cid,
-		resume_idx)
-		values((SELECT NVL(MAX(cscrap_idx),0) + 1 FROM
-		COM_SCRAP_TB), #{cid} ,
-		#{resume_idx})
-	</insert>
 
 	<!-- 공고 이름 가져오기 -->
 	<select id="getpostName">
@@ -310,11 +321,20 @@
 		#{deadline}, #{job_intro}, #{c_intro})
 
 	</insert>
+
+	<insert id="insertScrap">
+		insert into COM_SCRAP_TB (cscrap_idx, cid,
+		resume_idx)
+		values((SELECT NVL(MAX(cscrap_idx),0) + 1 FROM
+		COM_SCRAP_TB), #{cid} ,
+		#{resume_idx})
+	</insert>
+
 	<delete id="deleteScrap">
 		delete from COM_SCRAP_TB where resume_idx =
 		#{resume_idx}
 	</delete>
-
+	
    <select id="getScrapList"
       resultType="com.green.domain.ComscrapListVo">
       SELECT distinct CS.resume_idx,
@@ -331,9 +351,40 @@
       JOIN PERSON_INFO_TB I ON R.ID = I.ID
       WHERE CS.cid = #{cid}
    </select>
+
 	<select id="countScrap" resultType="int">
 		select count(*) from
 		COM_SCRAP_TB where cid = #{arg0} and RESUME_IDX =
 		#{arg1}
 	</select>
+
+	<select id="countPost"
+		parameterType="com.green.domain.JobpostVo" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM JOB_POST_TB
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{ id }
+			</if>
+		</where>
+	</select>
+
+		<select id="getPostPaing"
+			resultType="com.green.domain.JobpostVo">
+			select POST_IDX, ID, POST_NAME, CAREER, JOB_TYPE, PAY, GO_WORK,
+			GO_HOME, DEADLINE, JOB_INTRO, C_INTRO, TO_CHAR(CREATED_DATE,
+			'YY-MM-DD') CREATED_DATE
+			from JOB_POST_TB
+			<where>
+				<if test="id != null and id != ''">
+					AND id = #{ id }
+				</if>
+			</where>
+			ORDER BY POST_IDX DESC
+			OFFSET #{ offset } ROWS FETCH NEXT #{ pageSize
+			}
+			ROWS ONLY
+
+		</select>
+		
 </mapper>

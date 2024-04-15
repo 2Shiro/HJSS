@@ -11,7 +11,7 @@
 		<div class="row">
 			<p class="mt-auto">
 				저작권 © 2024 HJSS <a class="ms-2 text-white text-decoration-none"
-					href="#">고객 센터</a>
+					href="/FAQ">고객 센터</a>
 			</p>
 		</div>
 	</footer>

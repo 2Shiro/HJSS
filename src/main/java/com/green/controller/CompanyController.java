@@ -1,18 +1,24 @@
 package com.green.controller;
 
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +34,9 @@ import com.green.domain.JobpostVo;
 import com.green.domain.MainPageVo;
 import com.green.domain.MatchingResultVo;
 import com.green.domain.MyProposalVo;
+import com.green.domain.Pagination;
+import com.green.domain.PagingResponse;
+import com.green.domain.PagingVo;
 import com.green.domain.PersonVo;
 import com.green.domain.PostskillVo;
 import com.green.domain.PresumeVo;
@@ -39,6 +48,9 @@ import com.green.mapper.PersonMapper;
 import com.green.util.AgeUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+//github.com/2Shiro/HJSS.git
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -111,6 +123,7 @@ public class CompanyController {
 					vo.getCsize(), vo.getCyear()));
 		}
 
+
 		// 담기
 		for (int i = 0; i < jobList.size(); i++) {
 			mainPageList.add(
@@ -118,6 +131,7 @@ public class CompanyController {
 							jobList.get(i).getCareer(), jobList.get(i).getJob_type(), companyVo.get(i).getCom_logo()));
 			// System.out.println(companyVo.get(i).getCom_logo());
 		}
+
 		log.info("jobList = {}", jobList);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("jobList", jobList);
@@ -131,31 +145,30 @@ public class CompanyController {
 	@RequestMapping("/MyParticipate") // /Company/MyParticipate
 	public ModelAndView getProposal(@SessionAttribute("login") CompanyVo companyVo) {
 		String cid = companyVo.getId();
-		//System.out.println(cid);
-		//기업의 공고 번호
+
+		// System.out.println(cid);
+		// 기업의 공고 번호
 		List<JobpostVo> mypost = companyMapper.getMyPost(cid);
 		log.info("==mypost==", mypost);
 		System.out.println(mypost.size());
-		
+
+
 		// 공고에 제안한 것들 테이블
 		List<CproposalVo> proposalList = new ArrayList<>();
 		for (int i = 0; i < mypost.size(); i++) {
 			List<CproposalVo> vo = companyMapper.getProposal(mypost.get(i).getPost_idx());
 			System.out.println("vo : " + vo.size());
 			for (int j = 0; j < vo.size(); j++) {
-				proposalList.add(new CproposalVo(vo.get(j).getPro_idx(),
-											 vo.get(j).getId(), 
-											 vo.get(j).getPost_idx(),
-											 vo.get(j).getResume_idx(),
-											 vo.get(j).getStatus(),
-											 vo.get(j).getCreated_at()));
+
+				proposalList.add(new CproposalVo(vo.get(j).getPro_idx(), vo.get(j).getId(), vo.get(j).getPost_idx(),
+						vo.get(j).getResume_idx(), vo.get(j).getStatus(), vo.get(j).getCreated_at()));
 			}
 		}
 		log.info("==proposalList==", proposalList);
-		
+
 		// 공고에 제안한 것들 테이블
-		//String cid = companyVo.getId();
-		//List<CproposalVo> proposalList = companyMapper.getProposal(cid);
+		// String cid = companyVo.getId();
+		// List<CproposalVo> proposalList = companyMapper.getProposal(cid);
 		// System.out.println(proposalList);
 
 		// 공고 리스트
@@ -250,7 +263,8 @@ public class CompanyController {
 		return mv;
 	}
 
-	// /Company/DeleteForm
+
+	// /Company/Delete
 	@RequestMapping("/Delete")
 	public ModelAndView delete(CompanyVo companyVo) {
 
@@ -259,155 +273,216 @@ public class CompanyController {
 
 		ModelAndView mv = new ModelAndView();
 
+
+		mv.setViewName("home");
+
 		mv.setViewName("redirect:/");
 
 		return mv;
 	}
 
 	// 특정 기업회원의 등록 공고 관리
-	   @RequestMapping("/MyPost")
-	   public ModelAndView myPost(UserVo userVo, JobpostVo vo, @SessionAttribute("login") CompanyVo comVo) {
-	      ModelAndView mv = new ModelAndView();
+	@RequestMapping("/MyPost")
+	public ModelAndView myPost(UserVo userVo, JobpostVo vo, @SessionAttribute("login") CompanyVo comVo,
+			@RequestParam(value = "nowpage") int nowpage) {
+		ModelAndView mv = new ModelAndView();
 
-	      // session에서 id를 가져옴
-	      String id = comVo.getId();
+		// session에서 id를 가져옴
+		String id = comVo.getId();
 
-	      // 가져온 id를 UserVo와 JobpostVo에 입력
-	      userVo.setId(id);
-	      vo.setId(id);
+		// 가져온 id를 UserVo와 JobpostVo에 입력
+		userVo.setId(id);
+		vo.setId(id);
 
-	      // 가져온 id를 통해 해당 id의 등록 공고 목록 불러오기
-	      List<JobpostVo> list = companyMapper.getpostList(vo);
+		// 가져온 id를 통해 해당 id의 등록 공고 목록 불러오기
+		List<JobpostVo> list = companyMapper.getpostList(vo);
 
-	      // 모든 기술자격 리스트 불러오기
-	      List<SkillVo> skill = mainMapper.getSkillList();
+		// 모든 기술자격 리스트 불러오기
+		List<SkillVo> skill = mainMapper.getSkillList();
 
-	      // 회사 정보 불러오기
-	      userVo = mainMapper.getUser(id);
+		// 회사 정보 불러오기
+		userVo = mainMapper.getUser(id);
 
-	      mv.addObject("user", userVo);
-	      mv.addObject("id", id);
-	      mv.addObject("list", list);
-	      mv.addObject("skill", skill);
-	      mv.setViewName("/company/mypost");
-	      return mv;
-	   }
+		// 페이징
+		int count = companyMapper.countPost(vo);
+		PagingResponse<JobpostVo> response = null;
+		if (count < 1) {
+			response = new PagingResponse<>(Collections.emptyList(), null);
+		}
+		// 페이징을 위한 초기 설정값
+		PagingVo pagingVo = new PagingVo();
+		pagingVo.setPage(nowpage);
+		pagingVo.setPageSize(5);
+		pagingVo.setRecordSize(5);//
 
-	   // 특정 기업회원의 공고 등록
-	   @RequestMapping("/MyPostWrite")
-	   public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
-	      ModelAndView mv = new ModelAndView();
+		// Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDto 타입의 객체인 params에 계산된 페이지 정보 저장
+		Pagination pagination = new Pagination(count, pagingVo);
+		pagingVo.setPagination(pagination);
 
-	      // 기술자격 데이터를 넣기 위해 미리 post_idx를 확정함
-	      int post_idx = companyMapper.selectpostidxmax();
-	      postVo.setPost_idx(post_idx);
+		int offset = pagingVo.getOffset();
+		int pageSize = pagingVo.getPageSize();
 
-	      // 공고 등록 모달에서 입력한 데이터를 데이터베이스 insert
-	      companyMapper.insertpost(postVo);
+		List<JobpostVo> pagingList = companyMapper.getPostPaing(id, offset, pageSize);
+		response = new PagingResponse<>(pagingList, pagination);
 
-	      // 공고 등록 모달에서 선택된 기술자격 정보를 for문을 이용해서 하나씩 데이터베이스 저장
-	      for (Integer skillIdx : skillIdxList) {
-	         PostskillVo skillVo = new PostskillVo();
-	         skillVo.setPost_idx(post_idx);
-	         skillVo.setSkill_idx(skillIdx);
-	         companyMapper.insertskills(skillVo);
-	      }
-	      mv.setViewName("redirect:/Company/MyPost");
-	      return mv;
-	   }
+		mv.addObject("response", response);
+		mv.addObject("pagingVo", pagingVo);
+		mv.addObject("nowpage", nowpage);
+		mv.addObject("user", userVo);
+		mv.addObject("id", id);
+		mv.addObject("list", list);
+		mv.addObject("skill", skill);
+		mv.setViewName("/company/mypost");
+		return mv;
+	}
 
-	   @RequestMapping("/MyPostDetail")
-	   public ModelAndView myPostDetail(JobpostVo postVo) {
-	      ModelAndView mv = new ModelAndView();
+	// 특정 기업회원의 공고 등록
+	@RequestMapping("/MyPostWrite")
+	public ModelAndView writeMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo,
+			@SessionAttribute("login") CompanyVo comVo) {
+		ModelAndView mv = new ModelAndView();
+		String id = comVo.getId();
+		// 기술자격 데이터를 넣기 위해 미리 post_idx를 확정함
+		int post_idx = companyMapper.selectpostidxmax();
+		postVo.setPost_idx(post_idx);
 
-	      // 공고의 상세정보를 가져옴
-	      JobpostVo vo = companyMapper.viewPost(postVo);
+		// 공고 등록 모달에서 입력한 데이터를 데이터베이스 insert
+		companyMapper.insertpost(postVo);
 
-	      // 해당 공고의 id를 확정하기 위해 id값을 가져옴
-	      String id = vo.getId();
+		// 공고 등록 모달에서 선택된 기술자격 정보를 for문을 이용해서 하나씩 데이터베이스 저장
+		for (Integer skillIdx : skillIdxList) {
+			PostskillVo skillVo = new PostskillVo();
+			skillVo.setPost_idx(post_idx);
+			skillVo.setSkill_idx(skillIdx);
+			companyMapper.insertskills(skillVo);
+		}
+		mv.setViewName("redirect:/Company/MyPost?id=" + id + "&nowpage=1");
+		return mv;
+	}
 
-	      // 가져온 id값을 사용하여 해당 공고의 기업 정보를 가져옴
-	      CompanyVo com = companyMapper.getCompany(id);
+	@RequestMapping("/MyPostDetail")
+	public ModelAndView myPostDetail(JobpostVo postVo) {
+		ModelAndView mv = new ModelAndView();
 
-	      // 해당 공고 기업의 이메일 주소를 가져오기 위해 UserVo 정보를 가져옴
-	      UserVo userVo = mainMapper.getUser(id);
+		// 공고의 상세정보를 가져옴
+		JobpostVo vo = companyMapper.viewPost(postVo);
 
-	      // 공고의 기술자격 정보를 가져오기 위해 post_idx를 확정
-	      int post_idx = vo.getPost_idx();
+		// 해당 공고의 id를 확정하기 위해 id값을 가져옴
+		String id = vo.getId();
 
-	      // 해당 공고의 기술자격 정보를 가져옴
-	      List<SkillVo> skill = companyMapper.loadskills(post_idx);
+		// 가져온 id값을 사용하여 해당 공고의 기업 정보를 가져옴
+		CompanyVo com = companyMapper.getCompany(id);
 
-	      mv.addObject("vo", vo);
-	      mv.addObject("com", com);
-	      mv.addObject("userVo", userVo);
-	      mv.addObject("skill", skill);
-	      mv.setViewName("/company/mypostdetail");
-	      return mv;
-	   }
+		// 해당 공고 기업의 이메일 주소를 가져오기 위해 UserVo 정보를 가져옴
+		UserVo userVo = mainMapper.getUser(id);
 
-	   @RequestMapping("/MyPostEdit")
-	   public ModelAndView editMyPost(JobpostVo postVo) {
-	      ModelAndView mv = new ModelAndView();
+		// 공고의 기술자격 정보를 가져오기 위해 post_idx를 확정
+		int post_idx = vo.getPost_idx();
 
-	      // 공고의 상세정보를 가져옴
-	      JobpostVo vo = companyMapper.viewPost(postVo);
+		// 해당 공고의 기술자격 정보를 가져옴
+		List<SkillVo> skill = companyMapper.loadskills(post_idx);
 
-	      // 모든 기술 자격을 불러온 후 사전에 작성된 기술 자격을 selected 하기 위해 2개의 list를 만듦
-	      int post_idx = vo.getPost_idx();
-	      List<SkillVo> postSkills = companyMapper.loadskills(post_idx);
-	      List<SkillVo> allSkills = mainMapper.getSkillList();
+		mv.addObject("vo", vo);
+		mv.addObject("com", com);
+		mv.addObject("userVo", userVo);
+		mv.addObject("skill", skill);
+		mv.setViewName("/company/mypostdetail");
+		return mv;
+	}
 
-	      mv.addObject("vo", vo);
-	      mv.addObject("allSkills", allSkills);
-	      mv.addObject("postSkills", postSkills);
-	      mv.setViewName("/company/mypostedit");
-	      return mv;
-	   }
+	// 시간을 오전 오후 **시로 바꿔주기 위한 메소드
+	private String convertTimeFormat(String time) {
+		try {
+			String[] parts = time.split(" ");
+			int hour = Integer.parseInt(parts[1].replaceAll("[^0-9]", ""));
 
-	   @RequestMapping("/MyPostUpdate")
-	   public ModelAndView updateMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo) {
-	      ModelAndView mv = new ModelAndView();
+			if ("오후".equals(parts[0]) && hour != 12) {
+				hour += 12;
+			} else if ("오전".equals(parts[0]) && hour == 12) {
+				hour = 0;
+			}
 
-	      // 해당 공고의 post_idx를 확정
-	      int post_idx = postVo.getPost_idx();
-	      postVo.setPost_idx(post_idx);
+			return String.format("%02d:00", hour); // 분은 00으로 설정
+		} catch (Exception e) {
+			return "00:00"; // 예외 처리, 기본값 반환
+		}
+	}
 
-	      // 해당 공고의 정보를 update
-	      companyMapper.updatePost(postVo);
+	@RequestMapping("/MyPostEdit")
+	public ModelAndView editMyPost(JobpostVo postVo) {
+		ModelAndView mv = new ModelAndView();
 
-	      // 해당 공고의 모든 기술자격 데이터를 삭제
-	      companyMapper.deletepostskills(postVo);
+		// 공고의 상세정보를 가져옴
+		JobpostVo vo = companyMapper.viewPost(postVo);
 
-	      // 해당 공고의 기술자격 데이터를 다시 입력
-	      for (Integer skillIdx : skillIdxList) {
-	         PostskillVo skillVo = new PostskillVo();
-	         skillVo.setPost_idx(post_idx);
-	         skillVo.setSkill_idx(skillIdx);
-	         companyMapper.insertskills(skillVo);
-	      }
-	      mv.setViewName("redirect:/Company/MyPost");
-	      return mv;
-	   }
+		// 모든 기술 자격을 불러온 후 사전에 작성된 기술 자격을 selected 하기 위해 2개의 list를 만듦
+		int post_idx = vo.getPost_idx();
+		List<SkillVo> postSkills = companyMapper.loadskills(post_idx);
+		List<SkillVo> allSkills = mainMapper.getSkillList();
 
-	   @RequestMapping("/MyPostDelete")
-	   public ModelAndView postDelete(JobpostVo postVo) {
-	      ModelAndView mv = new ModelAndView();
-	      // 해당 공고의 모든 기술자격 데이터 삭제
-	      companyMapper.deletepostskills(postVo);
+		String goWork = vo.getGo_work();
+		String goHome = vo.getGo_home();
 
-	      // 해당 공고 삭제
-	      companyMapper.postDelete(postVo);
-	      mv.setViewName("redirect:/Company/MyPost");
-	      return mv;
-	   }
+		String goWorkTime = convertTimeFormat(goWork);
+		String goHomeTime = convertTimeFormat(goHome);
+		log.info("goWorkTime = {}", goWorkTime);
+		log.info("goHomeTime = {}", goHomeTime);
+
+		mv.addObject("goHomeTime", goHomeTime);
+		mv.addObject("goWorkTime", goWorkTime);
+
+		mv.addObject("vo", vo);
+		mv.addObject("allSkills", allSkills);
+		mv.addObject("postSkills", postSkills);
+		mv.setViewName("/company/mypostedit");
+		return mv;
+	}
+
+	@RequestMapping("/MyPostUpdate")
+	public ModelAndView updateMyPost(@RequestParam("skillIdx") List<Integer> skillIdxList, JobpostVo postVo,
+			@SessionAttribute("login") CompanyVo comVo) {
+		ModelAndView mv = new ModelAndView();
+		String id = comVo.getId();
+		// 해당 공고의 post_idx를 확정
+		int post_idx = postVo.getPost_idx();
+		postVo.setPost_idx(post_idx);
+
+		// 해당 공고의 정보를 update
+		companyMapper.updatePost(postVo);
+
+		// 해당 공고의 모든 기술자격 데이터를 삭제
+		companyMapper.deletepostskills(postVo);
+
+		// 해당 공고의 기술자격 데이터를 다시 입력
+		for (Integer skillIdx : skillIdxList) {
+			PostskillVo skillVo = new PostskillVo();
+			skillVo.setPost_idx(post_idx);
+			skillVo.setSkill_idx(skillIdx);
+			companyMapper.insertskills(skillVo);
+		}
+		mv.setViewName("redirect:/Company/MyPost?id=" + id + "&nowpage=1");
+		return mv;
+	}
+
+	@RequestMapping("/MyPostDelete")
+	public ModelAndView postDelete(JobpostVo postVo, @SessionAttribute("login") CompanyVo comVo) {
+		ModelAndView mv = new ModelAndView();
+		String id = comVo.getId();
+		// 해당 공고의 모든 기술자격 데이터 삭제
+		companyMapper.deletepostskills(postVo);
+
+		// 해당 공고 삭제
+		companyMapper.postDelete(postVo);
+		mv.setViewName("redirect:/Company/MyPost?id=" + id + "&nowpage=1");
+		return mv;
+	}
 
 	// 특정 기업회원의 공고에 대한 인재 추천
 	@ResponseBody
 	@RequestMapping("/Recommend")
 	public ModelAndView recommend(UserVo userVo, JobpostVo jobpostVo, PresumeVo presume,
 			@SessionAttribute("login") CompanyVo comVo) {
-		
+
 		ModelAndView mv = new ModelAndView();
 
 		// session에서 id를 가져옴
@@ -499,6 +574,12 @@ public class CompanyController {
 		mv.setViewName("company/join");
 		return mv;
 	}
+/*	@GetMapping("/id/${id}/exists")
+	public ResponseEntity<Boolean> checkIdDuplicate(@PathVariable String id){
+		return ResponseEntity.ok(userService.checkIdDuplicate(id));
+	}*/
+	
+
 
 	// 기업회원가입
 	@RequestMapping("/Join")
@@ -508,10 +589,48 @@ public class CompanyController {
 
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);
-
-		mv.setViewName("redirect:/main");
+		
+		mv.setViewName("company/login");
 		return mv;
 	}
+	//기업로그인폼
+	@RequestMapping("/LoginForm")
+	public String companyLoginForm() {
+		return "company/login";
+	}
+
+
+	//기업로그인
+	@PostMapping("/Login")
+	public String companyLogin(HttpServletRequest request, CompanyVo comVo,
+	                           HttpServletResponse response) throws IOException {
+	
+	      
+	String id = request.getParameter("id");
+	String password = request.getParameter("password");
+	
+    comVo= companyMapper.login(id,password);
+    
+    
+	 if(comVo != null) {//아이디와 암호 일치시 수행
+	 HttpSession session = request.getSession();
+	 session.setMaxInactiveInterval(60*60); //60분동안 로그인 유지
+	 session.setAttribute("login", comVo);
+	 session.setAttribute("isLoggedIn", true);
+     return "redirect:/Company/Cmain";           
+	 }
+	 else {//로그인 실패시
+		  PrintWriter out = response.getWriter();
+		  response.setCharacterEncoding("UTF-8");
+		  response.setContentType("text/html; charset=UTF-8;");
+	      out.println("<script> alert('Please Check Your ID and Password');");
+	      out.println("history.go(-1); </script>"); 
+	      out.close();             
+	      return "redirect:/Company/LoginForm";
+	      }
+	 	   
+	   }
+	   
 
 	// 이력서 스크랩 기능
 	@RequestMapping("/ScrapAdd")
@@ -551,6 +670,16 @@ public class CompanyController {
 			return ResponseEntity.badRequest().body("스크랩 상태 확인에 실패했습니다.");
 		}
 	}
+
+
+	@RequestMapping("/LoadRecommend")
+	public ResponseEntity<List<MatchingResultVo>> recommendLoad(@RequestParam("post_idx") int post_idx) {
+		List<MatchingResultVo> candidates = companyMapper.recommended(post_idx);
+		return new ResponseEntity<>(candidates, HttpStatus.OK);
+	}
+
+	
+	
 
 	@RequestMapping("/MyScrap")
 	   public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo, @SessionAttribute("login") CompanyVo comVo) {
