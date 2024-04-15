@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,11 +37,10 @@
 .action-column {
 	width: 10%;
 }
-
 .linkDiv {
-	border: 1px solid #5215a6;
-}
 
+border: 1px solid #5215a6;
+}
 </style>
 <script>
     $(document).ready(function() {
@@ -51,18 +51,10 @@
             var post_idx = $(this).closest('.linkDiv').data('post-idx');
             var candidateList = $('#candidateList');
 
-            // 현재 클릭한 linkDiv의 하위 목록을 토글
-            candidateList.toggle();
-
             // 다른 linkDiv의 하위 목록은 숨김
             $('.linkDiv').not(this).each(function() {
                 $(this).find('.candidateList').hide();
             });
-
-            // 목록을 보여줬으면 함수를 종료
-            if (candidateList.is(':visible')) {
-                return;
-            }
 
             // 이전에 보여준 인재 목록을 비움
             candidateList.empty();
@@ -100,7 +92,7 @@
                             '</tbody>' +
                             '</table>';
                     });
-                    $('#candidateList').html(html);
+                    candidateList.html(html);
 
                     // forEach 루프를 추가합니다.
                     candidates.forEach(function(candidate) {
@@ -165,9 +157,35 @@
         }
 
         // linkDiv를 클릭할 때 loadRecommendationList 함수를 호출하여 목록을 표시/숨김함
-        $('.linkDiv').click(loadRecommendationList);
+        $('.linkDiv').click(function() {
+            var post_idx = $(this).closest('.linkDiv').data('post-idx');
+            var candidateList = $('#candidateList');
+
+
+
+            // 클릭한 linkDiv의 post-idx를 가져옴
+            var currentPostIdx = $(this).closest('.linkDiv').data('post-idx');
+
+            // 이전에 클릭한 linkDiv와 post-idx가 같은 경우에는 토글만 함
+            if (candidateList.data('currentPostIdx') === currentPostIdx) {
+                // 현재 클릭한 linkDiv의 하위 목록을 토글
+                candidateList.toggle();
+            	
+            	return;
+            }
+
+            // 현재 클릭한 linkDiv의 post-idx를 저장하여 다음에 클릭할 때 비교할 수 있도록 함
+            candidateList.data('currentPostIdx', currentPostIdx);
+
+            // 인재 추천 목록 로드 함수 호출
+            loadRecommendationList.call(this);
+        });
     });
 </script>
+
+
+
+
 </head>
 
 <body>
@@ -189,10 +207,12 @@
 					<input type="hidden" value="${cid }" id="cid">
 					<!-- 공고별 추천 인재 목록 출력 -->
 					<c:forEach var="post" items="${candidatesPerPost}">
-						<div class="row border border-dark py-3 d-flex align-items-center">
+						<div
+							class="row py-3 d-flex align-items-center linkDiv my-3"
+							data-post-idx="${post.key}">
 							<div class="col-3">
 								<div></div>
-								<p class="fs-3">공고명: ${postNames[post.key]}</p>
+								<p class="fs-4">공고명: ${postNames[post.key]}</p>
 								<span> 마감일: <fmt:formatDate
 										value="${deadlines[post.key]}" pattern="yyyy-MM-dd" />
 								</span>
@@ -204,57 +224,17 @@
 									href="/Company/MyPostDetail?post_idx=${post.key}">공고 확인</a>
 							</div>
 						</div>
-						<div class="mb-3">
-							<c:forEach var="resume" items="${post.value}">
-								<table class="table fixed-width-table text-center mt-3">
-									<thead class="table-secondary text-white">
-										<tr>
-											<th scope="col" class="name-column">이름</th>
-											<th scope="col" class="info-column">이력서 정보</th>
-											<th scope="col" class="skill-column">기술스택</th>
-											<th scope="col" class="action-column">스크랩</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td class="name-column text-center pt-3 align-middle"><img
-												alt="profile" src="${resume.profile}" style="height: 150px;">
-												<p class="pt-3">${resume.pname}</p>
-												<p>만 ${candidateAges[resume.resume_idx]}세</p></td>
-											<td class="info-column align-middle"><a
-												class="text-decoration-none text-dark"
-												href="/Person/MyResumeDetail?resume_idx=${resume.resume_idx}">${resume.title}</a></td>
-											<td class="skill-column align-middle"><c:forEach
-													var="skill" items="${fn:split(resume.skills, ',')}"
-													varStatus="status">
-													<c:if test="${not skill.trim().equals('무자격 지원가능')}">
-														<button type="button" class="btn btn-primary btn-sm m-1">${skill}</button>
-													</c:if>
-												</c:forEach></td>
-											<td class="action-column align-middle"><input
-												class="btn btn-outline-secondary scrap-button" type="button"
-												data-resume-idx="${resume.resume_idx}" value="스크랩">
-											</td>
-										</tr>
-									</tbody>
-
-								</table>
-							</c:forEach>
-
-							<!-- 후보자 목록이 비어있을 경우 메시지 표시 -->
-							<c:if test="${fn:length(post.value) == 0}">
-								<div class="row">
-									<div class="col">추천할 인재가 없네요....</div>
-								</div>
-							</c:if>
-						</div>
 					</c:forEach>
+				</div>
+				<div class="mb-3" id="candidateList">
+
 				</div>
 			</section>
 		</div>
 	</main>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
+
 </html>
 
 <%@include file="/WEB-INF/include/cmain_nav_active.jsp"%>
