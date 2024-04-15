@@ -317,7 +317,7 @@ public class PersonController {
 	   }
 
 
-	//특정 구직자가 지원한 공고
+	//특정 구직자가 지원한 공고 
 	@RequestMapping("/MyProposal")
 	public ModelAndView getProposal(@SessionAttribute("login") PersonVo personVo) {
 		//아이디에 따라 하는 것 추가하기
