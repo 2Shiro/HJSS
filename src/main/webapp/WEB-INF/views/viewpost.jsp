@@ -212,7 +212,7 @@
 							<!-- 기업회원일때 -->
 							<c:if test="${sessionVo.type == 1}">
 									<input type="hidden" name="id" value="cp1" />
-									<a href="/Company/MyPost?id=${sessionVo.id}" class="btn btn-primary mx-3">등록 공고 관리</a>
+									<a href="/Company/MyPost?id=${sessionVo.id}&nowpage=1" class="btn btn-primary mx-3">등록 공고 관리</a>
 							</c:if>
 							<!-- history back 사용? -->
 							<!-- 세션별로 다르게 -->

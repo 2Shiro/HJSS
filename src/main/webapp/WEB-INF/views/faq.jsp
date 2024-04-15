@@ -81,38 +81,39 @@ p{
       <div class="row">
          <nav class="col-2 bg-white sidebar vh-100 border-end">
             <div class="sidebar-sticky pt-3">
-               <%@include file="/WEB-INF/include/pmypage_nav.jsp"%>
+               <%@include file="/WEB-INF/include/main_nav.jsp"%>
             </div>
          </nav>
-         <section class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            
-            <h2>자주 묻는 질문</h2>
+            <section class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <h2 style="height:50px;">자주 묻는 질문</h2>
             <table>
-            <tr><td>            
-            <h3>개인회원 FAQ</h3>
-            <c:forEach var="faq"  items="${faqList}">            
-                <button type="button" class="collapsible" onclick="collapse(this);">${faq.question}</button>
-                   <div class="content">
-                    <p>${faq.answer}</p>
-                </div>
-                </c:forEach>
-                </td>
-                <td>
-            <h3>기업회원 FAQ</h3>
-            <c:forEach var="faq"  items="${faqList2}">            
-                <button type="button" class="collapsible" onclick="collapse(this);">${faq.question}</button>
-                   <div class="content">
-                    <p>${faq.answer}</p>
-                </div>
-                </c:forEach>
-                </td></tr>
+                  <tr><td>            
+                  <h3>개인회원 FAQ</h3>
+                  <c:forEach var="faq"  items="${faqList}">            
+                      <button type="button" class="collapsible" onclick="collapse(this);">${faq.question}</button>
+                         <div class="content">
+                          <p>${faq.answer}</p>
+                      </div>
+                      </c:forEach>
+                      </td>
+                      <td>
+                  <h3>기업회원 FAQ</h3>
+                  <c:forEach var="faq"  items="${faqList2}">            
+                      <button type="button" class="collapsible" onclick="collapse(this);">${faq.question}</button>
+                         <div class="content">
+                          <p>${faq.answer}</p>
+                         </div>
+                      </c:forEach>
+                      </td></tr>
                 </table>
-                
+                </section>
+                </div>
+             </main>
 
-                   
-
-                
-       <script>
+   <%@include file="/WEB-INF/include/getstatus.jsp" %>
+   <%@include file="/WEB-INF/include/footer.jsp"%>
+   
+   <script>
         function collapse(element) {
             var before = document.getElementsByClassName("active")[0]               // 기존에 활성화된 버튼
             if (before && document.getElementsByClassName("active")[0] != element) {  // 자신 이외에 이미 활성화된 버튼이 있으면
@@ -129,9 +130,5 @@ p{
             }
         }
     </script>
-         </section>
-   </main>
-   <%@include file="/WEB-INF/include/getstatus.jsp" %>
-   <%@include file="/WEB-INF/include/footer.jsp"%>
 </body>
 </html>

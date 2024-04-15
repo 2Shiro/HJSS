@@ -74,7 +74,7 @@
     
       <div class="input-group-sm mb-3">
               <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>사업자번호</span>
-           <input type="text" class="form-control" name="cnumber" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required >
+           <input type="number" class="form-control" name="cnumber" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required >
          </div>
     
       <div class="input-group-sm mb-3">
@@ -99,7 +99,7 @@
    
      <div class="input-group-sm mb-3">
               <span class="input-group-text" id="inputGroup-sizing-default"><span class="star">*</span>기업 규모(사원수 기준)</span>
-              <input type="text" class="form-control" name="csize" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required >
+              <input type="number" class="form-control" name="csize" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required >
       </div>
    
       <div class="input-group-sm mb-3">
@@ -118,43 +118,85 @@
     <%@include file="/WEB-INF/include/footer.jsp" %>
   </div>
   </main>
-<script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var isIdDuplicated = false; // 아이디 중복 상태를 추적하는 변수
 
-	$('#id').keyup(function(){
-		let id = $('#id').val();
-			
-		$.ajax({
-			url : "/CheckId",
-			type : "post",
-			data : {id:id},
-			dataType : 'json',
-			error : function(){
-				$("#idck").html('오류').css('color','red');
-			},
-			success : function(result){
-				if(result == 1){
-					$("#idck").html('이미 사용중인 아이디입니다.').css('color','red');
-				}else if(result == 0){
-					$("#idck").html('사용가능한 아이디입니다.').css('color','blue');					
-				}else if(result == null){
-					$("#idck").html('아이디를 입력해주세요').css('color','red');
-				}
-			}
-		})
-	})
+    $('form[name="join"]').submit(function(e) {
+        e.preventDefault(); // 폼의 기본 제출 동작을 방지
 
-	
-	$('#pw2').on('keyup',function pwCheck(){
-		var pw1 = $('#pw1').val();
-		var pw2 = $('#pw2').val();
-		
-		if(pw1==pw2){
-			$('#pwck').html('비밀번호 일치').css('color','blue')
-		}else{
-			$('#pwck').html('비밀번호 불일치').css('color','red')
-		}
-	})
+        if(isIdDuplicated) {
+            alert("중복된 아이디입니다. 다른 아이디를 사용해주세요.");
+            return; // 중복된 아이디인 경우 여기서 함수 종료
+        }
+
+        // 필수 입력 필드 검사
+        var formData = $(this).serializeArray();
+        var isFormValid = true;
+   
+        formData.forEach(function(input) {
+            if (!input.value) {
+                isFormValid = false; // 빈 필드 발견
+            }
+        });
+
+        if (!isFormValid) {
+            alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+            return; // 여기서 함수 종료
+        }
+
+        // AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "/Company/Join",
+            data: $.param(formData),
+            success: function(response) {
+                alert('회원가입이 완료되었습니다.');
+                window.location.href = '/'; // 메인 페이지로 리디렉션
+            },
+            error: function(xhr, status, error) {
+                alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+            }
+        });
+    });
+
+    $('#id').keyup(function(){
+        let id = $('#id').val();
+        
+        $.ajax({
+            url : "/CheckId",
+            type : "post",
+            data : {id:id},
+            dataType : 'json',
+            error : function(){
+                $("#idck").html('오류').css('color','red');
+            },
+            success : function(result){
+                if(result == 1){
+                    $("#idck").html('이미 사용중인 아이디입니다.').css('color','red');
+                    isIdDuplicated = true; // 아이디가 중복된 상태로 설정
+                }
+                else{
+                    $("#idck").html('사용가능한 아이디입니다.').css('color','blue');
+                    isIdDuplicated = false; // 아이디가 중복되지 않은 상태로 설정
+                }
+            }
+        })
+    })
+
+    $('#pw2').on('keyup', function pwCheck(){
+        var pw1 = $('#pw1').val();
+        var pw2 = $('#pw2').val();
+        
+        if(pw1 == pw2){
+            $('#pwck').html('비밀번호 일치').css('color','blue')
+        }else{
+            $('#pwck').html('비밀번호 불일치').css('color','red')
+        }
+    })
+});
 </script>
+
 
 </body>
 
