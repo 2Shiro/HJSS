@@ -148,7 +148,7 @@
 									<td class="name-column text-center pt-3 align-middle">
 										<p class="pt-3">${scrap.pname}</p>
 									<td class="info-column align-middle"><a
-										class="text-decoration-none text-dark"></a>${scrap.title}</td>
+										class="text-decoration-none text-dark" href="/Person/MyResumeDetail?resume_idx=${scrap.resume_idx }">${scrap.title}</a></td>
 									<td class="skill-column align-middle"><c:forEach
 											var="skill" items="${fn:split(scrap.skills, ',')}"
 											varStatus="status">

@@ -78,7 +78,7 @@
      <div class="input-group input-group-sm mb-3">
   <span class="input-group-text" id="inputGroup-sizing-sm"><span class="star">*</span>이메일</span>
   <input type="text" class="form-control" aria-label="Sizing example input"
-         name="email" aria-describedby="inputGroup-sizing-sm">
+         name="user_email" aria-describedby="inputGroup-sizing-sm">
 </div>
 
   <input type="hidden" name="created_date" value=${ now } readonly>
