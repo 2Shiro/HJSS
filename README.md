@@ -1,6 +1,35 @@
 # HJSS
 ![HJSS](https://github.com/2Shiro/HJSS/assets/81484241/a60c8000-5b1b-4194-884b-6db73bed8aba)
 
+
+## 결과
+### 비회원
+![메인페이지](https://github.com/2Shiro/HJSS/assets/79212190/53e8318a-134c-4a41-bace-2d75c9d5eae5)
+![로그인](https://github.com/2Shiro/HJSS/assets/79212190/c0019436-de26-4faf-bc22-41390213e5de)
+![회원가입](https://github.com/2Shiro/HJSS/assets/79212190/189c394b-df5b-4094-824a-d3235837e545)
+![고객센터](https://github.com/2Shiro/HJSS/assets/79212190/40f5a835-4683-4d59-a081-cbbb46a6f62e)
+
+### 기업
+![메인페이지](https://github.com/2Shiro/HJSS/assets/79212190/44fa7de5-ba40-4ab2-8dec-7d8bea8f8eec)
+![공고등록](https://github.com/2Shiro/HJSS/assets/79212190/08e3154e-d8ac-471b-b2ff-ef11d5ee18d7)
+![공고수정](https://github.com/2Shiro/HJSS/assets/79212190/359b37d7-9d3a-4deb-969c-966a201b6084)
+![공고삭제](https://github.com/2Shiro/HJSS/assets/79212190/7e1006d5-bbf7-4ebf-8b88-9b621bb2eeb2)
+![지원 현황](https://github.com/2Shiro/HJSS/assets/79212190/7f5d9a84-3d73-4c6f-9578-e8f321d1ec2a)
+![인재추천](https://github.com/2Shiro/HJSS/assets/79212190/65b0eb7a-37a8-46be-909a-fba314be5b5b)
+![인재추천2](https://github.com/2Shiro/HJSS/assets/79212190/55d20bdf-ded2-41bd-8485-3c644bf82f12)
+![스크랩한 이력서](https://github.com/2Shiro/HJSS/assets/79212190/9ab5bc23-c3b7-4749-9d38-dedfda71a4e6)
+![수정 탈퇴](https://github.com/2Shiro/HJSS/assets/79212190/b714fdad-c730-419f-b556-5f57fd399ab3)
+
+### 개인
+![메인](https://github.com/2Shiro/HJSS/assets/79212190/f7a975a6-12fa-4e85-b22b-de99abe9634a)
+![이력서 등록](https://github.com/2Shiro/HJSS/assets/79212190/a16427c3-c2c0-48ef-a2a0-dd0f02ff8233)
+![이력서 보기 수정 삭제](https://github.com/2Shiro/HJSS/assets/79212190/66172019-7039-419d-8b1d-d88bce173e64)
+![지원한 공고](https://github.com/2Shiro/HJSS/assets/79212190/3cae0f59-2e0b-4c60-9c80-a77f567b52f2)
+![맞춤공고](https://github.com/2Shiro/HJSS/assets/79212190/dba12639-f5bb-4855-98a3-49737f88384c)
+![공고 스크랩](https://github.com/2Shiro/HJSS/assets/79212190/a965b5c0-92a4-4474-9532-a6b2b4b83dbd)
+![마이페이지](https://github.com/2Shiro/HJSS/assets/79212190/068e8738-eaf0-4aea-84a8-81a2d7e62939)
+![수정 탈퇴](https://github.com/2Shiro/HJSS/assets/79212190/58c7f0fb-22d0-48f3-aece-c0b13df60486)
+
 ## 기술스택
  - JDK 17
  - Springboot
@@ -152,10 +181,14 @@
       개인,기업 개인정보 보기 수정하기
       개인 이력서 보기, 쓰기, 수정하기
       개인 이력서 지원하기
+- 회원가입시 알림창 뜨기(아이디 중복시 가입불가창)
 
 조세은
- - ID:cp1-PW:1234 ->회원가입 후 로그인 
+ - 회원가입시 아이디 중복체크 추가(ajax)
+ - 회원가입시 비밀번호 확인 추가(jquery)
+ - ID:cp1-PW:1234 ->회원가입 후 로그인 테스트 
  - JUnit 테스트 :  (기업) 회원가입
+
 
 이준석
  - JUnit 테스트 : ID값을 임의로 줘서 기능이 잘 수행하는지 테스트 완료
