@@ -25,7 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-//github.com/2Shiro/HJSS.git
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,7 +55,6 @@ import com.green.mapper.PersonMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-//github.com/2Shiro/HJSS.git
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -580,13 +578,16 @@ public class PersonController {
    
    // /Person/Delete
    @RequestMapping("/Delete")
+
    public ModelAndView delete( PersonVo personVo, HttpSession session) {
-      
+
       personMapper.deletePerson( personVo );
       personMapper.deleteUser( personVo );
          
       ModelAndView mv = new ModelAndView();
+
       session.invalidate();
+
       mv.setViewName("redirect:/");
       
       return mv;

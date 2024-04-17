@@ -50,7 +50,7 @@ import com.green.util.AgeUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-//github.com/2Shiro/HJSS.git
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -266,13 +266,16 @@ public class CompanyController {
 
 	// /Company/Delete
 	@RequestMapping("/Delete")
+
 	public ModelAndView delete(CompanyVo companyVo, HttpSession session) {
 
 		companyMapper.deleteCompany(companyVo);
 		companyMapper.deleteUser(companyVo);
 
 		ModelAndView mv = new ModelAndView();
+
 		session.invalidate();
+
 		mv.setViewName("redirect:/");
 
 		return mv;
