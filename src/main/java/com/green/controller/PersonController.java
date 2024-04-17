@@ -228,6 +228,77 @@ public class PersonController {
 		return mv;
 	}
 
+	//특정 구직자가 지원한 공고
+	   @RequestMapping("/MyProposal")
+	   public ModelAndView getProposal(@SessionAttribute("login") PersonVo personVo) {
+	      //아이디에 따라 하는 것 추가하기
+	      String pid = personVo.getId();
+	      //나의 지원 가져오기
+	      List<CproposalVo> proposalList = companyMapper.getmyProposal(pid);
+	      
+	      //지원 전부 가져오기
+	      //List<CproposalVo> proposalList = companyMapper.getProposalq();
+	      
+	      //공고 정보 가져오기
+	      List<JobpostVo> jobpostList = new ArrayList<>();
+	      for(int i = 0; i < proposalList.size(); i++) {
+	         JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
+	         jobpostList.add(new JobpostVo(vo.getPost_idx(),
+	                                vo.getId(),
+	                                vo.getPost_name(),
+	                                vo.getCareer(),
+	                                vo.getJob_type(),
+	                                vo.getPay(),
+	                                vo.getGo_work(),
+	                                vo.getGo_home(),
+	                                vo.getDeadline(),
+	                                vo.getJob_intro(),
+	                                vo.getC_intro(),
+	                                vo.getCreated_date()));
+	      }
+	      
+	      //이력서 가져오기
+	      List<PresumeVo> presumeVo = new ArrayList<>();
+	      for (int i = 0; i < proposalList.size(); i++) {
+	         int resume_idx = proposalList.get(i).getResume_idx();
+	         PresumeVo vo = personMapper.getResume(resume_idx);
+	         presumeVo.add(vo);
+	      }
+	      
+	      //필요한 정보를 담은 리스트
+	      List<PproposalVo> pproposalList = new ArrayList<>();
+	      for (int i = 0; i < proposalList.size(); i++) {
+	         //comment를 굳이 테이블에서 가져와?
+	         String status, comment;
+	         if (proposalList.get(i).getStatus() == 1) {
+	            status = "합격";
+	            comment = "합격했습니다. ";
+	         } else if (proposalList.get(i).getStatus() == 2) {
+	            status = "불합격";
+	            comment = "불합격했습니다. ";
+	         } else {
+	            status = "미처리";
+	            comment = "아직 처리되지않았습니다. ";
+	         }
+	         pproposalList.add(new PproposalVo(proposalList.get(i).getPost_idx(), 
+                     jobpostList.get(i).getPost_name(), 
+                     jobpostList.get(i).getDeadline(), 
+                     proposalList.get(i).getResume_idx(),
+                     presumeVo.get(i).getTitle(),
+                     status, comment,
+                     proposalList.get(i).getId()));
+	      }
+	      
+	      ModelAndView mv = new ModelAndView();
+	      mv.addObject("pid", pid);
+	      mv.addObject("proposalList", proposalList);
+	      mv.addObject("jobpostList", jobpostList);
+	      mv.addObject("presumeVo", presumeVo);
+	      mv.addObject("pproposalList", pproposalList);
+	      mv.setViewName("/person/myproposal");
+	      return mv;
+	   }
+
 	@RequestMapping("/MyResumeWrite")
 	public ModelAndView WriteResume(@RequestParam("skillIdx") List<Integer> skillIdxList, PresumeVo vo, UserVo userVo,
 			@RequestParam("file") MultipartFile file, @Value("${file.upload-dir}") String uploadDir) {
@@ -423,76 +494,6 @@ public class PersonController {
 		return mv;
 	}
 
-	 //특정 구직자가 지원한 공고
-	   @RequestMapping("/MyProposal")
-	   public ModelAndView getProposal(@SessionAttribute("login") PersonVo personVo) {
-	      //아이디에 따라 하는 것 추가하기
-	      String pid = personVo.getId();
-	      //나의 지원 가져오기
-	      List<CproposalVo> proposalList = companyMapper.getmyProposal(pid);
-	      
-	      //지원 전부 가져오기
-	      //List<CproposalVo> proposalList = companyMapper.getProposalq();
-	      
-	      //공고 정보 가져오기
-	      List<JobpostVo> jobpostList = new ArrayList<>();
-	      for(int i = 0; i < proposalList.size(); i++) {
-	         JobpostVo vo = companyMapper.getpostName(proposalList.get(i).getPost_idx());
-	         jobpostList.add(new JobpostVo(vo.getPost_idx(),
-	                                vo.getId(),
-	                                vo.getPost_name(),
-	                                vo.getCareer(),
-	                                vo.getJob_type(),
-	                                vo.getPay(),
-	                                vo.getGo_work(),
-	                                vo.getGo_home(),
-	                                vo.getDeadline(),
-	                                vo.getJob_intro(),
-	                                vo.getC_intro(),
-	                                vo.getCreated_date()));
-	      }
-	      
-	      //이력서 가져오기
-	      List<PresumeVo> presumeVo = new ArrayList<>();
-	      for (int i = 0; i < proposalList.size(); i++) {
-	         int resume_idx = proposalList.get(i).getResume_idx();
-	         PresumeVo vo = personMapper.getResume(resume_idx);
-	         presumeVo.add(vo);
-	      }
-	      
-	      //필요한 정보를 담은 리스트
-	      List<PproposalVo> pproposalList = new ArrayList<>();
-	      for (int i = 0; i < proposalList.size(); i++) {
-	         //comment를 굳이 테이블에서 가져와?
-	         String status, comment;
-	         if (proposalList.get(i).getStatus() == 1) {
-	            status = "합격";
-	            comment = "합격했습니다. ";
-	         } else if (proposalList.get(i).getStatus() == 2) {
-	            status = "불합격";
-	            comment = "불합격했습니다. ";
-	         } else {
-	            status = "미처리";
-	            comment = "아직 처리되지않았습니다. ";
-	         }
-	         pproposalList.add(new PproposalVo(proposalList.get(i).getPost_idx(), 
-	                                   jobpostList.get(i).getPost_name(), 
-	                                   jobpostList.get(i).getDeadline(), 
-	                                   proposalList.get(i).getResume_idx(),
-	                                   presumeVo.get(i).getTitle(),
-	                                   status, comment,
-	                                   proposalList.get(i).getId()));
-	      }
-	      
-	      ModelAndView mv = new ModelAndView();
-	      mv.addObject("proposalList", proposalList);
-	      mv.addObject("jobpostList", jobpostList);
-	      mv.addObject("presumeVo", presumeVo);
-	      mv.addObject("pproposalList", pproposalList);
-	      mv.setViewName("/person/myproposal");
-	      return mv;
-	   }
-
    //이력서 가져오기
    @RequestMapping("/GetResume")
    public ModelAndView getResume(PresumeVo presume) {
@@ -503,9 +504,11 @@ public class PersonController {
       PersonVo psuerVo = personMapper.getPuser(presumeVo.getId());
       UserVo userVo = personMapper.getUser(presumeVo.getId());
       //System.out.println("유저: " + userVo);
-      
+      String id = userVo.getId();
+      List<SkillVo> skill = personMapper.loadskills(id);
       ModelAndView mv = new ModelAndView();
       mv.addObject("presumeVo", presumeVo);
+      mv.addObject("skill", skill);
       mv.addObject("psuerVo", psuerVo);
       mv.addObject("userVo", userVo);
       mv.setViewName("/person/popresume");
@@ -577,13 +580,13 @@ public class PersonController {
    
    // /Person/Delete
    @RequestMapping("/Delete")
-   public ModelAndView delete( PersonVo personVo ) {
+   public ModelAndView delete( PersonVo personVo, HttpSession session) {
       
       personMapper.deletePerson( personVo );
       personMapper.deleteUser( personVo );
          
       ModelAndView mv = new ModelAndView();
-         
+      session.invalidate();
       mv.setViewName("redirect:/");
       
       return mv;

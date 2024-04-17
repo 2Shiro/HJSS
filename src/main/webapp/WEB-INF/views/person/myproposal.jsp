@@ -18,7 +18,6 @@
 	crossorigin="anonymous"></script>
 <style>
 .sticky-footer {
-	position: fixed;
 	bottom: 0;
 	width: 100%;
 }
@@ -49,7 +48,7 @@
              <td> &nbsp &nbsp ${pproposalList.post_idx}</td>
          	   <td><a href="/ViewPost?id=${pproposalList.cid}&post_idx=${pproposalList.post_idx}">${pproposalList.post_name}</a></td>
              <td>${pproposalList.deadline}</td>
-             <td><a href="/Person/MyResume" value="${pproposalList.resume_idx}">${pproposalList.resume_name}</a></td>
+             <td><a href="/Person/MyResume?id=${pid}&nowpage=1" value="${pproposalList.resume_idx}">${pproposalList.resume_name}</a></td>
              <td>
              	<c:choose>
              		<c:when test="${pproposalList.status eq '합격'}">

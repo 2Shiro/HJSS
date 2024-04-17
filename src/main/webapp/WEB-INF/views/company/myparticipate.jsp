@@ -18,7 +18,6 @@
 	crossorigin="anonymous"></script>
 <style>
 .sticky-footer {
-	position: fixed;
 	bottom: 0;
 	width: 100%;
 }
@@ -73,7 +72,8 @@ h3 {
 			popup.onclick = function(e) {
 				e.preventDefault();
 				//alert(popup.href)
-				let popOption = 'width = 650px, height=550px;, top=300px, left=300px, scrollbars=yes';
+				
+				let popOption = 'width = 800px, height=700px;, top=50%, left=80%, scrollbars=yes';
 				let openUrl = popup.href
 				window.open(openUrl, 'popresume', popOption);
 		  }

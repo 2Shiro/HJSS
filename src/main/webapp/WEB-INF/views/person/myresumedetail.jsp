@@ -23,7 +23,14 @@
 		<div class="row">
 			<nav class="col-2 bg-white sidebar vh-100 border-end">
 				<div class="sidebar-sticky pt-3">
-					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>
+				<c:choose>
+				<c:when test="${sessionVo.type == 1}">
+					<%@include file="/WEB-INF/include/cmain_nav.jsp"%>
+				</c:when>
+				<c:when test="${sessionVo.type == 2}">
+					<%@include file="/WEB-INF/include/pmain_nav.jsp"%>				
+				</c:when>
+				</c:choose>
 				</div>
 			</nav>
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">

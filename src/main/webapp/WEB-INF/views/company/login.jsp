@@ -17,7 +17,6 @@
 	crossorigin="anonymous"></script>
 <style>
 .sticky-footer {
-	position: fixed;
 	bottom: 0;
 	width: 100%;
 }
@@ -65,7 +64,7 @@ footer{
 	<main>
 		<div>
 			<a href="/"> <img alt="Logo" src="/images/logo.png"
-			style="width: 150px;">
+			style="width: 250px; margin-top : 20px; ">
 			</a><br><br><br>
 		</div>
 		<table id="logch">
@@ -78,11 +77,11 @@ footer{
 			<div class="log">
 				<table>
 					<tr>
-						<td colspan="2"><input type="text" id="id" name="id" 
+						<td colspan="2"><input type="text" id="id" name="id"  autocomplete="off"
 						style="width: 250px;" placeholder="아이디"></td>
 					</tr>
 					<tr>
-						<td colspan="2"><input type="password" id="password" name="password" 
+						<td colspan="2"><input type="password" id="password" name="password"  autocomplete="off"
 						style="width: 250px;" placeholder="비밀번호"><br></td>
 					</tr>
 					<tr id="btn">

@@ -1,5 +1,6 @@
 package com.green.controller;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -100,13 +101,13 @@ public class CompanyController {
 		mv.setViewName("/company/cmain");
 		return mv;
 	}
-
+	
 	// 기업의 검색페이지
 	@RequestMapping("/Search")
-	public ModelAndView search(@RequestParam(value = "keyword") String keyword) {
+	public ModelAndView search( @RequestParam(value="keyword") String keyword ) {
 		// JOB_POST_TB 리스트
 		List<MainPageVo> mainPageList = new ArrayList<>();
-		List<JobpostVo> jobList = companyMapper.getsearchpostList(keyword);
+		List<JobpostVo> jobList = companyMapper.getsearchpostList( keyword );
 
 		// 기업 이미지 객체리스트 -> companyVo
 
@@ -121,6 +122,7 @@ public class CompanyController {
 					vo.getCrepresentive(), vo.getAddress(), vo.getManager_name(), vo.getCompany_managerphone(),
 					vo.getCsize(), vo.getCyear()));
 		}
+
 
 		// 담기
 		for (int i = 0; i < jobList.size(); i++) {
@@ -149,6 +151,7 @@ public class CompanyController {
 		List<JobpostVo> mypost = companyMapper.getMyPost(cid);
 		log.info("==mypost==", mypost);
 		System.out.println(mypost.size());
+
 
 		// 공고에 제안한 것들 테이블
 		List<CproposalVo> proposalList = new ArrayList<>();
@@ -260,17 +263,16 @@ public class CompanyController {
 		return mv;
 	}
 
+
 	// /Company/Delete
 	@RequestMapping("/Delete")
-	public ModelAndView delete(CompanyVo companyVo) {
+	public ModelAndView delete(CompanyVo companyVo, HttpSession session) {
 
 		companyMapper.deleteCompany(companyVo);
 		companyMapper.deleteUser(companyVo);
 
 		ModelAndView mv = new ModelAndView();
-
-		mv.setViewName("home");
-
+		session.invalidate();
 		mv.setViewName("redirect:/");
 
 		return mv;
@@ -555,12 +557,6 @@ public class CompanyController {
 			return null;
 		}
 	}
-	
-	@RequestMapping("/LoadRecommend")
-	public ResponseEntity<List<MatchingResultVo>> recommendLoad(@RequestParam("post_idx") int post_idx) {
-		List<MatchingResultVo> candidates = companyMapper.recommended(post_idx);
-		return new ResponseEntity<>(candidates, HttpStatus.OK);
-	}
 
 	@RequestMapping("/JoinForm")
 	public ModelAndView CompanyJoinForm() {
@@ -575,11 +571,12 @@ public class CompanyController {
 		mv.setViewName("company/join");
 		return mv;
 	}
-	/*
-	 * @GetMapping("/id/${id}/exists") public ResponseEntity<Boolean>
-	 * checkIdDuplicate(@PathVariable String id){ return
-	 * ResponseEntity.ok(userService.checkIdDuplicate(id)); }
-	 */
+/*	@GetMapping("/id/${id}/exists")
+	public ResponseEntity<Boolean> checkIdDuplicate(@PathVariable String id){
+		return ResponseEntity.ok(userService.checkIdDuplicate(id));
+	}*/
+	
+
 
 	// 기업회원가입
 	@RequestMapping("/Join")
@@ -589,44 +586,48 @@ public class CompanyController {
 
 		ModelAndView mv = new ModelAndView();
 		companyMapper.insert(companyVo);
-
+		
 		mv.setViewName("company/login");
 		return mv;
 	}
-
-	// 기업로그인폼
+	//기업로그인폼
 	@RequestMapping("/LoginForm")
 	public String companyLoginForm() {
 		return "company/login";
 	}
 
-	// 기업로그인
+
+	//기업로그인
 	@PostMapping("/Login")
-	public String companyLogin(HttpServletRequest request, CompanyVo comVo, HttpServletResponse response)
-			throws IOException {
-
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-
-		comVo = companyMapper.login(id, password);
-
-		if (comVo != null) {// 아이디와 암호 일치시 수행
-			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(60 * 60); // 60분동안 로그인 유지
-			session.setAttribute("login", comVo);
-			session.setAttribute("isLoggedIn", true);
-			return "redirect:/Company/Cmain";
-		} else {// 로그인 실패시
-			PrintWriter out = response.getWriter();
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html; charset=UTF-8;");
-			out.println("<script> alert('Please Check Your ID and Password');");
-			out.println("history.go(-1); </script>");
-			out.close();
-			return "redirect:/Company/LoginForm";
-		}
-
-	}
+	public String companyLogin(HttpServletRequest request, CompanyVo comVo,
+	                           HttpServletResponse response) throws IOException {
+	
+	      
+	String id = request.getParameter("id");
+	String password = request.getParameter("password");
+	
+    comVo= companyMapper.login(id,password);
+    
+    
+	 if(comVo != null) {//아이디와 암호 일치시 수행
+	 HttpSession session = request.getSession();
+	 session.setMaxInactiveInterval(60*60); //60분동안 로그인 유지
+	 session.setAttribute("login", comVo);
+	 session.setAttribute("isLoggedIn", true);
+     return "redirect:/Company/Cmain";           
+	 }
+	 else {//로그인 실패시
+		  PrintWriter out = response.getWriter();
+		  response.setCharacterEncoding("UTF-8");
+		  response.setContentType("text/html; charset=UTF-8;");
+	      out.println("<script> alert('Please Check Your ID and Password');");
+	      out.println("history.go(-1); </script>"); 
+	      out.close();             
+	      return "redirect:/Company/LoginForm";
+	      }
+	 	   
+	   }
+	   
 
 	// 이력서 스크랩 기능
 	@RequestMapping("/ScrapAdd")
@@ -667,28 +668,38 @@ public class CompanyController {
 		}
 	}
 
-	@RequestMapping("/MyScrap")
-	public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo, @SessionAttribute("login") CompanyVo comVo) {
-		ModelAndView mv = new ModelAndView();
 
-		// ComscrapListVo는 스크랩 리스트를 가져오기 위해 만든 Vo
-		// session에서 id를 가져옴
-		String id = comVo.getId();
-		userVo.setId(id);
-		userVo.setId(id);
-
-		// 가져온 id를 사용해서 유저 정보를 가져옴
-		userVo = mainMapper.getUser(id);
-
-		// 가져온 id를 사용해서 ComscrapListVo의 id값을 확정함
-		scrapVo.setCid(id);
-
-		// ComscrapListVo 정보를 list로 가져옴
-		List<ComscrapListVo> comScrapList = companyMapper.getScrapList(scrapVo);
-		mv.addObject("cid", id);
-		mv.addObject("ScrapList", comScrapList);
-		mv.setViewName("company/myscrap");
-		return mv;
+	@RequestMapping("/LoadRecommend")
+	public ResponseEntity<List<MatchingResultVo>> recommendLoad(@RequestParam("post_idx") int post_idx) {
+		List<MatchingResultVo> candidates = companyMapper.recommended(post_idx);
+		return new ResponseEntity<>(candidates, HttpStatus.OK);
 	}
+
+	
+	
+
+	@RequestMapping("/MyScrap")
+	   public ModelAndView myScrap(ComscrapListVo scrapVo, UserVo userVo, @SessionAttribute("login") CompanyVo comVo) {
+	      ModelAndView mv = new ModelAndView();
+	      
+	      // ComscrapListVo는 스크랩 리스트를 가져오기 위해 만든 Vo   
+	      // session에서 id를 가져옴
+	      String id = comVo.getId();
+	      userVo.setId(id);
+	      userVo.setId(id);
+	      
+	      // 가져온 id를 사용해서 유저 정보를 가져옴
+	      userVo = mainMapper.getUser(id);
+	      
+	      // 가져온 id를 사용해서 ComscrapListVo의 id값을 확정함
+	      scrapVo.setCid(id);
+	      
+	      // ComscrapListVo 정보를 list로 가져옴
+	      List<ComscrapListVo> comScrapList = companyMapper.getScrapList(scrapVo);
+	      mv.addObject("cid", id);
+	      mv.addObject("ScrapList", comScrapList);
+	      mv.setViewName("company/myscrap");
+	      return mv;
+	   }
 
 }

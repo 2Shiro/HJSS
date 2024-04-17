@@ -63,7 +63,7 @@ footer{
 	<main>
 	<div class="main">
 		<a href="/">
-			<img alt="Logo" src="/images/logo.png" style="width:150px;">
+			<img alt="Logo" src="/images/logo.png" style="width:250px; margin-top : 20px;">
 		</a><br><br><br>
 	</div>
 	<table id="logch">
@@ -77,11 +77,11 @@ footer{
 			<table>
 				<tr>
 					<td colspan="2"><input type="text" id="id" name="id" 
-					style="width: 250px;" placeholder="아이디"></td>
+					style="width: 250px;" placeholder="아이디" autocomplete="off"></td>
 				</tr>
 				<tr>
 					<td colspan="2"><input type="password" id="password" name="password" 
-					style="width: 250px;" placeholder="비밀번호"></td>
+					style="width: 250px;" placeholder="비밀번호" autocomplete="off"></td>
 				</tr>
 				<tr id="btn">
 					<td><br><button type="submit" class="btn btn-primary" style="background-color:#5215a6; color : white; border:white; width : 120px;">로그인</button>
