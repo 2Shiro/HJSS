@@ -216,6 +216,7 @@
 		COUNT(DISTINCT PS.skill_idx) >= 2
 		)
 		)
+		or PS.skill_idx = 0
 		GROUP BY
 		j.post_idx, j.post_name,
 		j.pay, j.job_type, j.job_intro,
@@ -307,6 +308,7 @@
                 HAVING COUNT(DISTINCT PS.skill_idx) >= 2
             )
         )
+        or PS.skill_idx = 0
         GROUP BY j.post_idx, j.post_name, j.pay, j.job_type, j.job_intro,
         j.go_work, j.go_home, j.deadline, j.career, j.id, ci.cname
     )
@@ -370,6 +372,7 @@
 		COUNT(DISTINCT PS.skill_idx) >= 2
 		)
 		)
+		or PS.skill_idx = 0
 		GROUP BY
 		j.post_idx, j.post_name,
 		j.pay, j.job_type, j.job_intro,

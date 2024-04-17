@@ -39,7 +39,7 @@
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
-						<input type="text" class="border-0" id="title"
+						<input type="text" class="border-0" id="title" style="width:500px;"
 							value="${ vo.cname }님의 마이페이지" readonly>
 					</h2>
 					<hr>

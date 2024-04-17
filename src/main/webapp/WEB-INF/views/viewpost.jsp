@@ -43,7 +43,7 @@
 					</c:choose>
 				</div>
 			</nav>
-			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
+			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 				<!-- 공고 보는 부분 -->
 				<div class="mt-5 ms-3">
 					<h2 class="text-center fw-semibold">
@@ -165,7 +165,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="text" class="form-control border-0" id="phone"
-										value="${companyVo.cnumber}" readonly="readonly">
+										value="${companyVo.company_managerphone}" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -184,7 +184,7 @@
 								</div>
 								<div class="col-3 my-3">
 									<input type="email" class="form-control border-0" id="email"
-										value="${companyVo.user_email}" readonly="readonly">
+										value="${userVo.user_email}" readonly="readonly">
 								</div>
 								<div class="col-2 my-3"></div>
 							</div>
@@ -195,7 +195,7 @@
 								<form action="/Person/JoinPost" method="POST">
 									<input type="hidden" name="id" value="ps1" /> <input
 										type="hidden" name="post_idx" value="${jobpostvo.post_idx}" />
-									<div class="input-group mb-3 resume" >
+									<div class="input-group mb-3 resume">
 										<label class="input-group-text" for="inputGroupSelect01">이력서</label>
 										<select name="resume_idx" class="form-select"
 											id="presumeSelect">
@@ -205,31 +205,38 @@
 											</c:forEach>
 										</select>
 									</div>
-									
-									<button type="submit" class="btn btn-primary mx-3">지원하기</button>
+									<div class="my-3 d-flex justify-content-center">
+										<button type="submit" class="btn btn-primary mx-3">지원하기</button>
+										<div>
+											<c:choose>
+												<c:when test="${sessionVo.type == 1}">
+													<a href="/Company/Cmain" id="btn-list"
+														class="btn btn-outline-secondary mx-3">메인으로</a>
+												</c:when>
+												<c:when test="${sessionVo.type == 2}">
+													<a href="/Person/Pmain" id="btn-list"
+														class="btn btn-outline-secondary mx-3">메인으로</a>
+												</c:when>
+												<c:otherwise>
+													<a href="/" id="btn-list"
+														class="btn btn-outline-secondary mx-3">메인으로</a>
+												</c:otherwise>
+											</c:choose>
+										</div>
+
+									</div>
 								</form>
 							</c:if>
 							<!-- 기업회원일때 -->
 							<c:if test="${sessionVo.type == 1}">
-									<input type="hidden" name="id" value="cp1" />
-									<a href="/Company/MyPost?id=${sessionVo.id}&nowpage=1" class="btn btn-primary mx-3">등록 공고 관리</a>
+								<input type="hidden" name="id" value="cp1" />
+								<a href="/Company/MyPost?id=${sessionVo.id}&nowpage=1"
+									class="btn btn-primary mx-3">등록 공고 관리</a>
 							</c:if>
 							<!-- history back 사용? -->
 							<!-- 세션별로 다르게 -->
-							
-							<div>
-							<c:choose>
-								<c:when test="${sessionVo.type == 1}">
-									<a href="/Company/Cmain" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
-								</c:when>
-								<c:when test="${sessionVo.type == 2}">
-									<a href="/Person/Pmain" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
-								</c:when>
-								<c:otherwise>
-									<a href="/" id="btn-list" class="btn btn-outline-secondary mx-3">메인으로</a>
-								</c:otherwise>
-							</c:choose>
-							</div>
+
+
 						</div>
 					</div>
 				</div>

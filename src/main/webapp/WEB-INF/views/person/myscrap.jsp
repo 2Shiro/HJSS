@@ -130,7 +130,7 @@
 			<!-- 메인 섹션 -->
 			<section class="col-md-9 ml-sm-auto col-lg-10 px-md-4 row">
 				<div class="mt-5 ms-3 mb-5">
-					<h2>스크랩한 이력서 목록</h2>
+					<h2>스크랩한 회사 목록</h2>
 					<hr>
 					<input type="hidden" value="${pid }" id="pid">
 					<table class="table fixed-width-table text-center mt-3">

@@ -504,9 +504,11 @@ public class PersonController {
       PersonVo psuerVo = personMapper.getPuser(presumeVo.getId());
       UserVo userVo = personMapper.getUser(presumeVo.getId());
       //System.out.println("유저: " + userVo);
-      
+      String id = userVo.getId();
+      List<SkillVo> skill = personMapper.loadskills(id);
       ModelAndView mv = new ModelAndView();
       mv.addObject("presumeVo", presumeVo);
+      mv.addObject("skill", skill);
       mv.addObject("psuerVo", psuerVo);
       mv.addObject("userVo", userVo);
       mv.setViewName("/person/popresume");
@@ -578,13 +580,13 @@ public class PersonController {
    
    // /Person/Delete
    @RequestMapping("/Delete")
-   public ModelAndView delete( PersonVo personVo ) {
+   public ModelAndView delete( PersonVo personVo, HttpSession session) {
       
       personMapper.deletePerson( personVo );
       personMapper.deleteUser( personVo );
          
       ModelAndView mv = new ModelAndView();
-         
+      session.invalidate();
       mv.setViewName("redirect:/");
       
       return mv;

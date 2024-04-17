@@ -18,7 +18,6 @@
 	crossorigin="anonymous"></script>
 <style>
 .sticky-footer {
-	position: fixed;
 	bottom: 0;
 	width: 100%;
 }
@@ -29,7 +28,7 @@ h3 {
 </style>
 </head>
 <body>
-<form action="/Person/Pass" method="POST">
+<form action="/Person/Pass" method="POST" class="container">
 <input type="hidden" name="resume_idx" value="${presumeVo.resume_idx}" />
 <div class="" id="personResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -72,13 +71,21 @@ h3 {
 				</div>
 				
 				<div class="input-group mb-3">
-				  <span class="input-group-text" id="inputGroup-sizing-default">기술스택</span>
-				  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"  readonly>
+				  <span class="input-group-text " id="inputGroup-sizing-default">기술스택</span>
+				 			<c:forEach var="skill" items="${ skill }">
+									<div class="col-auto ms-3">
+										<input type="checkbox" class="btn-check"
+											id="skill_${skill.skill_idx }" value="${skill.skill_idx}"
+											name="skillIdx" autocomplete="off" readonly="readonly">
+										<label class="btn btn-outline-primary"
+											for="skill_${skill.skill_idx }">${skill.skill_name }</label>
+									</div>
+								</c:forEach>
 				</div>
 				
 				<div class="input-group">
 				  <span class="input-group-text">자기소개</span>
-				  <textarea class="form-control" aria-label="With textarea" value="${presumeVo.self_intro}"  readonly></textarea>
+				  <textarea class="form-control" aria-label="With textarea" readonly>${presumeVo.self_intro}</textarea>
 				</div>
 				
       </div>

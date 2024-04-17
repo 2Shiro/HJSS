@@ -266,16 +266,13 @@ public class CompanyController {
 
 	// /Company/Delete
 	@RequestMapping("/Delete")
-	public ModelAndView delete(CompanyVo companyVo) {
+	public ModelAndView delete(CompanyVo companyVo, HttpSession session) {
 
 		companyMapper.deleteCompany(companyVo);
 		companyMapper.deleteUser(companyVo);
 
 		ModelAndView mv = new ModelAndView();
-
-
-		mv.setViewName("home");
-
+		session.invalidate();
 		mv.setViewName("redirect:/");
 
 		return mv;

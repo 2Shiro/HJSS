@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="/css/common.css" />
 <style>
 .sticky-footer {
-	position: fixed;
 	bottom: 0;
 	width: 100%;
 }
