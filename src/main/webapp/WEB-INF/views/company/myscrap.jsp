@@ -156,7 +156,7 @@
 										</c:forEach></td>
 									<td class="action-column align-middle"><input
 										class="btn btn-outline-secondary scrap-button" type="button"
-										data-resume-idx="${scrap.resume_idx}" value="스크랩"></td>
+										data-resume-idx="${scrap.resume_idx}" value="스크랩"></td> 
 								</tr>
 							</tbody>
 						</c:forEach>
