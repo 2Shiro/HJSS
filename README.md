@@ -10,8 +10,6 @@
 ![고객센터](https://github.com/2Shiro/HJSS/assets/79212190/40f5a835-4683-4d59-a081-cbbb46a6f62e)
 
 ### 기업
-![마이페이지](https://github.com/2Shiro/HJSS/assets/164135425/770f853c-5bd9-42de-b271-d130dbd2f465)
-
 ![메인페이지](https://github.com/2Shiro/HJSS/assets/79212190/44fa7de5-ba40-4ab2-8dec-7d8bea8f8eec)
 ![공고등록](https://github.com/2Shiro/HJSS/assets/79212190/08e3154e-d8ac-471b-b2ff-ef11d5ee18d7)
 ![공고수정](https://github.com/2Shiro/HJSS/assets/79212190/359b37d7-9d3a-4deb-969c-966a201b6084)
