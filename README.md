@@ -1,9 +1,6 @@
 # HJSS
 ![HJSS](https://github.com/2Shiro/HJSS/assets/81484241/a60c8000-5b1b-4194-884b-6db73bed8aba)
 
-<<<<<<< HEAD
-=======
-
 ## 결과
 ### 비회원
 ![메인페이지](https://github.com/2Shiro/HJSS/assets/79212190/53e8318a-134c-4a41-bace-2d75c9d5eae5)
@@ -32,7 +29,7 @@
 ![마이페이지](https://github.com/2Shiro/HJSS/assets/79212190/068e8738-eaf0-4aea-84a8-81a2d7e62939)
 ![수정 탈퇴](https://github.com/2Shiro/HJSS/assets/79212190/58c7f0fb-22d0-48f3-aece-c0b13df60486)
 
->>>>>>> f019d7205d9cb871868ad88a8548ae21c4422c83
+
 ## 기술스택
  - JDK 17
  - Springboot
@@ -184,13 +181,6 @@
       개인,기업 개인정보 보기 수정하기
       개인 이력서 보기, 쓰기, 수정하기
       개인 이력서 지원하기
-<<<<<<< HEAD
-
-조세은
- - ID:cp1-PW:1234 ->회원가입 후 로그인 
- - JUnit 테스트 :  (기업) 회원가입
-
-=======
 - 회원가입시 알림창 뜨기(아이디 중복시 가입불가창)
 
 조세은
@@ -200,7 +190,6 @@
  - JUnit 테스트 :  (기업) 회원가입
 
 
->>>>>>> f019d7205d9cb871868ad88a8548ae21c4422c83
 이준석
  - JUnit 테스트 : ID값을 임의로 줘서 기능이 잘 수행하는지 테스트 완료
 
